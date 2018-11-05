@@ -26,22 +26,21 @@
 
 \textoResumo{
 Os algoritmos clássicos de assinatura digital como RSA e ECDSA baseiam sua
-segurança na dificuldade de fatorar números inteiros, e no logaritmo discreto,
+segurança na dificuldade da fatoração de inteiros, e no logaritmo discreto,
 respectivamente. Esses problemas já possuem algoritmos quânticos que os
 resolvem em tempo polinomial, ou seja, com computadores quânticos poderosos o
-suficiente, o uso dos algoritmos de assinatura digital mais difundidos se
-tornará impraticável. Naturalmente, com o desenvolvimento de computadores
-quânticos cada vez mais poderosos, o interesse por criptossistemas resistentes
-a ataques de computadores quânticos também cresceu, surgindo uma nova área
-chamada criptografia pós-quântica que visa desenvolvê-los. Os algoritmos de
-criptografia pós-quânticos se baseiam numa série de problemas que ainda se
-mantém difíceis mesmo que computadores quânticos poderosos estejam disponíveis,
-logo, despertam o interesse para o uso nesse cenário. Este trabalho visa
-estudar a classe de criptossistemas baseados em polinômios multivariados, que
-se baseiam em problemas como o \textit{Polynomial System Solving} e o
-\textit{Isomorphism of Polynomials}, que ainda são difíceis mesmo com
-algoritmos quânticos, portanto são bons candidatos para criptografia
-pós-quântica.
+suficiente, o uso dos algoritmos de assinatura digital mais difundidos
+tornará-se impraticável. Naturalmente, com o aumento do poder computacional
+quântico, o interesse por criptossistemas resistentes a ataques que utilizam-se
+de tais computadores também cresceu. A área que estuda esses criptossistemas é
+portanto chamada de criptografia pós-quântica. Particularmente, esses
+algoritmos baseiam-se numa série de problemas que permanecem difíceis, mesmo
+que computadores quânticos poderosos sejam utilizados, logo, despertam o
+interesse para substituir os criptossistemas clássicos. Este trabalho visa
+estudar a classe de criptossistemas baseados em sistemas de polinômios
+multivariados, que, baseiam-se em problemas como a solução de sistemas de
+polinômios e o isomorfismo de polinômios, portanto, são bons candidatos para
+criptografia pós-quântica.
 }
 \palavrasChave{criptografia, assinatura digital, pós-quântico}
 
@@ -137,51 +136,53 @@ pós-quântica.
 \chapter{Introduction}
 
 Classic cryptography is threatened by quantum computers since polynomial time
-quantum algorithms for solving the factorization and the discrete logarithm
-problem already exist~\cite{shor1999polynomial}. With such algorithms, ECDSA
-and RSA private keys could be easily recovered with a sufficiently powerful
-quantum computer, hence the most used digital signature algorithms would become
-insecure and not suitable for signing digital documents.
+quantum algorithms for solving the integer factorization and the discrete
+logarithm problem already exist~\cite{shor1999polynomial}. The hardness of
+recovering private keys, for instance, ECDSA and RSA keys, relies on the
+hardness of the aforementioned problems, therefore, with such algorithms,
+private keys could be easily recovered with a sufficiently powerful quantum
+computer. Hence the most used digital signature algorithms would become
+insecure.
 
-In such scenario, cryptosystems that can't be broken by quantum computers
-should be used for generating new digital signatures. The area that studies
-such cryptosystems is called post-quantum cryptography, and the interest in
-these has emerged with the development of quantum computers.  These algorithms
-base their security upon problems that still do not have polynomial time
-quantum algorithms that solves them, hence are good candidates for use in a
-scenario with attackers equipped with quantum computers.
+In such scenario, cryptosystems that cannot be broken by quantum computers
+should be used for handling digital signatures. The area that studies such
+cryptosystems is called post-quantum cryptography, and the interest in these
+has emerged with the development of quantum computers. The security of these
+algorithms relies on problems that still do not have polynomial time quantum
+algorithms that solves them, therefore, they appear to be good candidates for
+use in a scenario of attackers equipped with quantum computers.
 
 There are several classes of post-quantum cryptosystems, and each of them
-relies on one kind of problem, this work aims to study the class of
-cryptosystems called Multivariate Public-Key Cryptosystems (MPKCs). These
-cryptosystems are constructed using multivariate polynomials systems, and
-differ from the classic polynomial systems on the fact that the monomials can,
-and will be, a product of more than one variable. Solving simple polynomial
-systems is trivial using Gaussian elimination, but solving multivariate systems
-is proven to be NP-Hard~\cite{garey1990npc} and the security of MPKCs will
-mostly rely on this fact and on the hardness of the Isomorphism of Polynomials
-(IP) problem.
+relies on one kind of problem. This work aims to study Multivariate Public-Key
+Cryptosystems (MPKCs). These algorithms are constructed using multivariate
+polynomials systems.  Polynomial systems are generally composed of equations
+that are a sum of single variable monomials. Such systems can be easily solved
+using Gaussian elimination, but the addition of more variables into the
+monomials turns the problem NP-Hard~\cite{garey1990npc}. The security of MPKCs
+will be based on the hardness of solving such systems and also, on the
+Isomorphism of Polynomials (IP) problem.
 
-A lot of digital signature schemes were developed upon the structure of
-multivariate systems, one of the first schemes presented was the Oil-Vinegar
-(OV) signature scheme~\cite{patarin1997ov}, which is currently
-broken~\cite{kipnis1998cryptanalysis} in its original specification, but a
-subsequent work made it secure again with the correct
-parameters~\cite{kipnis1999unbalanced} leading to a scheme called Unbalanced
-Oil-Vinegar (UOV). The classic OV is the building block for various other
-schemes, called \textit{SingleField} schemes, that, in essence, are similar to
-OV, but ended up optimizing the security, the signature size and the key sizes.
-These schemes withstood the test of time and the UOV is still secure.
+Several digital signature schemes were developed based on the structure of
+multivariate systems. One of the first schemes presented was the Oil-Vinegar
+(OV) signature scheme~\cite{patarin1997ov}, which was broken by Kipnis and
+Shamir in its original specification~\cite{kipnis1998cryptanalysis}. A
+subsequent work by Kipnis et al. made it secure again with new parameters
+leading to a scheme called Unbalanced Oil-Vinegar
+(UOV)~\cite{kipnis1999unbalanced}. The classic OV is the building block for
+various other schemes, called \textit{SingleField} schemes. In essence, they
+are similar to OV, but ended up optimizing the security, the signature size and
+the key sizes. These schemes currently withstand the test of time and are still
+secure.
 
 This work aims to understand the OV signature scheme and its subsequent
 optimized schemes as well as propose new optimization(s). Reducing public parts
-of the systems as well as the signatures size is very interesting, because
-these are the information that are actually transmitted over a communication
-channel and stored in various places, like embedded systems, in which these
-resources may be expensive. Also reducing key sizes has a direct impact on the
-operations that use them, from the simple fact that we operate with less data.
-For example, with a smaller public key, verifying signatures becomes faster, we
-can see that in a work by Petzold~\textit{et al.}~\cite{petzoldt2011small}.
+of the systems as well as the signature size is very interesting.  These are
+the information actually transmitted over a communication channel and stored in
+various places, like embedded systems, in which there may be constraints.
+Further, reducing key sizes has a direct impact on the operations that use
+them, from the simple fact that we operate with less data.  For example, with a
+smaller public key, verifying signatures becomes faster, as seen in a work by
+Petzoldt et al.~\cite{petzoldt2011small}.
 
 \section{Goals}
 
@@ -196,23 +197,31 @@ as scope and other basic premises.
     Observe and understand the impact of the parameters selection for such
     schemes and experiment with them, as this plays an important role in
     efficient and fast implementations of the schemes. Analyze the bleeding
-    edge schemes recently proposed, searching for pitfalls and also understand
-    the strategies being used to optimize the cryptosystems.
+    edge schemes recently proposed, searching for possible improvements and
+    also understand the strategies being used to optimize the cryptosystems.
 
-    \item \textit{Specific goals:} Describe the classic OV and the UOV digital
-    signature schemes; describe the Rainbow signature scheme; describe the
-    relevant optimized schemes based on Rainbow like
-    CyclicRainbow~\cite{petzoldt2010cyclicrainbow}; Compare and analyze the
-    performance of the aforementioned schemes in terms of time to perform
-    signatures and verifications as well as memory usage. If possible propose
-    new optimizations on top of those schemes.
+    \item \textit{Specific goals:} \begin{enumerate}
+
+        \item Describe the classic OV and the UOV digital signature schemes;
+
+        \item Describe the Rainbow signature scheme;
+
+        \item Describe the relevant optimized schemes based on Rainbow like
+        CyclicRainbow~\cite{petzoldt2010cyclicrainbow};
+
+        \item Compare and analyze the performance of the aforementioned schemes
+        in terms of time to generate and verify signatures as well as memory
+        usage.
+
+        \item Finally, propose new optimizations on top of those schemes.
+
+    \end{enumerate}
 
     \item \textit{Scope:} This work will not cover other classes of
     post-quantum algorithms like code-based, lattice-based and hash-based
-    cryptosystems, also, classic asymmetric algorithms (RSA, (EC)DSA, etc.)
-    won't be covered. Quantum algorithms and their aspects will not be covered
-    by this work, it will be restricted to algorithms that run on classic
-    computers, that is, computers based on binary digital systems.
+    cryptosystems, or, classic asymmetric algorithms, such as RSA and DSA.
+    Quantum algorithms and their aspects will also not be discussed by this
+    work.
 
     \item \textit{Acceptance criteria:} Detailed study and implementation of
     the (U)OV and Rainbow signature schemes; Detailed study of at least three
@@ -221,13 +230,13 @@ as scope and other basic premises.
     \item \textit{Deliverables:} Reports of the undergraduate thesis according
     to the deadlines and specifications of the related UFSC disciplines,
     including the full thesis at the end of the course (INE5434), as well as
-    the documented implementations made for experimentation and testing.
+    documented implementations made for experimentation and testing.
 
     \item \textit{Premises and restrictions:} There will be periodic meetings
-    with the supervisors to discuss what is being researched and what should be
-    researched. All documents will be normalized according to UFSC thesis
-    rules. Free and open-source software will be used. All deadlines of the
-    project, in respect of the related disciplines, should be respected.
+    with supervisors to discuss present and future activities. All documents
+    will be normalized according to UFSC thesis templates. Free and open-source
+    software will be used. All deadlines of the project, in respect of the
+    related disciplines, should be complied with.
 
 \end{itemize}
 
@@ -235,8 +244,8 @@ as scope and other basic premises.
 
 The work will be developed using the infrastructure and resources provided by
 the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
-made to determine what is the state-of-the-art in MPKCs, recently proposed
-schemes will be studied as well as broken ones for a better understanding of
+made to determine what is the state-of-the-art in MPKCs. Recently proposed
+schemes will be studied, as well as broken ones for a better understanding of
 the used constructions that optimize the classic multivariate schemes. Works
 that investigate the parameters of SingleField schemes will be given the
 deserved attention as well. Performance of all the schemes studied should be
@@ -256,11 +265,11 @@ observed along with the impact of the optimizations.
       & \textbf{abr.} & \textbf{mai.} & \textbf{jun.} \\
     \hline Fundamentação teórica & \cellcolor{lightgray} & & & & & \\
     \hline Revisão do estado da arte & \cellcolor{lightgray}
-      & \cellcolor{lightgray} & & & & \\
-      \hline Desenvolvimento do TCC & & \cellcolor{lightgray}
-      & \cellcolor{lightgray} & \cellcolor{lightgray} & & \\
-    \hline Implementação & & & & \cellcolor{lightgray}
-      & \cellcolor{lightgray} & \cellcolor{lightgray} \\
+      & \cellcolor{lightgray} & \cellcolor{lightgray} & & & \\
+      \hline Desenvolvimento do TCC & & & \cellcolor{lightgray}
+      & \cellcolor{lightgray} & \cellcolor{lightgray} & \\
+    \hline Implementação & & & & & \cellcolor{lightgray}
+      & \cellcolor{lightgray} \\
     \hline Relatório de TCC I & & & & & \cellcolor{lightgray} & \\
     \hline
     \hline \rowcolor{lightgray}
@@ -271,11 +280,11 @@ observed along with the impact of the optimizations.
       \multicolumn{1}{|c|}{\multirow{-2}{*}{\textbf{Etapas}}}
       & \textbf{jul.} & \textbf{ago.} & \textbf{set.}
       & \textbf{out.} & \textbf{nov.} & \textbf{dez.} \\
-    \hline Ajustes na implementação & \cellcolor{lightgray} & & & & & \\
-    \hline Redação da monografia & \cellcolor{lightgray}
-      & \cellcolor{lightgray} & \cellcolor{lightgray} & & & \\
-    \hline Ajustes na monografia & & & \cellcolor{lightgray}
-      & \cellcolor{lightgray} & & \\
+    \hline Implementação & \cellcolor{lightgray} & & & & & \\
+    \hline Experimentação & & \cellcolor{lightgray} & & & & \\
+    \hline Redação da monografia & & \cellcolor{lightgray}
+      & \cellcolor{lightgray} & \cellcolor {lightgray} & & \\
+    \hline Ajustes na monografia & & & & \cellcolor{lightgray} & & \\
     \hline Relatório de TCC II & & & & & \cellcolor{lightgray} & \\
     \hline Defesa pública & & & & & & \cellcolor{lightgray} \\
     \hline Ajustes finais do TCC & & & & & & \cellcolor{lightgray} \\
@@ -292,11 +301,10 @@ observed along with the impact of the optimizations.
       & \thatcell{1}{c|}{Valor Total (R\$)}                         \\
     \hline \thatcell{4}{|l|}{Material permanente}                   \\
     \hline Computador   & 1     & R\$ 3.000,00  & R\$ 3.000,00      \\
-    \hline Internet     & 1     & R\$ 1.000,00  & R\$ 1.000,00      \\
     \hline Artigos      & 10    & R\$ 90,00     & R\$ 900,00        \\
     \hline Livros       & 2     & R\$ 200,00    & R\$ 400,00        \\
     \hline \thatcell{4}{|l|}{Material de consumo}                   \\
-    \hline Alimentação  & 264   & R\$ 10,00     & R\$ 2.640,00      \\
+    \hline Alimentação  & 200   & R\$ 10,00     & R\$ 2.000,00      \\
     \hline CDs/DVDs     & 4     & R\$ 2,00      & R\$ 8,00          \\
     \hline \thatcell{4}{|l|}{Outros recursos e serviços}            \\
     \hline Impressões   & 200   & R\$ 1,00      & R\$ 200,00        \\
@@ -373,15 +381,15 @@ observed along with the impact of the optimizations.
       & Não se aplica \\
     \hline Problemas de saúde & Baixa & Alto & Alta
       & Tratamento médico das condições identificadas
-      & Diminuição do fator de exposição em caso de doenças com fator
-        ambiental, e exames para verificar condições genéticas \\
+      & Diminuir exposição a doenças e realizar exames de prevenção
+        regularmente \\
     \hline Perda de dados & Muito baixa & Alto & Média
-      & Recuperar cópia de segurança
-      & Cópias de segurança periódicas do material produzido \\
+      & Recuperar cópias
+      & Manter cópias do material produzido em serviços de dados distribuídos
+        confiáveis \\
     \hline Queima de equipamento(s) eletrônico(s) & Muito baixa & Alto & Média
       & Comprar novo(s) equipamento(s)
-      & Evitar utilização do(s) equipamento(s) em más condições de tempo ou
-        por períodos muito prolongados \\
+      & Evitar utilização do(s) equipamento(s) em condições de risco \\
     \hline
   \end{tabular}
 \end{figure}
