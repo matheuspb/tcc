@@ -32,15 +32,16 @@ resolvem em tempo polinomial, ou seja, com computadores quânticos poderosos o
 suficiente, o uso dos algoritmos de assinatura digital mais difundidos
 tornará-se impraticável. Naturalmente, com o aumento do poder computacional
 quântico, o interesse por criptossistemas resistentes a ataques que utilizam-se
-de tais computadores também cresceu. A área que estuda esses criptossistemas é
-portanto chamada de criptografia pós-quântica. Particularmente, esses
+de tais computadores também cresceu. A área que estuda esses criptossistemas é,
+portanto, chamada de criptografia pós-quântica. Particularmente, esses
 algoritmos baseiam-se numa série de problemas que permanecem difíceis, mesmo
 que computadores quânticos poderosos sejam utilizados, logo, despertam o
 interesse para substituir os criptossistemas clássicos. Este trabalho visa
 estudar a classe de criptossistemas baseados em sistemas de polinômios
 multivariados, que, baseiam-se em problemas como a solução de sistemas de
-polinômios e o isomorfismo de polinômios, portanto, são bons candidatos para
-criptografia pós-quântica.
+polinômios e o isomorfismo de polinômios, os quais ainda são resistentes a
+algoritmos quânticos, portanto, são bons candidatos para criptografia
+pós-quântica.
 }
 \palavrasChave{criptografia, assinatura digital, pós-quântico}
 
@@ -138,29 +139,30 @@ criptografia pós-quântica.
 Classic cryptography is threatened by quantum computers since polynomial time
 quantum algorithms for solving the integer factorization and the discrete
 logarithm problem already exist~\cite{shor1999polynomial}. The hardness of
-recovering private keys, for instance, ECDSA and RSA keys, relies on the
-hardness of the aforementioned problems, therefore, with such algorithms,
-private keys could be easily recovered with a sufficiently powerful quantum
-computer. Hence the most used digital signature algorithms would become
-insecure.
+recovering private keys, for instance, RSA and ECDSA keys, relies on the
+hardness of the aforementioned problems, therefore, with such algorithms, a
+private key could be easily recovered from its public key by a sufficiently
+powerful quantum computer. Hence the most used digital signature algorithms
+would become insecure.
 
 In such scenario, cryptosystems that cannot be broken by quantum computers
 should be used for handling digital signatures. The area that studies such
-cryptosystems is called post-quantum cryptography, and the interest in these
+cryptosystems is called post-quantum cryptography, and the interest in this
 has emerged with the development of quantum computers. The security of these
 algorithms relies on problems that still do not have polynomial time quantum
 algorithms that solves them, therefore, they appear to be good candidates for
 use in a scenario of attackers equipped with quantum computers.
 
-There are several classes of post-quantum cryptosystems, and each of them
-relies on one kind of problem. This work aims to study Multivariate Public-Key
-Cryptosystems (MPKCs). These algorithms are constructed using multivariate
-polynomials systems.  Polynomial systems are generally composed of equations
-that are a sum of single variable monomials. Such systems can be easily solved
-using Gaussian elimination, but the addition of more variables into the
-monomials turns the problem NP-Hard~\cite{garey1990npc}. The security of MPKCs
-will be based on the hardness of solving such systems and also, on the
-Isomorphism of Polynomials (IP) problem.
+There are several classes of post-quantum cryptosystems proposed in the
+literature, and each of them relies on one kind of hard problem. This work aims
+to study Multivariate Public-Key Cryptosystems (MPKCs). These cryptosystems are
+constructed using multivariate polynomials systems. Polynomial systems are
+generally composed of polynomial equations with single variable monomials. Such
+systems can be easily solved using Gaussian elimination, but the addition of
+more variables into the monomials, making it a multivariate system, turns the
+problem NP-Hard~\cite{garey1990npc}. The security of MPKCs will be based on the
+hardness of solving such systems and also, on the Isomorphism of Polynomials
+(IP) problem.
 
 Several digital signature schemes were developed based on the structure of
 multivariate systems. One of the first schemes presented was the Oil-Vinegar
@@ -170,19 +172,19 @@ subsequent work by Kipnis et al. made it secure again with new parameters
 leading to a scheme called Unbalanced Oil-Vinegar
 (UOV)~\cite{kipnis1999unbalanced}. The classic OV is the building block for
 various other schemes, called \textit{SingleField} schemes. In essence, they
-are similar to OV, but ended up optimizing the security, the signature size and
-the key sizes. These schemes currently withstand the test of time and are still
-secure.
+are similar to OV, but ended up optimizing the security, the signature and key
+sizes. These schemes are still considered secure.
 
 This work aims to understand the OV signature scheme and its subsequent
-optimized schemes as well as propose new optimization(s). Reducing public parts
-of the systems as well as the signature size is very interesting.  These are
-the information actually transmitted over a communication channel and stored in
-various places, like embedded systems, in which there may be constraints.
-Further, reducing key sizes has a direct impact on the operations that use
-them, from the simple fact that we operate with less data.  For example, with a
-smaller public key, verifying signatures becomes faster, as seen in a work by
-Petzoldt et al.~\cite{petzoldt2011small}.
+optimized schemes as well as propose new optimization(s). The public
+information of a public key cryptosystem, such as the public key or the
+signature, is the data that is actually transmitted over a communication
+channel, or stored in places in which there may be constraints, therefore,
+reducing such parts is of great interest. Further, reducing key sizes has a
+direct impact on the operations that use them, from the simple fact that we
+operate with less data.  For example, with a smaller public key, verifying
+signatures becomes faster, as seen in a work by Petzoldt et
+al.~\cite{petzoldt2011small}.
 
 \section{Goals}
 
