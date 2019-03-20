@@ -1,4 +1,6 @@
-all: proposal.pdf ratification.pdf
+TARGETS = proposal.pdf ratification.pdf
+
+all: $(TARGETS)
 
 %.pdf: %.tex ref.bib
 	pdflatex $^
@@ -8,4 +10,4 @@ all: proposal.pdf ratification.pdf
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.out *.toc
-	rm -f proposal.pdf
+	rm -f $(TARGETS)
