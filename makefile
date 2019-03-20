@@ -1,4 +1,4 @@
-all: proposal.pdf
+all: proposal.pdf ratification.pdf
 
 %.pdf: %.tex ref.bib
 	pdflatex $^
