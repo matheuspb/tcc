@@ -1,4 +1,4 @@
-TARGETS = proposal.pdf ratification.pdf
+TARGETS = main.pdf proposal.pdf ratification.pdf
 
 all: $(TARGETS)
 
