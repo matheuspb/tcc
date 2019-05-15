@@ -10,4 +10,5 @@ all: $(TARGETS)
 
 clean:
 	rm -f *.aux *.bbl *.blg *.log *.out *.toc
+	rm -f *.las *.loa *.lof *.lot *.lsb
 	rm -f $(TARGETS)
