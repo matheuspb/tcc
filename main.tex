@@ -302,10 +302,13 @@ however it is based on a totally different construction.
 
 \section{Multivariate digital signatures schemes}
 
+This section contains a description of the main schemes that are based on the
+bipolar construction.
+
 \subsection{Oil and Vinegar}\label{sec:ov}
 
 The original Oil and Vinegar was presented by \cite{patarin1997ov}, it
-introduces a backdoor that is based upon the idea of having two sets of
+introduces a trapdoor that is based upon the idea of having two sets of
 variables in the central map, called oil and vinegar. The central map is
 constructed in such a way that the polynomials are linear in the oil variables,
 that is, there is no monomials that consists of two oil variables. With this
@@ -448,6 +451,109 @@ Verifying a signature $\sigma$ for document $d$ is as simples as checking if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Recall that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
+
+\section{Rainbow variants}
+
+The cryptosystems described above have a notable space requirement. For
+instance, the Rainbow public key can get up to 1.6 MB for secure
+parameters~\cite{ding2017nist}. This section presents some variants in the
+literature that reduce Rainbow key sizes.
+
+\subsection{Establishing a linear relation between public and private maps}
+
+In~\cite{petzoldt2010cyclicrainbow} an approach is used in such way that one
+can partially select the public key. It relies on an important aspect of the
+schemes discussed here. On the UOV\sigla{UOV}{Unbalanced Oil and Vinegar} case,
+it is appointed that the secret map $\mathcal{S}$ actually establishes a linear
+relation between the private and public coefficients of the equations. This
+makes it possible to select $\mathcal{P}$ and $\mathcal{S}$ in a smart manner
+such that you can actually make their representations smaller, introducing some
+kind of structure like a circulant matrix in the case of the CyclicRainbow.
+
+Recall the UOV construction of the maps $\mathcal{P} = \mathcal{F} \circ
+\mathcal{S}$. To understand this linear relation, the equations can be
+simplified, without its linear and constant terms. Let $n = o + v$, suppose
+that the $k$-th private polynomial of the system, without its linear and
+constant terms, is denoted like:
+
+\begin{equation}
+y^{(k)} = \sum_{r=1}^n \sum_{s=r}^n\left(\alpha^{(k)}_{rs}x_rx_s\right)
+\end{equation}
+
+Let $\mathcal{S} \in K^{n \times n}$ be the matrix that describes the secret
+affine map. The $k$-th public polynomial can be written as:
+
+\begin{equation}\label{eq:pubpolynomial}
+p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n
+\left[ \alpha^{k}_{rs} \sum_{i=1}^n(s_{ir}x_i) \sum_{j=1}^n(s_{js}x_j) \right]
+\end{equation}
+
+where $s_{ij}$ is the element of $\mathcal{S}$ in the $i$-th line and the
+$j$-th column. The summations come from the matrix multiplication operation,
+the vector of $x$ variables is actually being multiplied with $\mathcal{S}$
+when the map is applied, giving  a ``new'' vector of $x$ variables, that are
+actually just linear combinations (the summations) of the old ones. Let's say
+we want to describe our public polynomial, just like our private one:
+
+\begin{equation}\label{pubpretty}
+p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n \left( \rho^{(k)}_{rs}x_rx_s \right)
+\end{equation}
+
+To establish a relation between $\alpha_{rs}$ and $\rho_{rs}$ we need to
+observe the structure of equation \ref{eq:pubpolynomial} where $\alpha_{rs}$ is
+multiplying two polynomials. We can write those two multiplying polynomials as:
+
+\begin{equation}
+(s_{1r}x_1 + s_{2r}x_2 + \cdots + s_{nr}x_n)
+(s_{1s}x_1 + s_{2s}x_2 + \cdots + s_{nr}x_n)
+\end{equation}
+
+This can be described as a new polynomial with quadratic terms, applying
+distributive multiplication:
+
+\begin{equation}\label{eq:tau}
+\sum_{i=1}^{n}\sum_{j=i}^n \left( \tau^{rs}_{ij} x_i x_j \right)
+\end{equation}
+
+where:
+
+\begin{equation*}
+\tau^{rs}_{ij} =
+\begin{cases}
+	s_{ir} s_{is} &\mbox{if } i=j \\
+	s_{ir} s_{js} + s_{jr} s_{is} &\mbox{otherwise}
+\end{cases}
+\end{equation*}
+
+Substituting \ref{eq:tau} into \ref{eq:pubpolynomial} we get:
+
+\begin{equation}
+p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n
+\left[
+\alpha^{k}_{rs} \sum_{i=1}^{n}\sum_{j=i}^n \left( \tau^{rs}_{ij} x_i x_j \right)
+\right]
+\end{equation}
+
+Therefore, a relation between private and public coefficients can be written as:
+
+\begin{equation}\label{eq:relation}
+\rho^{(k)}_{ij} = \sum_{r=1}^{n}\sum_{s=r}^n
+\left( \tau^{rs}_{ij} \alpha^{k}_{rs} \right)
+\end{equation}
+
+After we randomly choose $\mathcal{S}$, equation \ref{eq:relation} depicts the
+linear relation between the public ($\rho$) and private ($\alpha$)
+coefficients, hence we could either choose and fix $\rho$ or $\alpha$ and find
+the other using this equation. We need to observe that we cannot choose all
+public coefficients to achieve the structure in $\mathcal{F}$. This could also
+be used to recalculate $\mathcal{F}$ from $\mathcal{P}$ and $\mathcal{S}$, this
+will be important later. The idea behind this relation can be further expanded
+to Rainbow key pairs, such relation is described in detail
+by~\cite{petzoldt2011small}. This relation was extensively used to reduce
+public keys or private keys, but not both. Reducing key sizes in this manner
+consists of introducing some structure into one part of the key, such that its
+representation becomes smaller, and calculating the other part using the
+equations above. Notable key optimizations will be briefly discussed hereafter.
 
 % rainbow variants
 
