@@ -31,7 +31,7 @@
 \departamento[o]{Departamento de Informática e Estatística}
 \curso[o]{Programa de Graduação em Ciência da Computação}
 \documento[a]{Monografia}
-\titulo{Diminished Rainbow key pairs}
+\titulo{Smaller Rainbow key pairs}
 \autor{Matheus Silva Pinheiro Bittencourt}
 \grau{Bacharel em Ciência da Computação}
 \local{Florianópolis}
@@ -68,15 +68,106 @@
 \capa{}
 \pretextuais{}
 \listadefiguras{}
-\listadetabelas{}
+%\listadetabelas{}
 \listadeabreviaturas{}
-\listadesimbolos{}
-\listadealgoritmos{}
+%\listadesimbolos{}
+%\listadealgoritmos{}
 \sumario{}
 
 \chapter{Introduction}
 
+Classic cryptography is threatened by quantum computers since polynomial time
+quantum algorithms for solving the integer factorization and the discrete
+logarithm problem already exist~\cite{shor1999polynomial}. The hardness of
+recovering private keys, for instance, RSA\sigla{RSA}{Rivest-Shamir-Adleman}
+and ECDSA\sigla{ECDSA}{Elliptic Curve Digital Signature Algorithm} keys, relies
+on the hardness of the aforementioned problems, therefore, with such
+algorithms, a private key could be easily recovered from its public key by a
+sufficiently powerful quantum computer. Hence the most used digital signature
+algorithms would become insecure.
+
+In such scenario, cryptosystems that run on classical computers and cannot be
+broken by quantum computers should be used for handling digital signatures. The
+area that studies such cryptosystems is called post-quantum cryptography, and
+the interest in this has emerged with the development of quantum computers. The
+security of these algorithms relies on problems that still do not have
+polynomial time quantum algorithms that solves them, therefore, they appear to
+be good candidates for use in a scenario of attackers equipped with quantum
+computers.
+
+There are several classes of post-quantum cryptosystems proposed in the
+literature, and each of them relies on one kind of hard problem. This work aims
+to study Multivariate Public-Key Cryptosystems
+(MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems}. These
+cryptosystems are constructed using multivariate polynomials systems.
+Polynomial systems are generally composed of polynomial equations with single
+variable monomials. Such systems can be easily solved using Gaussian
+elimination. However, with the addition of more variables into the monomials,
+they become a multivariate system. The problem of solving such systems is
+NP-Hard~\cite{garey1990npc}. The security of MPKCs will be based on the
+hardness of aforementioned problem and also, on the Isomorphism of Polynomials
+(IP)\sigla{IP}{Isomorphism of Polynomials} problem.
+
+Several digital signature schemes were developed based on the structure of
+multivariate systems. One of the first schemes presented was the Oil-Vinegar
+(OV)\sigla{OV}{Oil and Vinegar} signature scheme~\cite{patarin1997ov}, which
+was broken by Kipnis and Shamir in its original
+specification~\cite{kipnis1998cryptanalysis}. A subsequent
+work~\cite{kipnis1999unbalanced} made it secure again with new parameters
+leading to a scheme called Unbalanced Oil-Vinegar (UOV)\sigla{UOV}{Unbalanced
+Oil and Vinegar}. The classic OV is the building block for various other
+schemes, called \textit{SingleField} schemes. In essence, they are similar to
+OV, but ended up optimizing the security, the signature and key sizes. These
+schemes are still considered secure.
+
+MPKCs have very efficient signature generation and verification algorithms as
+well as small signatures, even smaller than some classic algorithms. The main
+caveat of such schemes is that they have large public and private keys. Various
+efforts were made to reduce such parts of these cryptosystems, but, to the best
+of our knowledge, none of them reduced both public and private keys. This work
+aims to understand the OV signature scheme, its subsequent optimized schemes
+and the key reduction techniques proposed in the literature. Finally, a new
+framework that allows for a reduction of both the private and the public keys
+in Rainbow-like schemes is proposed.
+
+\section{Goals and scope}
+
+\textit{General goals:} Study and describe Rainbow-like digital signatures
+schemes, understand the optimized schemes that reduce keys and signature sizes,
+and their impact on the security of the classic schemes. Observe and understand
+the impact of the parameters selection for such schemes and experiment with
+them, as this plays an important role in efficient and fast implementations of
+the schemes. Analyze the bleeding edge schemes recently proposed, searching for
+possible improvements and also understand the strategies being used to optimize
+the cryptosystems.
+
+\textit{Specific goals:} Describe the classic OV and the UOV digital signature
+schemes; Describe the Rainbow signature scheme; Describe the relevant optimized
+schemes based on Rainbow like CyclicRainbow~\cite{petzoldt2010cyclicrainbow};
+Compare and analyze the performance of the aforementioned schemes in terms of
+time to generate and verify signatures as well as memory usage. Finally,
+propose new optimizations on top of those schemes.
+
+\textit{Scope:} This work will not cover other classes of post-quantum
+algorithms like code-, lattice- and hash-based cryptosystems, or, classic
+asymmetric algorithms, such as RSA and DSA. Quantum algorithms and their
+aspects will also not be discussed by this work.
+
+\section{Methodology}
+
+% TODO improve this section
+The work will be developed using the infrastructure and resources provided by
+the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
+made to determine what is the state-of-the-art in MPKCs. Recently proposed
+schemes will be studied, as well as broken ones for a better understanding of
+the constructions used that optimize the classic multivariate schemes. Works
+that investigate the parameters of SingleField schemes will be given the
+deserved attention as well. Performance of all the schemes studied should be
+observed along with the impact of the optimizations.
+
 \chapter{Cryptographic primitives}
+
+\textit{This chapter will be written next semester.}
 
 \chapter{Multivariate cryptography}
 
@@ -380,9 +471,8 @@ cryptosystem was exploited by~\cite{kipnis1998cryptanalysis}, this work
 introduced a method to efficiently forge new signatures when $o = v$. The same
 authors subsequently propose a new scheme called Unbalanced Oil and
 Vinegar~\cite{kipnis1999unbalanced}. This work proposes new parameters for the
-original OV\sigla{OV}{Oil and Vinegar}, the most common instantiation of this
-new scheme is the $v = 2o$ case, furthermore a series of other parameters were
-mentioned and analysed.
+original OV, the most common instantiation of this new scheme is the $v = 2o$
+case, furthermore a series of other parameters were mentioned and analysed.
 
 \subsection{Rainbow}
 
@@ -465,12 +555,12 @@ the public key or the private key, but not both.
 
 In~\cite{petzoldt2010cyclicrainbow} an approach is used in such way that one
 can partially select the public key. It relies on an important aspect of the
-schemes discussed here. On the UOV\sigla{UOV}{Unbalanced Oil and Vinegar} case,
-it is appointed that the secret map $\mathcal{S}$ actually establishes a linear
-relation between the private and public coefficients of the equations. This
-makes it possible to select $\mathcal{P}$ and $\mathcal{S}$ in a smart manner
-such that you can actually make their representations smaller, introducing some
-kind of structure like a circulant matrix in the case of the CyclicRainbow.
+schemes discussed here. On the UOV case, it is appointed that the secret map
+$\mathcal{S}$ actually establishes a linear relation between the private and
+public coefficients of the equations. This makes it possible to select
+$\mathcal{P}$ and $\mathcal{S}$ in a smart manner such that you can actually
+make their representations smaller, introducing some kind of structure like a
+circulant matrix in the case of the CyclicRainbow.
 
 Recall the UOV construction of the maps $\mathcal{P} = \mathcal{F} \circ
 \mathcal{S}$. To understand this linear relation, the equations can be
@@ -623,9 +713,13 @@ verification process of RainbowLRS2, which allows for a speed up to a factor of
 
 %%% Efficient variant of rainbow without triangular matrix representation
 
-\chapter{Diminishing key pairs by fixing vinegar variables}
+\chapter{Reducing private keys by fixing vinegar variables}
+
+\textit{This chapter will be written next semester.}
 
 \chapter{Conclusion}
+
+\textit{This chapter will be written next semester.}
 
 \bibliographystyle{abnt-alf}
 \bibliography{ref}
