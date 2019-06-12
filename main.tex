@@ -474,7 +474,7 @@ Vinegar~\cite{kipnis1999unbalanced}. This work proposes new parameters for the
 original OV, the most common instantiation of this new scheme is the $v = 2o$
 case, furthermore a series of other parameters were mentioned and analysed.
 
-\subsection{Rainbow}
+\subsection{Rainbow}\label{sec:rainbow}
 
 The Rainbow signature scheme was proposed in~\cite{ding2005rainbow}. It can be
 described simply as a multilayered OV. Actually, it is a generalization of the
@@ -656,8 +656,10 @@ equations above. Notable key optimizations will be briefly discussed hereafter.
 CyclicRainbow~\cite{petzoldt2010cyclicrainbow} uses the relations explained in
 section~\ref{sec:relation} to structure the public key. In the key generation
 step, parts of the public key matrix representation are selected such that they
-form a circulant matrix. An $n \times n$ circulant matrix is of the form:
+form a circulant matrix.
 
+\begin{definition}
+An $n \times n$ circulant matrix is of the form:
 \begin{equation}
 A =
 \begin{pmatrix}
@@ -668,6 +670,7 @@ a_{n-1} & a_n    & a_1     &         & a_{n-2} \\
 a_2     & \cdots & a_{n-1} & a_n     & a_1
 \end{pmatrix}
 \end{equation}
+\end{definition}
 
 Such matrices allow for a compact representation. Storing the vector $(a_1,
 a_2, \cdots, a_n)$ is enough to represent the matrix completely, as its
@@ -707,11 +710,27 @@ verification process of RainbowLRS2, which allows for a speed up to a factor of
 
 %% smaller private keys
 
-%%% Lite Rainbow
+\subsection{Circulant Rainbow}
 
-%%% Efficient variant of Rainbow using sparse secret keys
+Circulant Rainbow~\cite{peng2017circulant} introduces circulant matrices in the
+central private map, in contrast to CyclicRainbow that does it on the public
+map. These circulant relations will be present in very specific parts of the
+central polynomials, precisely in the terms that have oil variables. Throughout
+the signature generation, after plugging values into the vinegar variables one
+will have to solve a linear system as it is shown in section \ref{sec:rainbow}.
+Due the structure introduced in the coefficients of the central map, this
+system will be represented by a circulant matrix. Solving such systems can be
+done more efficiently using a method described in~\cite{peng2017circulant}.
+Indeed the private key needs less space to be represented as in CyclicRainbow.
+Circulant Rainbow has a private key 1.8 times smaller than the original
+Rainbow, and the signature generation can be 2.9 times faster if the optimized
+method for solving the special linear systems is used instead of the Gaussian
+elimination. Notably~\cite{hashimoto2018security} discourages the use of
+Circulant Rainbow. It is shown that the Kipnis-Shamir's
+attack~\cite{kipnis1998cryptanalysis} can be used to recover equivalent
+Circulant Rainbow private keys in polynomial time.
 
-%%% Efficient variant of rainbow without triangular matrix representation
+\subsection{NC-Rainbow}
 
 \chapter{Reducing private keys by fixing vinegar variables}
 
