@@ -732,6 +732,30 @@ Circulant Rainbow private keys in polynomial time.
 
 \subsection{NC-Rainbow}
 
+NC-Rainbow~\cite{yasuda2012reducing} proposes the use of non-commutative rings
+instead of a finite field in the central map. Further, the use of isomorphisms
+between the rings and the fields need to be used in the composition of the
+public map. Through this isomorphism it can be shown that a NC-Rainbow central
+map is equivalent to the original Rainbow central map. In fact, it is stated
+that an element $\alpha$ of a non-commutative ring $R$ can be represented by
+$r$ elements in the finite field $K$. This smaller representation of the
+elements in $R$ is what leads to a more compact representation of the central
+map. Indeed, it is shown that the use of such technique can reduce the private
+key by a factor of 4 and sign documents with 1.6 times less field
+multiplications with the proposed parameters for the new scheme.
+
+\cite{thomae2012quo} shows that NC-Rainbow is just a special case of
+introducing structures into the private central map. Additionally, it is
+demonstrated that, the reduction of NC-Rainbow to the original Rainbow is not
+enough to prove security. The reduction in the opposite direction is needed and
+it lacks in the original work. The existent reduction just provides an upper
+bound for the security of the new scheme. Actually, the rank attacks were
+sensibly improved for the NC-Rainbow case. The optimizations reduce the MinRank
+attack complexity from $2^{288}$ to $2^{192}$ and for the HighRank, the
+reduction is from $2^{128}$ to $2^{96}$. Hence, the usage of non-commutative
+rings in the central map is not recommended as it greatly decreases the
+security of the original Rainbow.
+
 \chapter{Reducing private keys by fixing vinegar variables}
 
 \textit{This chapter will be written next semester.}
