@@ -31,7 +31,7 @@
 \departamento[o]{Departamento de Informática e Estatística}
 \curso[o]{Programa de Graduação em Ciência da Computação}
 \documento[a]{Monografia}
-\titulo{Smaller Rainbow key pairs}
+\titulo{Reducing key pairs in Rainbow-like schemes}
 \autor{Matheus Silva Pinheiro Bittencourt}
 \grau{Bacharel em Ciência da Computação}
 \local{Florianópolis}
@@ -76,22 +76,22 @@
 
 \chapter{Introduction}
 
-Classic cryptography is threatened by quantum computers since polynomial time
-quantum algorithms for solving the integer factorization and the discrete
-logarithm problem already exist~\cite{shor1999polynomial}. The hardness of
+Classic cryptography is threatened as a result of quantum algorithms
+development. Factoring integers and solving discrete logarithms can be done in
+polynomial-time by quantum computers~\cite{shor1999polynomial}. The hardness of
 recovering private keys, for instance, RSA\sigla{RSA}{Rivest-Shamir-Adleman}
 and ECDSA\sigla{ECDSA}{Elliptic Curve Digital Signature Algorithm} keys, relies
-on the hardness of the aforementioned problems, therefore, with such
-algorithms, a private key could be easily recovered from its public key by a
-sufficiently powerful quantum computer. Hence the most used digital signature
-algorithms would become insecure.
+on the hardness of the aforementioned problems. With such algorithms,
+recovering private keys can be done efficiently by a sufficiently powerful
+quantum computer. Hence the most used digital signature algorithms would become
+insecure.
 
-In such scenario, cryptosystems that run on classical computers and cannot be
+In such a scenario, cryptosystems that run on classical computers and cannot be
 broken by quantum computers should be used for handling digital signatures. The
 area that studies such cryptosystems is called post-quantum cryptography, and
 the interest in this has emerged with the development of quantum computers. The
 security of these algorithms relies on problems that still do not have
-polynomial time quantum algorithms that solves them, therefore, they appear to
+polynomial-time quantum algorithms that solve them, therefore, they appear to
 be good candidates for use in a scenario of attackers equipped with quantum
 computers.
 
@@ -101,23 +101,22 @@ to study Multivariate Public-Key Cryptosystems
 (MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems}. These
 cryptosystems are constructed using multivariate polynomials systems.
 Polynomial systems are generally composed of polynomial equations with single
-variable monomials. Such systems can be easily solved using Gaussian
-elimination. However, with the addition of more variables into the monomials,
-they become a multivariate system. The problem of solving such systems is
-NP-Hard~\cite{garey1990npc}. The security of MPKCs will be based on the
-hardness of aforementioned problem and also, on the Isomorphism of Polynomials
-(IP)\sigla{IP}{Isomorphism of Polynomials} problem.
+variable monomials, and can be easily solved using Gaussian elimination.
+However, with the addition of more variables into the monomials, they become a
+multivariate system. The problem of solving multivariate systems is
+NP-Hard~\cite{garey1990npc}. Therefore, it may be interesting to build
+cryptosystems upon it.
 
 Several digital signature schemes were developed based on the structure of
-multivariate systems. One of the first schemes presented was the Oil-Vinegar
-(OV)\sigla{OV}{Oil and Vinegar} signature scheme~\cite{patarin1997ov}, which
+multivariate systems. One of the first schemes presented was the Oil and
+Vinegar\sigla{OV}{Oil and Vinegar} signature scheme~\cite{patarin1997ov}, which
 was broken by Kipnis and Shamir in its original
 specification~\cite{kipnis1998cryptanalysis}. A subsequent
 work~\cite{kipnis1999unbalanced} made it secure again with new parameters
-leading to a scheme called Unbalanced Oil-Vinegar (UOV)\sigla{UOV}{Unbalanced
-Oil and Vinegar}. The classic OV is the building block for various other
+leading to a scheme called Unbalanced Oil and Vinegar.\sigla{UOV}{Unbalanced
+Oil and Vinegar} The classic OV is the building block for various other
 schemes, called \textit{SingleField} schemes. In essence, they are similar to
-OV, but ended up optimizing the security, the signature and key sizes. These
+OV but ended up optimizing the security, the signature, and key sizes. These
 schemes are still considered secure.
 
 MPKCs have very efficient signature generation and verification algorithms as
@@ -149,21 +148,19 @@ time to generate and verify signatures as well as memory usage. Finally,
 propose new optimizations on top of those schemes.
 
 \textit{Scope:} This work will not cover other classes of post-quantum
-algorithms like code-, lattice- and hash-based cryptosystems, or, classic
-asymmetric algorithms, such as RSA and DSA. Quantum algorithms and their
-aspects will also not be discussed by this work.
+algorithms like code-, lattice- and hash-based cryptosystems, nor classical
+asymmetric algorithms. Quantum algorithms will also not be discussed.
 
 \section{Methodology}
 
 % TODO improve this section
 The work will be developed using the infrastructure and resources provided by
 the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
-made to determine what is the state-of-the-art in MPKCs. Recently proposed
-schemes will be studied, as well as broken ones for a better understanding of
-the constructions used that optimize the classic multivariate schemes. Works
-that investigate the parameters of SingleField schemes will be given the
-deserved attention as well. Performance of all the schemes studied should be
-observed along with the impact of the optimizations.
+made to determine what is state-of-the-art in MPKCs. Recently proposed schemes
+will be studied, as well as broken ones for a better understanding of the
+constructions used that optimize the classic multivariate schemes. The
+performance of all the schemes studied should be observed along with the impact
+of the optimizations.
 
 \chapter{Cryptographic primitives}
 
@@ -172,10 +169,15 @@ observed along with the impact of the optimizations.
 \chapter{Multivariate cryptography}
 
 In this chapter, some basic foundations are given for the comprehension of the
-techniques proposed in the current work.
-% TODO brief description of each section
+techniques proposed in the current work. Section \ref{sec:mqsystems} contains a
+description of the basic mathematical structure used to built MPKCs. Section
+\ref{sec:bipolar} presents the construction used in the schemes discussed in
+this work. Section \ref{sec:problems} depicts the underlying problems in which
+MPKCs rely their security on. Section \ref{sec:mqschemes} describes the schemes
+addressed in this study. Section \ref{sec:rainbowvariants} illustrates some
+variants of the Rainbow digital signature scheme present in the literature.
 
-\section{Systems of multivariate equations}
+\section{Systems of multivariate equations}\label{sec:mqsystems}
 
 Standard polynomials are simply a sum of monomials, each monomial consists of a
 variable and a constant that multiplies it. You may represent polynomials using
@@ -274,7 +276,7 @@ a way that some special structure is introduced into the matrices, hence
 reducing their space requirements. Notably, CyclicRainbow uses a cyclic
 structure in the matrix representation of the public key.
 
-\section{Bipolar construction}
+\section{Bipolar construction}\label{sec:bipolar}
 
 \begin{figure}
 \centering
@@ -328,7 +330,7 @@ to the fact that those maps are constructed such that they can be inverted. To
 verify the signature $z$ for document $d$ one can simply check if $h =
 \mathcal{H}(d) = \mathcal{P}(z)$ holds.
 
-\section{Underlying problems}
+\section{Underlying problems}\label{sec:problems}
 
 This section describes the problems in which the multivariate cryptosystems
 security rely on.
@@ -391,7 +393,7 @@ be absent. MQDSS\sigla{MQDSS}{Multivariate Quadratic Digital Signature
 Scheme}~\cite{chen20165} is a provably secure multivariate cryptosystem,
 however it is based on a totally different construction.
 
-\section{Multivariate digital signatures schemes}
+\section{Multivariate digital signatures schemes}\label{sec:mqschemes}
 
 This section contains a description of the main schemes that are based on the
 bipolar construction.
@@ -542,7 +544,7 @@ $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Recall that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
 
-\section{Rainbow variants}
+\section{Rainbow variants}\label{sec:rainbowvariants}
 
 The cryptosystems described above have a notable space requirement. For
 instance, the Rainbow public key can get up to 1.6 MB for secure
