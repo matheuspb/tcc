@@ -35,7 +35,7 @@
 \autor{Matheus Silva Pinheiro Bittencourt}
 \grau{Bacharel em Ciência da Computação}
 \local{Florianópolis}
-\data{XX}{Julho}{2019} % TODO
+\data{01}{Julho}{2019}
 \orientador[Orientador]{Prof.\ Ricardo Felipe Custódio, Dr.}
 \coorientador[Coorientador]{Gustavo Zambonin, Bel.}
 \coordenador[Coordenador]
@@ -56,9 +56,8 @@
 
 \agradecimento{Agradecimentos} % TODO
 
-\epigrafe{
-``\textit{Pluralitas non est ponenda sine neccesitate}''
-}{Ockham's razor}
+\epigrafe{``\textit{Ce qui embellit le désert,
+c'est qu'il cache un puits quelque part...}''}{Le Petit Prince}
 
 \textoResumo{\textit{Inserir resumo}} % TODO
 \palavrasChave{criptografia, assinatura digital, pós-quântico}
@@ -80,79 +79,76 @@
 
 \chapter{Introduction}
 
-Classic cryptography is threatened as a result of quantum algorithms
-development. Factoring integers and solving discrete logarithms can be done in
-polynomial-time by quantum computers~\cite{shor1999polynomial}. The hardness of
-recovering private keys, for instance, RSA\sigla{RSA}{Rivest-Shamir-Adleman}
-and ECDSA\sigla{ECDSA}{Elliptic Curve Digital Signature Algorithm} keys, relies
-on the hardness of the aforementioned problems. With such algorithms,
-recovering private keys can be done efficiently by a sufficiently powerful
-quantum computer. Hence the most used digital signature algorithms would become
-insecure.
+Classic asymmetric cryptography is threatened as a result of the advance in
+quantum algorithms development. The hardness of recovering private keys, for
+instance, RSA\sigla{RSA}{Rivest-Shamir-Adleman} and ECDSA\sigla{ECDSA}{Elliptic
+Curve Digital Signature Algorithm} keys, relies, respectively, on the hardness
+of the integer factorization problem and the discrete logarithm. Quantum
+algorithms, that run in polynomial-time, for solving such problems already
+exist~\cite{shor1999polynomial}. Using such algorithms, recovering private keys
+can be done efficiently by a sufficiently powerful quantum computer. Hence, the
+most used digital signature algorithms would become insecure.
 
 In such a scenario, cryptosystems that run on classical computers and cannot be
 broken by quantum computers should be used for handling digital signatures. The
 area that studies such cryptosystems is called post-quantum cryptography, and
 the interest in this has emerged with the development of quantum computers. The
-security of these algorithms relies on problems that still do not have
-polynomial-time quantum algorithms that solve them, therefore, they appear to
-be good candidates for use in a scenario of attackers equipped with quantum
-computers.
+security of these algorithms relies on problems that are not known to be
+solvable in polynomial-time, therefore, they appear to be good candidates for
+use in a scenario of attackers equipped with quantum computers.
 
 There are several classes of post-quantum cryptosystems proposed in the
 literature, and each of them relies on one kind of hard problem. This work aims
 to study Multivariate Public-Key Cryptosystems
 (MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems}. These
-cryptosystems are constructed using multivariate polynomials systems.
-Polynomial systems are generally composed of polynomial equations with single
-variable monomials, and can be easily solved using Gaussian elimination.
-However, with the addition of more variables into the monomials, they become a
-multivariate system. The problem of solving multivariate systems is
-NP-Hard~\cite{garey1990npc}. Therefore, it may be interesting to build
-cryptosystems upon it.
+cryptosystems are constructed using multivariate polynomials systems. A
+Polynomial system is usually composed of polynomial equations with single
+variable monomials, and can be easily solved using, for instance, Gaussian
+elimination. However, with the inclusion of more variables into the monomials,
+it becomes a multivariate system. The problem of solving multivariate systems
+is NP-Hard~\cite{garey1979npc}. Therefore, it may be interesting to build
+cryptosystems based on this trait.
 
 Several digital signature schemes were developed based on the structure of
 multivariate systems. One of the first schemes presented was the Oil and
 Vinegar\sigla{OV}{Oil and Vinegar} signature scheme~\cite{patarin1997ov}, which
 was broken by Kipnis and Shamir in its original
 specification~\cite{kipnis1998cryptanalysis}. A subsequent
-work~\cite{kipnis1999unbalanced} made it secure again with new parameters
-leading to a scheme called Unbalanced Oil and Vinegar.\sigla{UOV}{Unbalanced
-Oil and Vinegar} The classic OV is the building block for various other
-schemes, called \textit{SingleField} schemes. In essence, they are similar to
-OV but ended up optimizing the security, the signature, and key sizes. These
-schemes are still considered secure.
+work~\cite{kipnis1999unbalanced} reparametrized it, leading to a scheme called
+Unbalanced Oil and Vinegar.\sigla{UOV}{Unbalanced Oil and Vinegar} The trapdoor
+introduced in the original OV is used in many other schemes. In essence, they
+are similar to OV but ended up optimizing the signature, and key sizes, while
+maintaining security levels. These schemes are still considered secure.
 
-MPKCs have very efficient signature generation and verification algorithms as
-well as small signatures, even smaller than some classic algorithms. The main
-caveat of such schemes is that they have large public and private keys. Various
-efforts were made to reduce such parts of these cryptosystems, but, to the best
-of our knowledge, none of them reduced both public and private keys. This work
-aims to understand the OV signature scheme, its subsequent optimized schemes
-and the key reduction techniques proposed in the literature. Finally, a new
-framework that allows for a reduction of both the private and the public keys
-in Rainbow-like schemes is proposed.
+MPKCs have very efficient signature generation and verification algorithms, as
+well as small signatures, in some cases, smaller than classic algorithms. The
+main caveat of such schemes is that they have large public and private keys.
+Various efforts were made to reduce such parts of these cryptosystems, but, to
+the best of our knowledge, none of them reduced both public and private keys.
+This work aims to understand the OV signature scheme, its subsequent optimized
+schemes and the key reduction techniques proposed in the literature. Finally, a
+new framework that allows for a reduction of both the private and the public
+keys in Rainbow-like schemes is proposed.
 
 \section{Goals and scope}
 
-\textit{General goals:} Study and describe Rainbow-like digital signatures
-schemes, understand the optimized schemes that reduce keys and signature sizes,
-and their impact on the security of the classic schemes. Observe and understand
-the impact of the parameters selection for such schemes and experiment with
-them, as this plays an important role in efficient and fast implementations of
-the schemes. Analyze the bleeding edge schemes recently proposed, searching for
-possible improvements and also understand the strategies being used to optimize
+\textit{General goal:} Study and describe Rainbow-like digital signature
+schemes, understand the optimizations that reduce keys and signature sizes, and
+their impact on the security of the classic schemes. Observe and analyze the
+impact of parameter selection for such algorithms, as this plays an important
+role in efficient and fast implementations of the schemes. Analyze the
+state-of-the-art schemes, to understand the strategies being used to optimize
 the cryptosystems.
 
 \textit{Specific goals:} Describe the classic OV and the UOV digital signature
-schemes; Describe the Rainbow signature scheme; Describe the relevant optimized
-schemes based on Rainbow like CyclicRainbow~\cite{petzoldt2010cyclicrainbow};
+schemes; Describe the Rainbow signature scheme; Introduce relevant
+optimizations on Rainbow, like CyclicRainbow~\cite{petzoldt2010cyclicrainbow};
 Compare and analyze the performance of the aforementioned schemes in terms of
-time to generate and verify signatures as well as memory usage. Finally,
-propose new optimizations on top of those schemes.
+operations needed to generate and verify signatures as well as storage
+requirements. Finally, propose new optimizations on top of those schemes.
 
 \textit{Scope:} This work will not cover other classes of post-quantum
-algorithms like code-, lattice- and hash-based cryptosystems, nor classical
+algorithms such as code-, lattice- and hash-based cryptosystems, nor classical
 asymmetric algorithms. Quantum algorithms will also not be discussed.
 
 \section{Methodology}
@@ -172,7 +168,7 @@ of the optimizations.
 
 \chapter{Multivariate cryptography}
 
-In this chapter, some basic foundations are given for the comprehension of the
+In this chapter, basic foundations are given for the comprehension of the
 techniques proposed in the current work. Section \ref{sec:mqsystems} contains a
 description of the basic mathematical structure used to built MPKCs. Section
 \ref{sec:bipolar} presents the construction used in the schemes discussed in
@@ -185,12 +181,13 @@ variants of the Rainbow digital signature scheme present in the literature.
 
 Standard polynomials are simply a sum of monomials, each monomial consists of a
 variable and a constant that multiplies it. You may represent polynomials using
-a vector that stores those constants. With polynomials of higher degrees, each
+a vector that stores those constants. With multivariate polynomials, each
 monomial consists of a multiplication of more than one variable and, again, a
-constant. This addition of multiple variables to the monomials is what makes
-them interest to use in cryptosystems because solving a system of such
+constant. This inclusion of multiple variables to the monomials is what makes
+them interesting to use in cryptosystems, since solving a system of such
 polynomials is computationally hard. For the purpose of multivariate
-cryptography, multivariate quadratic equations are most commonly used.
+cryptography, multivariate quadratic equations are sufficient, hence most
+commonly used.
 
 \begin{definition}
 A multivariate quadratic polynomial is defined as:
@@ -198,27 +195,31 @@ A multivariate quadratic polynomial is defined as:
 p(x_1,\cdots,x_n) = \sum_{i=1}^n \sum_{j=i}^n \alpha_{ij} x_i x_j +
 	\sum_{i=1}^n \beta_i x_i + \gamma
 \end{equation}
-where $x_1,\cdots,x_n \in \mathbb{F}$
+where all $x, \alpha, \beta, \gamma \in \mathbb{F}$
 \end{definition}
 
 A system of polynomials is a set of polynomials that share the same variables.
-It is known that for polynomials with $n$ variables, systems that have at least
-$n$ polynomials may be solvable. This can be checked efficiently. One of the
-most common methods for solving such systems is the Gaussian elimination. Note
-that, not all systems with $n$ polynomials are solvable, these systems depict
-singular matrices, when represented as such.
+It is known that, for polynomials with $n$ variables, systems that have at
+least $n$ polynomials may be solvable. This can be checked efficiently. One of
+the most common methods for solving such systems is the Gaussian elimination.
+Note that, not all systems with $n$ polynomials are solvable, these systems
+depict singular matrices, when represented as such.
 
+% TODO paragraph about matrix representation
+
+% TODO merge this and the first paragraphs
 Systems of multivariate polynomials can be constructed as well. Opposed to the
 systems explained above, solving multivariate systems is a NP-Hard
-problem~\cite{garey1990npc}, therefore they are interesting to be used in
+problem~\cite{garey1979npc}, therefore they are interesting to be used in
 building cryptosystems. Specially, systems of multivariate quadratic
 polynomials will be used, as the addition of more variables to the monomials
 does not increase the hardness of the problem. % TODO cite
 
-These systems can be seen as maps, for instance, the system $\mathcal{P}$
-defines a map $\mathcal{P}:\mathbb{F}^n \to \mathbb{F}^m$. Applying this map
-over a vector of variables consists of substituting these variables into the
-equations and take their results as the resulting vector.
+These systems can be seen as maps, for instance, a system $\mathcal{P}$, with
+$n$ variables and $m$ equations, defines a map $\mathcal{P}:\mathbb{F}^n \to
+\mathbb{F}^m$. Applying this map over a vector of variables consists of
+substituting these variables into the equations and take their results as the
+output of the map.
 
 \begin{definition}\label{def:mqsystem}
 A system $\mathcal{P}$ of multivariate quadratic polynomials is defined as:
@@ -233,14 +234,14 @@ p^{(m)}(x_1,\cdots,x_n) &= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(m)}_{ij} x_i x_j
 	+ \sum_{i=1}^n \beta^{(m)}_i x_i + \gamma^{(m)}
 \end{split}
 \end{equation}
-where $x_1,\cdots,x_n \in \mathbb{F}$
+where all $x, \alpha, \beta, \gamma \in \mathbb{F}$
 \end{definition}
 
-Each equation of the system can be represented by an upper triangular
-$(n+1)\times(n+1)$ matrix, where the element on the $i$-th line and the $j$-th
-column represents the constant that multiplies the monomial $x_i x_j$. The last
-column is used to represent the linear and the constant term. The $k$-th
-polynomial of the system can represented by a matrix of the form:
+Each equation of the system can be represented by an upper triangular matrix of
+order $n+1$, where the element on the $i$-th line and the $j$-th column
+represents the constant that multiplies the monomial $x_i x_j$. The last column
+is used to represent the linear and the constant term. The $k$-th polynomial of
+the system is represented by a matrix of the form:
 
 \begin{equation}
 A^{(k)} =
@@ -257,15 +258,15 @@ A^{(k)} =
 \end{pmatrix}
 \end{equation}
 
-And $p^{(k)}$ may be written as:
+Furthermore, $p^{(k)}$ may be written as:
 \begin{equation}
 p^{(k)}(x_1,\cdots,x_n) =
 	(x_1,\cdots,x_n,1) \cdot A^{(k)} \cdot (x_1,\cdots,x_n,1)^T
 \end{equation}
 
 Systems of multivariate quadratic equations can be represented and stored with
-ease, like shown above. It is worth noting that the coefficients of those
-equations are elements in a small finite field, thus operating them is very
+ease, as shown above. It is worth recalling that the coefficients of those
+equations are elements in a small finite field, thus operating with them is
 computationally efficient. Although easy to manipulate, storing these matrices
 is not space efficient. A notable effort resulted in various works that reduce
 the public map, \textit{e.g.} \cite{petzoldt2010cyclicrainbow}, or the private
@@ -299,60 +300,61 @@ node[below]{\textbf{Verify}} (h);
 \caption{Flow of the bipolar construction}\label{fig:bipolar}
 \end{figure}
 
-The basic construction used in multivariate cryptosystems is based upon the
-composition of multiple maps. As in definition \ref{def:mqsystem}, a
-multivariate system may be used as a map
-$\mathcal{F}:\mathbb{F}^n\to\mathbb{F}^m$. The central map of this construction
-will be a map of such kind, which will contain some specific structure such
-that one can invert this map. This map will remain secret, and with the
-combination of one or more affine maps, a public system of equations, with no
-apparent structure, thus hard to solve, will be generated.
+The basic construction used in multivariate cryptosystems is based on the
+composition of multiple transformations. As per Definition \ref{def:mqsystem},
+a multivariate system may be used as a function
+$\mathcal{F}:\mathbb{F}^n\to\mathbb{F}^m$. The central transformation of this
+construction will be a system of such kind, which will contain some specific
+structure such that, one can find preimages. $\mathcal{F}$ will remain secret,
+and with the combination of one or more affine transformations, a public system
+of equations, with no apparent structure, will be generated.
 
 As shown in Figure \ref{fig:bipolar}, the bipolar construction consists of
 three secret maps, and a public map that is derived from these three.
 $\mathcal{P}$ and $\mathcal{F}$ are multivariate systems. $\mathcal{S}$ and
-$\mathcal{T}$ are random invertible affine maps. In the signing procedure, one
-has to actually invert $\mathcal{F}$ which is not feasible for any multivariate
-system, as stated above. Thus, $\mathcal{F}$ introduces some structure that
-allows the signer to invert it as the affine maps take care of hiding this
-structure by actually scrambling the variables of the system. When generating
-the keys one may calculate $\mathcal{P}$ by the composition of the secrete maps
-$\mathcal{P} = \mathcal{S} \circ \mathcal{F} \circ \mathcal{T}$.
+$\mathcal{T}$ are random invertible affine maps. In the signing procedure,
+$\mathcal{F}^{-1}$ means finding one of possibly many preimages, and
+$\mathcal{F}$ introduces some structure that allows one to do such. The affine
+maps take care of hiding this structure by actually scrambling the variables of
+the system. When generating the keys one may calculate $\mathcal{P}$ by the
+composition of the secret maps $\mathcal{P} = \mathcal{S} \circ \mathcal{F}
+\circ \mathcal{T}$.
 
-Note that $n>m$ should hold when using the construction for digital signature
-schemes. This makes the public map $\mathcal{P}$ surjective, and ensures that
-for every hash $h \in \mathbb{F}^m$ there is a signature $z \in \mathbb{F}^n$.
-Encryption schemes can be constructed too, in this case $n < m$ should hold,
-thus making the map injective and ensuring that the decryption process outputs
-only one plain text. Encryption schemes will not be covered by this work.
+Note that $n \geq m$ should hold when using the construction for digital
+signature schemes. This makes the public map $\mathcal{P}$ surjective, and
+ensures that for every hash $h \in \mathbb{F}^m$ there exists a signature
+$\sigma \in \mathbb{F}^n$. Encryption schemes can be constructed too, in this
+case $n \leq m$ should hold, thus making the map injective and ensuring that
+the decryption process outputs only one plain text. Encryption schemes will not
+be covered by this work.
 
 With a hash function $\mathcal{H}:\{0,1\}^* \to \mathbb{F}^m$ one can sign a
 document $d$ by calculating $h = \mathcal{H}(d)$, then, as shown in Figure
-\ref{fig:bipolar}, recursively compute the signature $z =
+\ref{fig:bipolar}, recursively compute the signature $\sigma =
 \mathcal{T}^{-1}(\mathcal{F}^{-1}(\mathcal{S}^{-1}(h)))$. This is possible due
 to the fact that those maps are constructed such that they can be inverted. To
-verify the signature $z$ for document $d$ one can simply check if $h =
-\mathcal{H}(d) = \mathcal{P}(z)$ holds.
+verify the signature $\sigma$ for document $d$ one can simply check if $h =
+\mathcal{P}(\sigma)$ holds.
 
-\section{Underlying problems}\label{sec:problems}
+\section{Underlying computational problems}\label{sec:problems}
 
-This section describes the problems in which the multivariate cryptosystems
+This section describes the problems in which multivariate cryptosystems
 security rely on.
 
 \subsection{Polynomial system solving}
 
-Solving systems of polynomials is the basic problem, as shown, if it is
-feasible to solve the public system, therefore one can forge signatures.
+Solving systems of polynomials is the basic underlying problem, since, solving
+the public system is sufficient to forge new signatures.
 
 \begin{definition}
-Polynomial System Solving problem: given a system $\mathcal{P}$ like the one in
-equation \ref{eq:mqsystem}, find a vector $x' = (x_1',\cdots,x_n')$ such that
+Polynomial System Solving problem: given a system $\mathcal{P}$ as per Equation
+\ref{eq:mqsystem}, find a vector $x' = (x_1',\cdots,x_n')$ such that
 $p^{(1)}(x') = p^{(2)}(x') = \cdots = p^{(m)}(x') = 0$.
 \end{definition}
 
-This problem was proven to be NP-Hard~\cite[Appendix A7.2]{garey1990npc} even
-for the simplest case of quadratic polynomials over $GF(2)$. The special case
-of this problem where the polynomials have degree 2 is called
+This problem was proven to be NP-Hard~\cite[Appendix A7.2]{garey1979npc} even
+for the simplest case of quadratic polynomials over $\mathbb{F}_2$. The special
+case of this problem where the polynomials have degree 2 is called
 \textbf{MQ-Problem}. The NP-Hardness of this problem is important due to the
 fact that, it is not feasible for an attacker to solve the public map
 $\mathcal{P}$ directly, hence not feasible to forge signatures this way.
@@ -370,16 +372,18 @@ called Extended Isomorphism of Polynomials problem.
 Extended Isomorphism of Polynomials problem: given a nonlinear multivariate
 system $\mathcal{P} = \mathcal{S} \circ \mathcal{F} \circ \mathcal{T}$ with
 $\mathcal{F}$ belonging to some class $\mathcal{C}$ of special nonlinear
-systems that can be inverted. Find $\mathcal{S}'$, $\mathcal{F}'$ and
-$\mathcal{T}'$ such that $\mathcal{P} = \mathcal{S}' \circ \mathcal{F}' \circ
-\mathcal{T}'$ and $\mathcal{F}' \in \mathcal{C}$.
+systems that can be inverted. Find $\tilde{\mathcal{S}}$, $\tilde{\mathcal{F}}$
+and $\tilde{\mathcal{T}}$ such that $\mathcal{P} = \tilde{\mathcal{S}} \circ
+\tilde{\mathcal{F}} \circ \tilde{\mathcal{T}}$ and $\tilde{\mathcal{F}} \in
+\mathcal{C}$.
 \end{definition}
 
-With $\mathcal{S}'$, $\mathcal{F}'$ and $\mathcal{T}'$ one may forge a
-signature to a document $d$ by computing $z =
-\mathcal{T}'^{-1}(\mathcal{F}'^{-1}(\mathcal{S}'^{-1}(\mathcal{H}(d))))$ and
-publish it as a valid signature for the public key $\mathcal{P}$. Recall that
-$\mathcal{F}' \in \mathcal{C}$ so it can be inverted.
+With $\tilde{\mathcal{S}}$, $\tilde{\mathcal{F}}$ and $\tilde{\mathcal{T}}$ one
+may forge a signature for a document $d$ by computing $\sigma =
+\tilde{\mathcal{T}}^{-1}(\tilde{\mathcal{F}}^{-1}(\tilde{\mathcal{S}}^{-1}(
+\mathcal{H}(d))))$ and publish it as a valid signature for the public key
+$\mathcal{P}$. Recall that $\tilde{\mathcal{F}} \in \mathcal{C}$ so it can be
+inverted.
 
 Some variations of the problem with less secret maps or even ones that involve
 finding the original central map $\mathcal{F}$ exist, but the extended
@@ -393,36 +397,37 @@ established. Actually, on the balanced Oil and Vinegar
 scheme~\cite{patarin1997ov} decomposing the public map was done efficiently by
 ~\cite{kipnis1998cryptanalysis}. While this problem remains an open problem,
 security proofs for multivariate schemes based on the bipolar construction will
-be absent. MQDSS\sigla{MQDSS}{Multivariate Quadratic Digital Signature
+be absent. Still, MQDSS\sigla{MQDSS}{Multivariate Quadratic Digital Signature
 Scheme}~\cite{chen20165} is a provably secure multivariate cryptosystem,
 however it is based on a totally different construction.
 
-\section{Multivariate digital signatures schemes}\label{sec:mqschemes}
+\section{Multivariate digital signature schemes}\label{sec:mqschemes}
 
 This section contains a description of the main schemes that are based on the
 bipolar construction.
 
 \subsection{Oil and Vinegar}\label{sec:ov}
 
-The original Oil and Vinegar was presented by \cite{patarin1997ov}, it
-introduces a trapdoor that is based upon the idea of having two sets of
-variables in the central map, called oil and vinegar. The central map is
-constructed in such a way that the polynomials are linear in the oil variables,
-that is, there is no monomials that consists of two oil variables. With this
-fact in mind, when generating a signature one may actually linearize the
+The original Oil and Vinegar signature scheme was presented by
+\cite{patarin1997ov}. It introduces a trapdoor that is based upon the idea of
+having two sets of variables in the central map, called oil and vinegar. The
+central map is constructed in such a way that the polynomials are linear in the
+oil variables, that is, there are no monomials with two oil variables. With
+this fact in mind, when generating a signature, one may actually linearize the
 central system and solve for oil variables. A detailed description of the Oil
 and Vinegar signature scheme follows.
 
 Let $K$ be a small finite field (\textit{e.g.} $\mathbb{F}_2$). Let $o$ and $v$
 be integers, such that $o$ is the number of oil variables and $v$ the number of
-vinegar variables. Let $\mathcal{H}: \{0,1\}^* \to K^o$ be a hash function.
+vinegar variables. Let $\mathcal{H}: \{0,1\}^* \to K^o$ be a cryptographic hash
+function.
 
 The private key consists of two maps $\mathcal{S}$ and $\mathcal{F}$. Let
 $\mathcal{S}: K^{o+v} \to K^{o+v}$ be a random \textit{invertible} affine
-transformation, this transformation just rewrites every variable as a linear
-equation of all other variables. This map will be used to hide the structure of
-the central map. Let $\mathcal{F}: K^{o+v} \to K^{o}$ be the central map, this
-map is composed of $o$ equations of the form:
+transformation, it rewrites every variable as a linear combination of all other
+variables. This map will be used to hide the structure of the central map. Let
+$\mathcal{F}: K^{o+v} \to K^{o}$ be the central map, composed of $o$ equations
+of the form:
 
 \begin{equation}\label{eq:ovpolynomial}
 y^{(k)} =
@@ -435,63 +440,61 @@ O \times V} +
 \end{equation}
 
 where $(x_1,\dots,x_v)$ are the ``vinegar'' variables and
-$(x_{v+1},\dots,x_{v+o})$ are the ``oil'' variables. Notice that the oil
-variables do not multiply themselves, this will be important to make this map
-invertible when signing a message.
+$(x_{v+1},\dots,x_{v+o})$ are the ``oil'' variables. Note that the oil
+variables are not multiplied between themselves, this will be important to find
+preimages for this map when signing a message.
 
-The public map $\mathcal{P}$ is a simple composition of the secret maps
-($\mathcal{P} = \mathcal{F} \circ \mathcal{S}$). Both $\mathcal{F}$ and
+The public map $\mathcal{P}$ is a simple composition of the secret maps,
+$\mathcal{P} = \mathcal{F} \circ \mathcal{S}$. Both $\mathcal{F}$ and
 $\mathcal{P}$ are multivariate systems. $\mathcal{F}$ has the special structure
-mentioned above, nevertheless $\mathcal{P}$ looks randomly built. With this
+mentioned above, nevertheless $\mathcal{P}$ looks randomly built. With these
 maps described, let the public/private key pair be
 $(\mathcal{P},(\mathcal{S},\mathcal{F}))$.
 
 To sign a document $d$, compute its hash value $h = \mathcal{H}(d)$, find a
 preimage $(x_1,\dots,x_{o+v})$ for the map $\mathcal{F}$ such that
-$(y_1,\dots,y_o) = (h_1,\dots,h_o)$. Recall the structure present in
+$(y^{(1)},\dots,y^{(o)}) = (h_1,\dots,h_o)$. Recall the structure present in
 $\mathcal{F}$, setting random values to the vinegar variables makes the system
-linear. Hence, the signing procedure consists of selecting vinegar variables at
-random, substitute them into $\mathcal{F}$ and find the rest of the, oil,
-variables through Gaussian elimination. If the system cannot be solved, new
-vinegar variables need to be chosen. The set of variables $x$ are found such
-that $\mathcal{F}(x)=h$.
-
-Next, using the map $\mathcal{S}$ the signature itself may be computed. Recall
-that $\mathcal{S}$ is invertible, thus $\mathcal{S}^{-1}$ can be easily
-obtained. With both maps inverted, the signature $\sigma$ of $d$ is published
-as $\sigma = \mathcal{S}^{-1}(x)$.
+linear. Hence, finding a preimage consists of selecting vinegar variables at
+random, substitute them into $\mathcal{F}$, and find the oil variables through
+Gaussian elimination. If the system cannot be solved, new vinegar variables
+need to be chosen. The set of variables $x$ are found such that
+$\mathcal{F}(x)=h$. Next, using the map $\mathcal{S}$ the signature itself may
+be computed. Recall that $\mathcal{S}$ is invertible, thus $\mathcal{S}^{-1}$
+can be obtained. With both maps inverted, the signature $\sigma$ of $d$ is
+published as $\sigma = \mathcal{S}^{-1}(x)$.
 
 To verify a signature $\sigma$ of a document $d$, one can simply check if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds, therefore the signature is valid,
 otherwise it is invalid. The equality does actually hold for valid signatures,
 as $\mathcal{P}$ is a composition of the maps that were inverted in the signing
-procedure. Although, solving $\mathcal{P}$ is unfeasible. Remind that
-$\mathcal{P}$ is a multivariate equations system, hence hard to solve.
+procedure. Remind that $\mathcal{P}$ is a system of multivariate equations,
+hence hard to solve.
 
 \subsection{Unbalanced Oil and Vinegar}
 
-The original Oil and Vinegar explained in section \ref{sec:ov} is actually
+The original Oil and Vinegar explained in Section \ref{sec:ov} is actually
 insecure due to the fact that $o = v$. It is called Balanced Oil and Vinegar
 due the same amount of oil and vinegar variables. This aspect of the
-cryptosystem was exploited by~\cite{kipnis1998cryptanalysis}, this work
-introduced a method to efficiently forge new signatures when $o = v$. The same
-authors subsequently propose a new scheme called Unbalanced Oil and
+cryptosystem was exploited by~\cite{kipnis1998cryptanalysis}, where a method
+was introduced to efficiently forge new signatures when $o = v$. The same
+authors subsequently proposed a new scheme, called Unbalanced Oil and
 Vinegar~\cite{kipnis1999unbalanced}. This work proposes new parameters for the
-original OV, the most common instantiation of this new scheme is the $v = 2o$
-case, furthermore a series of other parameters were mentioned and analysed.
+original OV. The most common instantiation of this new scheme is the $v = 2o$
+case.
 
 \subsection{Rainbow}\label{sec:rainbow}
 
 The Rainbow signature scheme was proposed in~\cite{ding2005rainbow}. It can be
-described simply as a multilayered OV. Actually, it is a generalization of the
-OV scheme, in other words, OV is a single layer Rainbow instantiation. This
-newly proposed scheme greatly improves space requirements in comparison to OV.
-Both public and private key sizes are reduced for the same security levels, as
-well as the signatures size. A detailed description of the Rainbow cryptosystem
+described simply as a multilayered UOV. Actually, it is a generalization of the
+UOV scheme, in other words, UOV is a single layer Rainbow instantiation. This
+newly proposed scheme greatly improves space requirements in comparison to UOV.
+Both public and private key sizes, as well as signatures size, are reduced for
+equivalent security levels. A detailed description of the Rainbow cryptosystem
 follows.
 
-Each layer of this so called Rainbow will have its own polynomials as well as
-its own set of oil and vinegar variables. This polynomials will have the same
+Each layer of this so called Rainbow will have its own polynomials, as well as
+its own set of oil and vinegar variables. These polynomials will have the same
 structure as the OV polynomials, but the layers are intrinsically connected
 when constructed. Namely, $V_l$ and $O_l$ are respectively the set of vinegar
 variables and the set of oil variables of the $l$-th layer. Let $u$ be the
@@ -500,23 +503,23 @@ variables in each layer, such that $0 < v_1 < v_2 < \cdots < v_{u+1} = n$. Note
 that the layers actually grow bigger, this is due to the fact that each set of
 vinegar variables contains the vinegar variables from the previous layer, that
 is $V_1 \subset V_2 \subset \cdots \subset V_{u}$. As you go deeper into the
-layers, the oil variables become vinegar variables, \textit{id est} $V_{l+1} =
+layers, the oil variables become vinegar variables, \textit{i.e.} $V_{l+1} =
 V_l \cup O_l$. Keep in mind that $|V_l| = v_l$ and $|O_l| = o_l = v_{l+1} -
 v_{l}$.
 
-The connection between the variables of the layers exist in such a way that the
-layers have to be inverted one after the other for one to completely invert the
-central map. To start the inversion of the central map, one randomly selects
-the first set of vinegar variables and substitutes them, making the first layer
-linear. Recall that the oil variables of some layer are part of the vinegar
-variables of the subsequent layer. When the first layer is solved, the set
-$O_1$ can be used to construct $V_2$ in its entirety. With known values for
-$V_2$ one can linearize the second layer and solve it. Repeating this process
-for every layer, inverts the whole central map.
+The connection between variables of the layers exist in such a way that the
+layers have to be inverted one after the other for the complete inversion of
+the central map. To start this process, one randomly selects the first set of
+vinegar variables and substitutes them, making the first layer linear. Recall
+that the oil variables of some layer are part of the vinegar variables of the
+subsequent layer. When the first layer is solved, the set $O_1$ can be used to
+construct $V_2$ in its entirety. With known values for $V_2$ one can linearize
+the second layer and solve it. Repeating this process for every layer, inverts
+the whole central map.
 
 Let the sets $V_l = \{x_1, \cdots, x_{v_l}\}$ be the vinegar variables of the
-$l$-th layer and $O_l = V_{l+1} - V_l$ the oil ones. Each layer $l$ has $o_l =
-v_{l+1} - v_{l}$ equations due to the fact that $|O_l| = o_l$, hence $o_l$
+$l$-th layer, and $O_l = V_{l+1} - V_l$ the respective oil variables. Recall
+that, each layer $l$ has $o_l = v_{l+1} - v_{l}$ equations, and thus $o_l$
 equations are needed to solve for $O_l$ variables. For each layer $l$,
 construct a system $\mathcal{F}_l$ composed of $o_l$ polynomials of the form:
 
@@ -530,20 +533,21 @@ y^{(k)} =
 
 for $k = v_l, \cdots, v_{l+1} - 1$ and $l = 1, \cdots, u$. Observe that the
 polynomials are Oil and Vinegar polynomials, just like the ones in
-equation~\ref{eq:ovpolynomial}, and they can be solved for $O_l$ when $V_l$ has
+Equation~\ref{eq:ovpolynomial}, and they can be solved for $O_l$ when $V_l$ has
 known values. Let the central map $\mathcal{F}:K^{n} \to K^{n-v_1}$ be the
-union of the $u$ layers. To hide the central map, two random affine maps will
-be used. Let $\mathcal{S}:K^{n-v_1} \to K^{n-v_1}$ and $\mathcal{T}:K^{n} \to
-K^{n}$ be part of the private key. Publish $\mathcal{P} = \mathcal{S} \circ
-\mathcal{F} \circ \mathcal{T}$ as the public key.
+union of the $u$ layers. To hide the central map, two random invertible affine
+maps will be used. Let $\mathcal{S}:K^{n-v_1} \to K^{n-v_1}$ and
+$\mathcal{T}:K^{n} \to K^{n}$ be part of the private key. Publish $\mathcal{P}
+= \mathcal{S} \circ \mathcal{F} \circ \mathcal{T}$ as the public key.
 
-To sign a document $d$, using a hash function $\mathcal{H}: \{0,1\}^* \to
-K^{n-v_1}$, compute $h = \mathcal{H}(d)$. Compute $y = (y_1, \cdots, y_{n-v_1})
-= \mathcal{S}^{-1}(h)$. Solve all layers of $\mathcal{F}$, finding $x = (x_1,
-\cdots, x_n)$ such that $\mathcal{F}(x) = y$. Finally, publish $\sigma =
-\mathcal{T}^{-1}(x)$ as the signature for $d$.
+To sign a document $d$, using a cryptographic hash function $\mathcal{H}:
+\{0,1\}^* \to K^{n-v_1}$, compute $h = \mathcal{H}(d)$. Compute $y = (y_1,
+\cdots, y_{n-v_1}) = \mathcal{S}^{-1}(h)$. Solve all layers of $\mathcal{F}$ as
+per the process described above, finding $x = (x_1, \cdots, x_n)$ such that
+$\mathcal{F}(x) = y$. Finally, publish $\sigma = \mathcal{T}^{-1}(x)$ as the
+signature for $d$.
 
-Verifying a signature $\sigma$ for document $d$ is as simples as checking if
+Verifying a signature $\sigma$ for a document $d$ is as simple as checking if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Recall that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
@@ -552,27 +556,27 @@ directly.
 
 The cryptosystems described above have a notable space requirement. For
 instance, the Rainbow public key can get up to 1.6 MB for secure
-parameters~\cite{ding2017nist}. This section presents some variants in the
-literature that reduce Rainbow key sizes. Notably, all of them reduce either
-the public key or the private key, but not both.
+parameters~\cite[Table 2]{ding2017nist}. This section presents some variants in
+the literature that reduce Rainbow key sizes. As it will be shown, all of them
+reduce either the public key or the private key, but not both.
 
 \subsection{Establishing a linear relation between public and private maps}
 \label{sec:relation}
 
 In~\cite{petzoldt2010cyclicrainbow} an approach is used in such way that one
 can partially select the public key. It relies on an important aspect of the
-schemes discussed here. On the UOV case, it is appointed that the secret map
-$\mathcal{S}$ actually establishes a linear relation between the private and
-public coefficients of the equations. This makes it possible to select
-$\mathcal{P}$ and $\mathcal{S}$ in a smart manner such that you can actually
-make their representations smaller, introducing some kind of structure like a
-circulant matrix in the case of the CyclicRainbow.
+schemes previously discussed. In the UOV case, it is demonstrated that the
+secret map $\mathcal{S}$ actually establishes a linear relation between the
+private and public coefficients of the equations. This makes it possible to
+select $\mathcal{P}$ and $\mathcal{S}$ in a clever manner, such that their
+representations are smaller, introducing some kind of structure like a
+circulant matrix in the case of CyclicRainbow.
 
 Recall the UOV construction of the maps $\mathcal{P} = \mathcal{F} \circ
-\mathcal{S}$. To understand this linear relation, the equations can be
-simplified, without its linear and constant terms. Let $n = o + v$, suppose
-that the $k$-th private polynomial of the system, without its linear and
-constant terms, is denoted like:
+\mathcal{S}$. To better understand this linear relation, the equations can be
+simplified, without its linear and constant terms. Let $n = o + v$. Let the
+$k$-th private polynomial of the system, without its linear and constant terms,
+be denoted as:
 
 \begin{equation}
 y^{(k)} = \sum_{r=1}^n \sum_{s=r}^n\left(\alpha^{(k)}_{rs}x_rx_s\right)
@@ -587,19 +591,19 @@ p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n
 \end{equation}
 
 where $s_{ij}$ is the element of $\mathcal{S}$ in the $i$-th line and the
-$j$-th column. The summations come from the matrix multiplication operation,
-the vector of $x$ variables is actually being multiplied with $\mathcal{S}$
-when the map is applied, giving  a ``new'' vector of $x$ variables, that are
-actually just linear combinations (the summations) of the old ones. Let's say
-we want to describe our public polynomial, just like our private one:
+$j$-th column. The inner summations come from the matrix multiplication
+operation, where the vector of $x$ variables is multiplied with $\mathcal{S}$
+when the map is applied, giving a ``new'' vector of $x$ variables, that are
+actually just linear combinations of the old ones. Let the public polynomial be
+denoted similarly to the private one:
 
 \begin{equation}
 p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n \left( \rho^{(k)}_{rs}x_rx_s \right)
 \end{equation}
 
-To establish a relation between $\alpha_{rs}$ and $\rho_{rs}$ we need to
+To establish a relation between $\alpha_{rs}$ and $\rho_{rs}$
 observe the structure of equation \ref{eq:pubpolynomial} where $\alpha_{rs}$ is
-multiplying two polynomials. We can write those two multiplying polynomials as:
+multiplying two polynomials. Expanding the inner summations:
 
 \begin{equation}
 (s_{1r}x_1 + s_{2r}x_2 + \cdots + s_{nr}x_n)
@@ -611,17 +615,12 @@ distributive multiplication:
 
 \begin{equation}\label{eq:tau}
 \sum_{i=1}^{n}\sum_{j=i}^n \left( \tau^{rs}_{ij} x_i x_j \right)
-\end{equation}
-
-where:
-
-\begin{equation*}
-\tau^{rs}_{ij} =
+\quad \mathrm{where:} \quad \tau^{rs}_{ij} =
 \begin{cases}
 	s_{ir} s_{is} &\mbox{if } i=j \\
 	s_{ir} s_{js} + s_{jr} s_{is} &\mbox{otherwise}
 \end{cases}
-\end{equation*}
+\end{equation}
 
 Substituting \ref{eq:tau} into \ref{eq:pubpolynomial} we get:
 
@@ -641,17 +640,17 @@ Therefore, a relation between private and public coefficients can be written as:
 
 After we randomly choose $\mathcal{S}$, equation \ref{eq:relation} depicts the
 linear relation between the public ($\rho$) and private ($\alpha$)
-coefficients, hence we could either choose and fix $\rho$ or $\alpha$ and find
-the other using this equation. We need to observe that we cannot choose all
-public coefficients to achieve the structure in $\mathcal{F}$. This could also
-be used to recalculate $\mathcal{F}$ from $\mathcal{P}$ and $\mathcal{S}$, this
-will be important later. The idea behind this relation can be further expanded
-to Rainbow key pairs, such relation is described in detail
-by~\cite{petzoldt2011small}. This relation was extensively used to reduce
-public keys or private keys, but not both. Reducing key sizes in this manner
-consists of introducing some structure into one part of the key, such that its
-representation becomes smaller, and calculating the other part using the
-equations above. Notable key optimizations will be briefly discussed hereafter.
+coefficients. Hence one can choose and fix $\rho$ and find $\alpha$ using this
+equation. Observe that not all public coefficients can be chosen, otherwise no
+structure would be present in $\mathcal{F}$ and it could not be inverted. This
+could also be used to recalculate $\mathcal{F}$ from $\mathcal{P}$ and
+$\mathcal{S}$. The idea behind this relation is further expanded to Rainbow key
+pairs, and is described in detail by~\cite{petzoldt2011small}. This relation
+was extensively used to reduce either public or private keys, but not both.
+Reducing key sizes with this strategy consists of introducing some structure
+into one part of the key, such that its representation becomes smaller, and
+calculating the other part using the equations above. Notable key optimizations
+will be briefly discussed hereafter.
 
 % rainbow variants
 
@@ -660,12 +659,12 @@ equations above. Notable key optimizations will be briefly discussed hereafter.
 \subsection{CyclicRainbow}
 
 CyclicRainbow~\cite{petzoldt2010cyclicrainbow} uses the relations explained in
-section~\ref{sec:relation} to structure the public key. In the key generation
+Section~\ref{sec:relation} to structure the public key. In the key generation
 step, parts of the public key matrix representation are selected such that they
 form a circulant matrix.
 
 \begin{definition}
-An $n \times n$ circulant matrix is of the form:
+A square circulant matrix of order $n$ is of the form:
 \begin{equation}
 A =
 \begin{pmatrix}
@@ -701,10 +700,10 @@ this matrix is:
 A[i] = (a_i^0, a_i^1, a_i^2, \cdots, a_i^{n-1}) \qquad i = 1, \cdots, m
 \end{equation}
 
-Keeping the vector $a$ is sufficient the represent the matrix $A$, as all its
-rows can be calculated using equation \ref{eq:lrsmatrix}. Using matrices of
-this fashion in the public map representation, allows for a reduction factor of
-up to 3.1. Veritably, this method is pretty much similar to the one used in
+Storing the vector $a$ is sufficient the represent the matrix $A$, since every
+row can be calculated using equation \ref{eq:lrsmatrix}. Using matrices of this
+fashion in the public map representation, allows for a reduction factor of up
+to 3.1. Veritably, this method is pretty much similar to the one used in
 CyclicRainbow, thus provides an akin improvement in space requirements. The
 main difference is that CyclicRainbow uses rotations to generate each row. In
 RainbowLRS2 the rows are defined by equation \ref{eq:lrsmatrix}. It is shown
@@ -722,19 +721,19 @@ Circulant Rainbow~\cite{peng2017circulant} introduces circulant matrices in the
 central private map, in contrast to CyclicRainbow that does it on the public
 map. These circulant relations will be present in very specific parts of the
 central polynomials, precisely in the terms that have oil variables. Throughout
-the signature generation, after plugging values into the vinegar variables one
-will have to solve a linear system as it is shown in section \ref{sec:rainbow}.
+the signature generation, after inserting values into the vinegar variables,
+one will have to solve a linear system as shown in section \ref{sec:rainbow}.
 Due the structure introduced in the coefficients of the central map, this
 system will be represented by a circulant matrix. Solving such systems can be
 done more efficiently using a method described in~\cite{peng2017circulant}.
-Indeed the private key needs less space to be represented as in CyclicRainbow.
-Circulant Rainbow has a private key 1.8 times smaller than the original
-Rainbow, and the signature generation can be 2.9 times faster if the optimized
-method for solving the special linear systems is used instead of the Gaussian
-elimination. Notably~\cite{hashimoto2018security} discourages the use of
-Circulant Rainbow. It is shown that the Kipnis-Shamir's
-attack~\cite{kipnis1998cryptanalysis} can be used to recover equivalent
-Circulant Rainbow private keys in polynomial time.
+Indeed, the private key needs less space to be represented. Circulant Rainbow
+has a private key 1.8 times smaller than the original Rainbow, and the
+signature generation can be 2.9 times faster if the optimized method for
+solving the special linear systems is used instead of the Gaussian elimination.
+Notably, \cite{hashimoto2018security} discourages the use of Circulant Rainbow.
+It is shown that the Kipnis-Shamir's attack~\cite{kipnis1998cryptanalysis} can
+be used to recover equivalent Circulant Rainbow private keys in polynomial
+time.
 
 \subsection{NC-Rainbow}
 
@@ -746,20 +745,20 @@ map is equivalent to the original Rainbow central map. In fact, it is stated
 that an element $\alpha$ of a non-commutative ring $R$ can be represented by
 $r$ elements in the finite field $K$. This smaller representation of the
 elements in $R$ is what leads to a more compact representation of the central
-map. Indeed, it is shown that the use of such technique can reduce the private
+map. Indeed, it is shown that the use of this technique can reduce the private
 key by a factor of 4 and sign documents with 1.6 times less field
 multiplications with the proposed parameters for the new scheme.
 
-\cite{thomae2012quo} shows that NC-Rainbow is just a special case of
+In~\cite{thomae2012quo}, it is shown that NC-Rainbow is just a special case of
 introducing structures into the private central map. Additionally, it is
 demonstrated that, the reduction of NC-Rainbow to the original Rainbow is not
 enough to prove security. The reduction in the opposite direction is needed and
-it lacks in the original work. The existent reduction just provides an upper
-bound for the security of the new scheme. Actually, the rank attacks were
-sensibly improved for the NC-Rainbow case. The optimizations reduce the MinRank
-attack complexity from $2^{288}$ to $2^{192}$ and for the HighRank, the
+is absent in the original work. The existent reduction just provides an upper
+bound for the security of the new scheme. Actually, known attacks on Rainbow
+were sensibly improved for the NC-Rainbow case. The optimizations reduce the
+MinRank attack complexity from $2^{288}$ to $2^{192}$ and for the HighRank, the
 reduction is from $2^{128}$ to $2^{96}$. Hence, the usage of non-commutative
-rings in the central map is not recommended as it greatly decreases the
+rings in the central map is not recommended, as it greatly decreases the
 security of the original Rainbow.
 
 \chapter{Reducing private keys by fixing vinegar variables}
