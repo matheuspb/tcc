@@ -200,20 +200,17 @@ where all $x, \alpha, \beta, \gamma \in \mathbb{F}$
 
 A system of polynomials is a set of polynomials that share the same variables.
 It is known that, for polynomials with $n$ variables, systems that have at
-least $n$ polynomials may be solvable. This can be checked efficiently. One of
-the most common methods for solving such systems is the Gaussian elimination.
-Note that, not all systems with $n$ polynomials are solvable, these systems
-depict singular matrices, when represented as such.
+least $n$ polynomials may be solvable, and it can be checked efficiently. One
+of the most common methods for solving such systems is the Gaussian
+elimination. Note that, not all systems with $n$ polynomials are solvable.
 
-% TODO paragraph about matrix representation
-
-% TODO merge this and the first paragraphs
 Systems of multivariate polynomials can be constructed as well. Opposed to the
 systems explained above, solving multivariate systems is a NP-Hard
-problem~\cite{garey1979npc}, therefore they are interesting to be used in
-building cryptosystems. Specially, systems of multivariate quadratic
-polynomials will be used, as the addition of more variables to the monomials
-does not increase the hardness of the problem. % TODO cite
+problem~\cite{garey1979npc}, even for the simplest case of quadratic
+polynomials, therefore they are interesting to be used in building
+cryptosystems. Specially, systems of multivariate quadratic polynomials will be
+used, as the addition of more variables to the monomials does not increase the
+hardness of the problem.
 
 These systems can be seen as maps, for instance, a system $\mathcal{P}$, with
 $n$ variables and $m$ equations, defines a map $\mathcal{P}:\mathbb{F}^n \to
