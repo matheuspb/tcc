@@ -1,11 +1,12 @@
 % TODO translate template
 \documentclass{ufsctex/ufsctex}
 
-\usepackage{amsmath, amsfonts, amsthm, mathtools, tikz}
+\usepackage{amsmath, amsfonts, amsthm, makecell, mathtools, tikz}
 
 % English captions
 \addto\captionsbrazil{
 	\renewcommand{\figurename}{Figure}
+	\renewcommand{\tablename}{Table}
 	\renewcommand{\listfigurename}{List of Figures}
 	\renewcommand{\listtablename}{List of Tables}
 	\renewcommand{\contentsname}{Table of Contents}
@@ -25,6 +26,9 @@
 
 % Create `definition' environment
 \newtheorem{definition}{Definition}
+
+% Tabular configurations
+\renewcommand\theadfont{\bfseries}
 
 % Cover info
 \instituicao[a]{Universidade Federal de Santa Catarina}
@@ -71,7 +75,7 @@ c'est qu'il cache un puits quelque part...}''}{Le Petit Prince}
 \capa{}
 \pretextuais{}
 \listadefiguras{}
-%\listadetabelas{}
+\listadetabelas{}
 \listadeabreviaturas{}
 %\listadesimbolos{}
 %\listadealgoritmos{}
@@ -240,7 +244,7 @@ represents the constant that multiplies the monomial $x_i x_j$. The last column
 is used to represent the linear and the constant term. The $k$-th polynomial of
 the system is represented by a matrix of the form:
 
-\begin{equation}
+\begin{equation}\label{eq:matrixrepresentation}
 A^{(k)} =
 \begin{pmatrix}
 \alpha^{(k)}_{11} & \alpha^{(k)}_{12} & \alpha^{(k)}_{13} & \cdots &
@@ -512,7 +516,10 @@ that the oil variables of some layer are part of the vinegar variables of the
 subsequent layer. When the first layer is solved, the set $O_1$ can be used to
 construct $V_2$ in its entirety. With known values for $V_2$ one can linearize
 the second layer and solve it. Repeating this process for every layer, inverts
-the whole central map.
+the whole central map. It may happen that some layer will not be solvable, in
+this case, a new set $V_1$ is chosen and the inversion process starts over.
+This happens with very small probability as it will be shown in section
+\ref{sec:invertibility}.
 
 Let the sets $V_l = \{x_1, \cdots, x_{v_l}\}$ be the vinegar variables of the
 $l$-th layer, and $O_l = V_{l+1} - V_l$ the respective oil variables. Recall
@@ -520,7 +527,7 @@ that, each layer $l$ has $o_l = v_{l+1} - v_{l}$ equations, and thus $o_l$
 equations are needed to solve for $O_l$ variables. For each layer $l$,
 construct a system $\mathcal{F}_l$ composed of $o_l$ polynomials of the form:
 
-\begin{equation}
+\begin{equation}\label{eq:rainbowmap}
 y^{(k)} =
 \sum_{i=1}^{v_l}\sum_{j=i}^{v_l} \alpha^{(k)}_{ij} x_i x_j +
 \sum_{i=v_l+1}^{v_{l+1}}\sum_{j=1}^{v_l} \beta^{(k)}_{ij} x_i x_j +
@@ -549,13 +556,63 @@ $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Recall that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
 
+For illustration, Table \ref{tab:rainbowkeysizes} shows a comparison between
+the key sizes of some Rainbow instances proposed in \cite[Chapter
+6]{petzoldt2013thesis}. Let $m = n - v_1$ be the number of equations in Rainbow
+central and public maps. The private and public key size of Rainbow-like
+signature schemes is given by the formulas:
+
+\begin{equation}
+K_{pr} =
+\underbrace{m^2 + m}_{\mathcal{S}} + \underbrace{n^2 + n}_{\mathcal{T}} +
+\underbrace{\sum_{l=1}^{u} o_l \left(
+\frac{v_l(v_l + 1)}{2} + v_l o_l + v_{l+1} + 1
+\right)}_{\mathcal{F}}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+K_{pu} &= m \left( \frac{n (n + 1)}{2} + n + 1 \right) \\
+&= m \frac{(n+1)(n+2)}{2}
+\end{split}
+\end{equation}
+
+These can be easily checked by looking at Equation \ref{eq:rainbowmap} and the
+size of the affine maps $\mathcal{S}$ and $\mathcal{T}$. Also, the public key
+size is simply the size of a multivariate system with $n$ variables and $m$
+equations. The public key size formula can be checked if the matrix in Equation
+\ref{eq:matrixrepresentation} is observed, as the public map is composed of $m$
+matrices of such kind. OV and UOV key sizes can be calculated using $K_{pr}$
+and $K_{pu}$ also, as Rainbow is a generalization of the Oil and Vinegar
+schemes.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+% header
+\thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
+& \thead{Public key size} & \thead{Private key size} \\ \hline
+% data
+80  & $(\mathbb{F}_{256}, 17, 17, 9)$   & 19208   & 25740   \\ \hline
+100 & $(\mathbb{F}_{256}, 26, 22, 11)$  & 45450   & 60390   \\ \hline
+128 & $(\mathbb{F}_{256}, 36, 28, 15)$  & 103704  & 139320  \\ \hline
+192 & $(\mathbb{F}_{256}, 63, 46, 22)$  & 440638  & 596904  \\ \hline
+256 & $(\mathbb{F}_{256}, 85, 63, 30)$  & 1086971 & 1498230 \\ \hline
+\end{tabular}
+\caption{Rainbow key sizes, in bytes}
+\label{tab:rainbowkeysizes}
+\end{center}
+\end{table}
+
 \section{Rainbow variants}\label{sec:rainbowvariants}
 
 The cryptosystems described above have a notable space requirement. For
 instance, the Rainbow public key can get up to 1.6 MB for secure
-parameters~\cite[Table 2]{ding2017nist}. This section presents some variants in
-the literature that reduce Rainbow key sizes. As it will be shown, all of them
-reduce either the public key or the private key, but not both.
+parameters~\cite[Table 2]{ding2017nist} in comparison to ECDSA's 64 bytes
+public keys. This section presents some variants in the literature that reduce
+Rainbow key sizes. As it will be shown, all of them reduce either the public
+map or the private central map, but not both.
 
 \subsection{Establishing a linear relation between public and private maps}
 \label{sec:relation}
@@ -649,10 +706,6 @@ into one part of the key, such that its representation becomes smaller, and
 calculating the other part using the equations above. Notable key optimizations
 will be briefly discussed hereafter.
 
-% rainbow variants
-
-%% smaller public keys
-
 \subsection{CyclicRainbow}
 
 CyclicRainbow~\cite{petzoldt2010cyclicrainbow} uses the relations explained in
@@ -708,10 +761,6 @@ in~\cite{petzoldt2013thesis} that field multiplications also repeat in the
 verification process of RainbowLRS2, which allows for a speed up to a factor of
 2.2.
 
-%%% other non-Petzoldt variants
-
-%% smaller private keys
-
 \subsection{Circulant Rainbow}
 
 Circulant Rainbow~\cite{peng2017circulant} introduces circulant matrices in the
@@ -758,15 +807,253 @@ reduction is from $2^{128}$ to $2^{96}$. Hence, the usage of non-commutative
 rings in the central map is not recommended, as it greatly decreases the
 security of the original Rainbow.
 
-\chapter{Reducing private keys by fixing vinegar variables}
+% TODO equivalent keys
 
-\textit{This chapter will be written next semester.}
+\chapter{Reducing private keys by reusing vinegar variables}
+
+In chapter \ref{sec:rainbowvariants} it is shown some examples of Rainbow
+variants that introduce structure in either the public key or the central map
+$\mathcal{F}$. As stated above, none of these strategies could be used
+simultaneously to achieve smaller key pairs. In this section, a novel
+modification to the original Rainbow scheme is presented. Such modification can
+reduce up to 84\% of the private key. Additionally, this optimization can be
+used along with variants that introduce structure into the public key, reducing
+the whole key pair by up to 71\%~\cite{zambonin2019handling}.
+
+\section{Proposal}
+
+It can be noted that introducing structure into the central map is generally
+not well succeeded. Such schemes generally offer some vulnerability due to the
+special structure in $\mathcal{F}$. With this in mind, a new general framework
+to reduce private keys in Rainbow-like signature schemes is proposed. The
+modification, namely Rainbow-$\eta$, consists in modifying the key generation
+and the signature generation step, rather than introducing structures in the
+central system of equations. Recall that the first set of vinegar variables is
+chosen at random for every new signature. If this set of vinegar variables
+could be reused across multiple signatures, a reduced version of the central
+map, with the first set of vinegar variables substituted into the equations
+could be stored, in contrast to the whole map with all variables.
+
+Generating new keys now includes an additional step. After building
+$\mathcal{F}$, the set $V_1$ is chosen randomly and then substituted into the
+equations. Notice that the first layer polynomials are now linearized. $V_1$
+can be substituted in the subsequent layers too. These layers remain quadratic
+but with far less monomials, because the monomials that contain variables from
+$V_1$ will be simplified. We store this ``linearized'' central map
+$\mathcal{F'}$ along with the chosen $V_1$ for use in the signature generation
+step. The rest of the key generation step remains the same. $\mathcal{P}$ is
+calculated using the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to be
+stored. The private key is now the tuple $(\mathcal{S}, \mathcal{F'},
+\mathcal{T}, V_1)$.
+
+To further generate new signatures, the first step of the signing procedure,
+that is, chose and substitute $V_1$ into $\mathcal{F}$, is not needed anymore,
+as this was done in the key generation step. The layers are inverted as
+described in section \ref{sec:rainbow}. After the preimage of $\mathcal{F}$ is
+found, the set $V_1$, selected in the key generation step, is used along with
+the rest of the variables to compute the signature. It may happen that some
+layer cannot be solvable for a given signature. Originally, when this happens,
+a new set $V_1$ is chosen and the inversion process is repeated. In
+Rainbow-$\eta$ this cannot be done, due to the fact that the central map
+$\mathcal{F'}$ is already simplified with the previously chosen $V_1$, and
+$\mathcal{F}$ is not available. With this issue in mind, henceforth three
+alternatives are proposed to viabilize Rainbow-$\eta$.
+
+\subsection{Rainbow-$\eta_1$}
+
+In order to further regenerate the central map $\mathcal{F}$, a
+PRNG\sigla{PRNG}{Pseudorandom Number Generator} seeded by $S$ can be used to
+generate $\mathcal{F}$ in the key generation step. Storing $S$ with the rest of
+the private key, enables the signer to regenerate $\mathcal{F}$ in the case of
+the some layer not being solvable for some signature. Therefore, in the
+signature procedure, if some layer fails to be solved, $\mathcal{F}$ is
+regenerated completely and a new set $\tilde{V_1}$ is chosen until the first
+layer becomes solvable. After $\tilde{V_1}$ is substituted into $\mathcal{F}$,
+only this new simplified version of $\mathcal{F}$ needs to be kept for
+subsequent signatures.
+
+This alternative is efficient and adds only the cost of regenerating
+$\mathcal{F}$ every time that some layer is not solvable, which occurs with
+small probability, as it is shown in section \ref{sec:invertibility}. Also, the
+cost of storing $S$ along with the private key is added.
+
+\subsection{Rainbow-$\eta_2$}
+
+It is show in section \ref{sec:relation} that a linear relation between the
+public and private maps exist. This relation can be used to generate
+$\mathcal{F}$ from $\mathcal{P}$, $\mathcal{S}$ and $\mathcal{T}$. Therefore,
+in the case of the signer being unable to find a preimage for the central map,
+$\mathcal{F}$ is regenerated and the signing procedure occurs just like in
+Rainbow-$\eta_1$. With this method, no additional data is needed in the private
+key, anyway, regenerating the central map by this manner is less efficient than
+through the PRNG solution.
+
+\subsection{Rainbow-$\eta_3$}
+
+If the central map layers could be solved for different values, there would be
+no need for new vinegar variables to be plugged in $\mathcal{F}$. This could be
+achieved using a random nonce in the generation of $h$. When generating a new
+signature, a random salt $r$ is chosen and $h$ is given by $h =
+\mathcal{H}(\mathcal{H}(d) \| r)$. Note that now, changing $r$ changes $h$
+completely.  Recall that the image $y$ is calculated by $y =
+\mathcal{S}^{-1}(h)$, hence changing $r$ totally alters $y$. With this modified
+hashing procedure, in the case of an unsolvable layer, $r$ is changed and the
+hashing repeated, getting new values for $y$. This is done until all layers are
+solvable and the signature step can follow up. The verification process is done
+by checking if $\mathcal{P}(\sigma) = \mathcal{H}(\mathcal{H}(d) \| r)$ holds,
+also $r$ is now part of the signature.
+
+Actually, this method is used in the Rainbow proposal to NIST's standardization
+process~\cite{ding2017nist}. This technique is used to achieve
+EUF-CMA\sigla{EUF-CMA}{Existential Unforgeability under Chosen Message Attack}
+security and to avoid the need of choosing new vinegar variables in the case of
+some layer being unsolvable. Rainbow-$\eta_3$ is clearly more efficient than
+the other variants, as it avoids the regeneration of $\mathcal{F}$. Since this
+method is more efficient, and it is already used in Rainbow implementations,
+the use of Rainbow-$\eta_3$ is recommended.
+
+\section{Invertibility of the central map}\label{sec:invertibility}
+
+As describe in section \ref{sec:rainbow}, to sign a document, $\mathcal{F}$
+needs to be inverted\footnote{Note that $\mathcal{F}$ is surjective, hence
+there is no inverse of this map. This inversion is actually a
+``pseudo-inversion'' and it consists in finding a preimage for $\mathcal{F}$.}.
+To invert $\mathcal{F}$, all layers need to be inverted individually. Inverting
+each layer, after the values for the vinegar variables are substituted,
+consists in solving systems of linear equations. These systems may be solvable
+or not. In the case of some of these systems not being solvable, the inversion
+of the central map needs to be restarted. Specially, in Rainbow-$\eta$
+restarting this process adds some cost to the signature generation. In this
+section, it is shown that this happens with small probability, hence the
+average cost introduced by the $\eta$ variants is small.
+
+A linear system of equations can be represented by a matrix of its
+coefficients. Each line of this matrix will represent one equation. For
+instance, the following system with $n$ equation and $n$ variables:
+
+\begin{equation}
+\begin{split}
+y^{(1)} &= \alpha^{(1)}_1 x_1 + \alpha^{(1)}_2 x_2 + \cdots +
+	\alpha^{(1)}_n x_n + \beta^{(1)} \\
+y^{(2)} &= \alpha^{(2)}_1 x_1 + \alpha^{(2)}_2 x_2 + \cdots +
+	\alpha^{(2)}_n x_n + \beta^{(2)} \\
+&\vdotswithin{=} \\
+y^{(n)} &= \alpha^{(n)}_1 x_1 + \alpha^{(n)}_2 x_2 + \cdots +
+	\alpha^{(n)}_n x_n + \beta^{(k)} \\
+\end{split}
+\end{equation}
+
+with all $x, y, \alpha \in \mathbb{F}_q$, can be rewritten as:
+
+\begin{equation}\label{eq:linear}
+y =
+\begin{pmatrix}
+\alpha^{(1)}_1 & \alpha^{(1)}_2 & \cdots & \alpha^{(1)}_n \\
+\alpha^{(2)}_1 & \alpha^{(2)}_2 & \cdots & \alpha^{(2)}_n \\
+\vdots & \vdots & \ddots & \vdots \\
+\alpha^{(k)}_1 & \alpha^{(k)}_2 & \cdots & \alpha^{(k)}_n \\
+\end{pmatrix}
+\cdot x +
+\begin{pmatrix}
+\beta^{(1)}_n \\
+\beta^{(2)}_n \\
+\vdots \\
+\beta^{(k)}_n \\
+\end{pmatrix}
+\end{equation}
+
+with $x$ and $y$ being the column of $x$ and $y$ variables. Let $A$ be the
+coefficient matrix of equation \ref{eq:linear} and $B$ the column of constant
+terms, we can solve the system for a given vector $y$ by calculating:
+
+\begin{equation}
+x = A^{-1} \cdot (y - B)
+\end{equation}
+
+Actually, the system will be solvable if and only if $A$ is invertible.
+Therefore, observing the probability of a randomly built matrix being
+invertible shows the probability of random linear systems being
+solvable\footnote{From now on, it is assumed that the linear systems generated
+in the signature step, are randomly built.}.
+
+\begin{definition}
+Let $I_n$ be the identity matrix of size $n$. A matrix $A \in \mathbb{F}^{n
+\times n}_q$ is invertible if and only if there exists another matrix $B \in
+\mathbb{F}^{n \times n}_q$ such that $AB = BA = I_n$. $A^{-1} = B$ denotes the
+inverse of $A$.
+\end{definition}
+
+It can be shown that all lines of an invertible matrix are linearly
+independent. Let $A$ be an invertible matrix. For contradiction, assume that
+some line of $A$ is linearly dependent of other(s). So, there exists a nonzero
+column vector $x$ such that $Ax = 0$. If $A$ is invertible, then $A^{-1}Ax = 0$
+can be calculated and this equality does not hold, as $x$ is nonzero.
+
+With this fact in mind, invertible matrices can be constructed line by line,
+choosing a vector that is not linearly dependent of the previously selected
+ones. On the first line $l_1$ there will be a total of $q^n - 1$ choices, as
+the zero vector cannot be chosen. The second line must satisfy the condition
+$l_2 \neq c l_1$, since $q$ values for $c$ can be selected, the second line has
+$q^n - q$ possibilities. Extending, the $k$-th line must satisfy $l_k \ne
+c_1l_1 + c_2l_2 + \cdots + c_{k-1}l_{k-1}$. As there are $q^{k-1}$
+possibilities for $c$ constants, the $k$-th line has $q^n - q^{k-1}$
+possibilities. Multiplying all these possibilities, the probability of a random
+matrix with elements in $\mathbb{F}_q$ being invertible is:
+
+\begin{equation}
+\begin{split}
+p(n, q) &= \prod_{k=1}^{n} \frac{q^n - q^{k-1}}{q^n} \\
+&= \prod_{k=1}^{n} \left( 1 - q^{-k} \right) \\
+\end{split}
+\end{equation}
+
+Also, the probability of all layers being invertible for a given Rainbow
+instance with parameters $(v_1, o_1, o_2, \ldots, o_u)$ is:
+
+\begin{equation}
+\tilde{p}(q, o_1, \ldots, o_u) =
+	\prod_{l=1}^{u} \prod_{k=1}^{o_l} \left( 1 - q^{-k} \right) \\
+\end{equation}
+
+It can be observed that smaller matrices with bigger fields are more probable
+to be invertible. For instance, with the parameters proposed in~\cite[Chapter
+6]{petzoldt2013thesis}, using the finite field $\mathbb{F}_{16}$ and a Rainbow
+instance that achieves 256-bit security level, the probability of all layers
+being invertible is $\tilde{p}(16, 69, 59) \approx 87.15\%$. But using another
+proposed instance, with $\mathbb{F}_{256}$ and for the same security level,
+$\tilde{p}(256, 63, 30) \approx 99.21\%$. So, only in 0.79\% of the cases some
+layer will not be solvable. In Rainbow-$\eta$, this probability is even
+smaller, as the first layer is fixed throughout multiple signatures and it only
+has a chance of not being invertible when a new set $V_1$ is chosen. Specially,
+in Rainbow-$\eta_3$, as no new set $V_1$ is chosen, only the probability of the
+subsequent layers need to be taken into account. It can be noted that the third
+proposed variant does not add any cost to the implementation submitted
+in~\cite{ding2017nist}.
+
+\section{Similarity of multiple signatures}
+
+Rainbow-$\eta$ fixes part of the preimage of $\mathcal{F}$, which may raise a
+concern. Do multiple signatures, with the same vinegar variables, leak
+information about these variables? An attacker with access to multiple
+signatures that use the same set $V_1$, could derive some information about
+that set if some pattern is observed across the signatures.
+
+% TODO argument
+
+\section{Improvement on Rainbow instances}
+
+% TODO comparison tables
+% application to existent variants
+
+% TODO talk about proof-of-concept implementation
 
 \chapter{Conclusion}
 
 \textit{This chapter will be written next semester.}
 
+% TODO article in appendix
+
 \bibliographystyle{abnt-alf}
-\bibliography{ref}
+\bibliography{ref} % TODO fix titles, use uppercase letters
 
 \end{document}
