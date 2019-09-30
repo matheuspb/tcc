@@ -423,8 +423,8 @@ be integers, such that $o$ is the number of oil variables and $v$ the number of
 vinegar variables. Let $\mathcal{H}: \{0,1\}^* \to K^o$ be a cryptographic hash
 function.
 
-The private key consists of two maps $\mathcal{S}$ and $\mathcal{F}$. Let
-$\mathcal{S}: K^{o+v} \to K^{o+v}$ be a random \textit{invertible} affine
+The private key consists of two maps $\mathcal{T}$ and $\mathcal{F}$. Let
+$\mathcal{T}: K^{o+v} \to K^{o+v}$ be a random \textit{invertible} affine
 transformation, it rewrites every variable as a linear combination of all other
 variables. This map will be used to hide the structure of the central map. Let
 $\mathcal{F}: K^{o+v} \to K^{o}$ be the central map, composed of $o$ equations
@@ -446,11 +446,11 @@ variables are not multiplied between themselves, this will be important to find
 preimages for this map when signing a message.
 
 The public map $\mathcal{P}$ is a simple composition of the secret maps,
-$\mathcal{P} = \mathcal{F} \circ \mathcal{S}$. Both $\mathcal{F}$ and
+$\mathcal{P} = \mathcal{F} \circ \mathcal{T}$. Both $\mathcal{F}$ and
 $\mathcal{P}$ are multivariate systems. $\mathcal{F}$ has the special structure
 mentioned above, nevertheless $\mathcal{P}$ looks randomly built. With these
 maps described, let the public/private key pair be
-$(\mathcal{P},(\mathcal{S},\mathcal{F}))$.
+$(\mathcal{P},(\mathcal{F},\mathcal{T}))$.
 
 To sign a document $d$, compute its hash value $h = \mathcal{H}(d)$, find a
 preimage $(x_1,\dots,x_{o+v})$ for the map $\mathcal{F}$ such that
@@ -460,10 +460,10 @@ linear. Hence, finding a preimage consists of selecting vinegar variables at
 random, substitute them into $\mathcal{F}$, and find the oil variables through
 Gaussian elimination. If the system cannot be solved, new vinegar variables
 need to be chosen. The set of variables $x$ are found such that
-$\mathcal{F}(x)=h$. Next, using the map $\mathcal{S}$ the signature itself may
-be computed. Recall that $\mathcal{S}$ is invertible, thus $\mathcal{S}^{-1}$
+$\mathcal{F}(x)=h$. Next, using the map $\mathcal{T}$ the signature itself may
+be computed. Recall that $\mathcal{T}$ is invertible, thus $\mathcal{T}^{-1}$
 can be obtained. With both maps inverted, the signature $\sigma$ of $d$ is
-published as $\sigma = \mathcal{S}^{-1}(x)$.
+published as $\sigma = \mathcal{T}^{-1}(x)$.
 
 To verify a signature $\sigma$ of a document $d$, one can simply check if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds, therefore the signature is valid,
@@ -562,7 +562,7 @@ the key sizes of some Rainbow instances proposed in \cite[Chapter
 central and public maps. The private and public key size of Rainbow-like
 signature schemes is given by the formulas:
 
-\begin{equation}
+\begin{equation}\label{eq:rainbowprivatekeysize}
 K_{pr} =
 \underbrace{m^2 + m}_{\mathcal{S}} + \underbrace{n^2 + n}_{\mathcal{T}} +
 \underbrace{\sum_{l=1}^{u} o_l \left(
@@ -807,7 +807,123 @@ reduction is from $2^{128}$ to $2^{96}$. Hence, the usage of non-commutative
 rings in the central map is not recommended, as it greatly decreases the
 security of the original Rainbow.
 
-% TODO equivalent keys
+\section{Equivalent keys in Multivariate Cryptosystems}
+
+In~\cite{wolf2005equivalent} is introduced the idea of equivalent keys for
+Multivariate Cryptosystems. Equivalent keys are different private keys that
+lead to the same public key. They can be found using the idea of "sustainers".
+Sustainers are transformations that do not alter the property present in the
+central map that allow its inversion. For instance, a sustainer to UOV is a
+transformation that, when applied to the central map, does not change the fact
+that oil variables do not multiply themselves. Let $\Delta, \Gamma$ be
+sustainers, an equivalent key can be found using the equation:
+
+\begin{equation}\label{eq:sustainer}
+\mathcal{P} =
+\underbrace{\mathcal{S} \circ \Delta^{-1}}_{\mathcal{S'}}
+\circ
+\underbrace{\Delta \circ \mathcal{F} \circ \Gamma}_{\mathcal{F'}}
+\circ
+\underbrace{\Gamma^{-1} \circ \mathcal{T}}_{\mathcal{T'}}
+\end{equation}
+
+$\mathcal{S'}, \mathcal{F'}, \mathcal{T'}$ are equivalent keys for
+$\mathcal{P}$. If for every $\mathcal{S}$ and $\mathcal{T}$, $\Delta$ and
+$\Gamma$ can be found such that $\mathcal{S'}$ and $\mathcal{T'}$ contain some
+special structure, the private key space can be reduced.
+
+For instance, if this idea is applied to UOV, additive sustainers can be used
+to reduce $\mathcal{T}$. An additive sustainer only adds a term to the constant
+term. This sustainer clearly does not break the Oil and Vinegar property of the
+central map, and we can use it to subtract the constant terms in $\mathcal{S}$.
+Let $\mathcal{T}$ be a random affine map, $\Gamma^{-1}$ can be chosen such that
+it subtracts all its constant terms. So, for every $\mathcal{T}$, there exists
+an equivalent map $\mathcal{T'}$ that has no constants. Using this fact,
+$\mathcal{T}$ can be chosen without its constants already.
+
+Extending this idea, as done in~\cite{wolf2011equivalent}, Gauss sustainers can
+be used to further reduce the private key space. Gauss sustainers are
+transformations that permute or add rows and columns of a matrix. This
+sustainers can be described by invertible matrices. Again, let $\Gamma$ be a
+sustainer for UOV:
+
+\begin{equation}
+\Gamma(x) =
+\begin{pmatrix}
+A & 0 \\
+B & C \\
+\end{pmatrix} \cdot x
+\end{equation}
+
+such that $A \in K^{v \times v}_q$, $B \in K^{o \times v}_q$, $C \in K^{o
+\times o}_q$ and $A, C$ are invertible. Recall that $x$ is the column of
+variables in the central equations. $\Gamma$ only shuffles the vinegar
+variables within themselves, so it is in fact a sustainer. The construction of
+Equation \ref{eq:sustainer} can be applied as:
+
+\begin{equation}
+\begin{split}
+\mathcal{P} &= \mathcal{F} \circ \Gamma \circ \Gamma^{-1} \circ \mathcal{T} \\
+&=
+\mathcal{F} \circ
+% Gamma inverse
+\begin{pmatrix}
+A & 0 \\
+B & C \\
+\end{pmatrix}
+\circ
+% Gamma
+\begin{pmatrix}
+A^{-1} & 0 \\
+-C^{-1} \cdot B \cdot A^{-1} & C^{-1} \\
+\end{pmatrix}
+\circ
+\mathcal{T} \\
+\end{split}
+\end{equation}
+
+Now an structure can be enforced in $\mathcal{T'}$. Let $I_n$ be identity
+matrix of size $n$:
+
+\begin{equation}
+\begin{split}
+\mathcal{T} &= \Gamma \circ \mathcal{T'} \\
+\begin{pmatrix}
+T_1 & T_2 \\
+T_3 & T_4 \\
+\end{pmatrix}
+&=
+\begin{pmatrix}
+T_1 & 0 \\
+T_3 & T_4 - T_3 \cdot T_1^{-1} \cdot T_2 \\
+\end{pmatrix}
+\circ
+\begin{pmatrix}
+I_v & T_1^{-1} \cdot T_2 \\
+0 & I_o \\
+\end{pmatrix} \\
+\end{split}
+\end{equation}
+
+For every\footnote{Actually, $T_1$ needs to invertible} $\mathcal{T}$, there
+exists an equivalent map $\mathcal{T'}$, thus $\mathcal{T}$ can be chosen with
+the shape of $\mathcal{T'}$. This greatly reduces the space requirements, as
+only a matrix of size $v \times o$, \textit{i.e.} the upper right portion of
+$\mathcal{T'}$, is sufficient to represent $\mathcal{T}$.
+
+The idea of equivelent keys and the use of Gauss sustainers to reduce the outer
+maps of the private keys, is extended in~\cite[Chapter 3.5]{petzoldt2013thesis}
+to be used in Rainbow. The multilayer construction allows to build $\Delta$
+sustainers that mix layer equations within their own layer. The improvement is
+actually used in the Rainbow submission~\cite{ding2017nist2} to round 2 of
+NIST's standardization process.  The proposal consists of using almost upper
+triangular matrices, with the main diagonal only composed by 1's, in the outer
+maps. Matrices of such kind are always invertible due to the fact that their
+determinant is always equal to 1.  This reduction in the outer maps key space
+can be used along with the Rainbow variants mentioned above, nonetheless it
+only reduces the maps $\mathcal{S}$ and $\mathcal{T}$ which do not make part of
+the majority of the private key size, as it can be observed in
+equation~\ref{eq:rainbowprivatekeysize}.
 
 \chapter{Reducing private keys by reusing vinegar variables}
 
