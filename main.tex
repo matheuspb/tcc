@@ -342,7 +342,7 @@ verify the signature $\sigma$ for document $d$ one can simply check if $h =
 This section describes the problems in which multivariate cryptosystems
 security rely on.
 
-\subsection{Polynomial system solving}
+\subsection{Polynomial system solving}\label{sec:posso}
 
 Solving systems of polynomials is the basic underlying problem, since, solving
 the public system is sufficient to forge new signatures.
@@ -592,7 +592,7 @@ schemes.
 \hline
 % header
 \thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
-& \thead{Public key size} & \thead{Private key size} \\ \hline
+& \thead{Private key size} & \thead{Public key size} \\ \hline
 % data
 80  & $(\mathbb{F}_{256}, 17, 17, 9)$   & 19208   & 25740   \\ \hline
 100 & $(\mathbb{F}_{256}, 26, 22, 11)$  & 45450   & 60390   \\ \hline
@@ -808,15 +808,16 @@ rings in the central map is not recommended, as it greatly decreases the
 security of the original Rainbow.
 
 \section{Equivalent keys in Multivariate Cryptosystems}
+\label{sec:equivalentkeys}
 
 In~\cite{wolf2005equivalent} is introduced the idea of equivalent keys for
 Multivariate Cryptosystems. Equivalent keys are different private keys that
-lead to the same public key. They can be found using the idea of "sustainers".
-Sustainers are transformations that do not alter the property present in the
-central map that allow its inversion. For instance, a sustainer to UOV is a
-transformation that, when applied to the central map, does not change the fact
-that oil variables do not multiply themselves. Let $\Delta, \Gamma$ be
-sustainers, an equivalent key can be found using the equation:
+lead to the same public key. They can be found using the idea of
+``sustainers''.  Sustainers are transformations that do not alter the property
+present in the central map that allow its inversion. For instance, a sustainer
+to UOV is a transformation that, when applied to the central map, does not
+change the fact that oil variables do not multiply themselves. Let $\Delta,
+\Gamma$ be sustainers, an equivalent key can be found using the equation:
 
 \begin{equation}\label{eq:sustainer}
 \mathcal{P} =
@@ -936,7 +937,7 @@ reduce up to 84\% of the private key. Additionally, this optimization can be
 used along with variants that introduce structure into the public key, reducing
 the whole key pair by up to 71\%~\cite{zambonin2019handling}.
 
-\section{Proposal}
+\section{Proposal}\label{sec:proposal}
 
 It can be noted that introducing structure into the central map is generally
 not well succeeded. Such schemes generally offer some vulnerability due to the
@@ -1004,7 +1005,7 @@ Rainbow-$\eta_1$. With this method, no additional data is needed in the private
 key, anyway, regenerating the central map by this manner is less efficient than
 through the PRNG solution.
 
-\subsection{Rainbow-$\eta_3$}
+\subsection{Rainbow-$\eta_3$}\label{sec:rainboweta3}
 
 If the central map layers could be solved for different values, there would be
 no need for new vinegar variables to be plugged in $\mathcal{F}$. This could be
@@ -1156,12 +1157,123 @@ that set if some pattern is observed across the signatures.
 
 % TODO argument
 
+\section{Application of known attacks}
+
+There are lots of known attacks on Rainbow and UOV that could also be applied
+to Rainbow-$\eta$. In the previous sections, some problems and possibly
+security flaws are analysed. In this section, the applicability of existing
+attacks is discussed and if they can take advantage of the reuse of vinegar
+variables throughout multiple signatures.
+
+\subsection{Direct Attack}
+
+A direct attack consists on solving the public system directly, \textit{i.e.}
+solve $\mathcal{P}(x) = h$, without any information of the private key or
+signatures. This can be done via methods like the one described
+in~\cite{bettale2009hybrid}. This is the most generic attack to multivariate
+systems, as it tries to tackle the base MQ-Problem which, as described in
+Section \ref{sec:posso}, is NP-Hard. Clearly this attack is not facilitated by
+Rainbow-$\eta$, as the proposed scheme does not alter the public key in any
+form, and the attack does not make use of multiple signatures.
+
+\subsection{Rank Attacks}
+
+The attack based on the MinRank problem was exposed
+in~\cite{billet2006cryptanalysis}. The attack consists in finding a linear
+combination of all public matrices, that represent the equations, with very low
+rank. This rank threshold depends on the parameters of Rainbow. Finding this
+combination allows an attacker to extract the first layer of the central
+polynomials, and part of the outer maps. Repeating the process, the others
+layers can recovered as well, and with negligible effort, due to the partial
+knowledge of the private maps.
+
+HighRank can be seen as the opposite of MinRank. It tries to find linear
+combinations between the public matrices and inverts Rainbow layers from last
+to first. An improved version of the HighRank attack for Rainbow is proposed
+by~\cite{ding2008new}. Both the MinRank and the HighRank attacks try to recover
+the private map from the public one. The attacks cannot be optimized for
+Rainbow-$\eta$ as, again, it does not modify the public key generation and
+structure.
+
+\subsection{Rainbow-Band-Separation Attack}
+
+The Rainbow-Band-Separation attack was proposed in~\cite{ding2008new} as an
+extension of the UOV-Reconciliation attack. Basically the attack tries to find
+an equivalent private key to forge new valid signatures. Again, it attacks the
+public key directly, hence the complexity of the attack for Rainbow-$\eta$ is
+the same.
+
+\subsection{Side-Channel Attacks}
+
+As described in Sections \ref{sec:rainbow} and \ref{sec:proposal}, when some
+Rainbow layer is not solvable, a new set of first layer vinegar variables
+should be chosen. This adds a considerable computation time to the signature
+generation step when some layer is not solvable. Specially, in Rainbow-$\eta_2$
+this difference can be huge, as the signer will recalculate the central map. In
+a chosen message attack, an attacker can observe the time taken to generate
+signatures and know the messages that cause a non-invertibility of some layer.
+
+\cite{ding2017nist} claims that their implementation is side-channel resistant
+as \textit{``... all key dependent operations are performed in a time-constant
+manner.''}. However, when some layer is not solvable, the signature generation
+takes longer, as described in Section~\ref{sec:rainboweta3}. There are no known
+attacks that make use of such information, but the possibility of existing such
+attack is not discarded, and the submitted implementation may be vulnerable to
+such timing attack.
+
 \section{Improvement on Rainbow instances}
 
-% TODO comparison tables
-% application to existent variants
+The new private key size for Rainbow-$\eta$, without the additional data
+required for Rainbow-$\eta_1$, can be calculated by:
 
-% TODO talk about proof-of-concept implementation
+\begin{equation}\label{eq:etaprivatekeysize}
+\begin{split}
+K^{\eta}_{pr} &=
+m^2 + m + n^2 + n + v_1 \, + \\
+&\quad \sum_{l=1}^{u} o_l \left(
+\frac{(v_l - v_1)(v_l - v_1 + 1)}{2} + (v_l - v_1) o_l + (v_{l+1} - v_1) + 1
+\right)
+\end{split}
+\end{equation}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+% header
+\thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
+& \thead{$K_{pr}$} & \thead{$K^{\eta}_{pr}$} & \thead{Difference} \\ \hline
+% data
+80  & $(\mathbb{F}_{256}, 17, 17, 9)$  & 19208   & 5914   & -69.21\% \\ \hline
+100 & $(\mathbb{F}_{256}, 26, 22, 11)$ & 45450   & 11013  & -75.77\% \\ \hline
+128 & $(\mathbb{F}_{256}, 36, 28, 15)$ & 103704  & 22110  & -78.68\% \\ \hline
+192 & $(\mathbb{F}_{256}, 63, 46, 22)$ & 440638  & 71773  & -83.71\% \\ \hline
+256 & $(\mathbb{F}_{256}, 85, 63, 30)$ & 1086971 & 164721 & -84.85\% \\ \hline
+\end{tabular}
+\caption{Rainbow-$\eta$ improvement}
+\label{tab:etaimprovement}
+\end{center}
+\end{table}
+
+Table \ref{tab:etaimprovement} shows the reduction of the private key achieved
+by using Rainbow-$\eta$ on those parameters. This reduction can be combined
+with some variant that reduces public keys, like the ones described in
+Section~\ref{sec:rainbowvariants}, to achieve smaller key pairs. Also, the use
+of the limited key spaces, described in Section~\ref{sec:equivalentkeys}, to
+reduce the outer maps of the private key can be used along with the $\eta$
+variant. So this method is a general framework that can be applied to all
+Rainbow variants that do not change the private key, and it can be joined with
+other methods to achieve smaller key pairs.
+
+\section{Implementation}
+
+A proof of concept implementation was made to validate the proposed
+optimization. It can be found in
+\footnote{\url{https://github.com/matheuspb/rainbow-eta}}. The repository
+contains a modified version of the Rainbow implementation submitted to NIST's
+standardization process. In this implementation, the first set of vinegar
+variables is only substituted in the first layer, so the full potential of the
+technique is not exploited.
 
 \chapter{Conclusion}
 
