@@ -168,7 +168,153 @@ of the optimizations.
 
 \chapter{Cryptographic primitives}
 
-\textit{This chapter will be written next semester.}
+In this chapter some basic cryptographic primitives will be described for a
+complete understanding of the following chapters. All definitions and
+descriptions will be based on the book \cite{stinson2005cryptography}.
+% TODO give chapter layout
+
+\section{Public Key Cryptography}
+
+Symmetric cryptography consists of ciphering and deciphering a message with the
+same key. This can be very useful if two parties, say Alice and Bob, have
+agreed upon using the same key using a secure channel. But if Alice and Bob are
+distant and do not have a secure channel to share a symmetric key, this cannot
+be used. Public key cryptography resolves this issue, as there exists two keys.
+One of the keys is public, everyone can have access, and it is used to encrypt
+a message. The other key is private and can be held only by its owner, no one
+else can access it. Deciphering a message can only be made with the private
+key. Also, getting the private key from the public key should be
+computationally unfeasible. Now, if Alice wants to send a private message to
+Bob, she gets his public key through any mean of communication, encrypts the
+message, and sends to Bob. Bob, which possesses the private key, is the only
+one capable of decrypting Alice's message.
+
+The idea of public key cryptosystems was first introduced
+in~\cite{diffie1976new}, but the first practical scheme of such kind was only
+proposed in~\cite{rivest1977digital}. These algorithms can be thought as a
+trapdoor one-way function, \textit{i.e.} the encryption process ``traps'' the
+message, and only with the possession of the private key, one can untangle the
+original message from the trap. The security of this algorithms rely on the
+difficulty of getting the private key from the public one, that is, it should
+be hard to unravel the message from the trapdoor.
+
+\section{Digital Signatures}
+
+A conventional signature is used everyday to provide authenticity of documents,
+like letters and contracts. A digital signature is a signature to a digital
+document, that can be transmitted across a digital medium. Digitally signed
+documents have considerable differences to conventional signatures. First is
+that a digital signature is not physically bonded to the signed document.
+Second is the verification of the signature. Conventional signatures are
+verified by similarity to other signatures that are trusted. Digital signatures
+are verified using publicly known algorithms. Also, a digital signature can be
+copied several times, and it will remain authentic. Care should be taken, such
+that a document may not be used more times than it should be. For instance, a
+signed document saying that Alice wants to transfer some amount of money to Bob
+should be used only once, as Bob could force the bank to transfer this same
+amount multiple times. Adding the time the signature was made to the signed
+document can mitigate this problem.
+
+A digital signature scheme may be composed of three efficient\footnote{Can be
+computed in a reasonable time by the parties involved.} algorithms:
+
+\begin{itemize}
+
+	\item \textbf{Key generation:} Alice generates a key pair, publishes the
+	public key to anyone who wants to verify her signatures, and keeps the
+	private key secret.
+
+	\item \textbf{Signature generation:} Alice, possessing the private key,
+	signs a document $d$, yielding a signature $\sigma$, and publishes the pair
+	$(d, \sigma)$. For each different document, a different signature will be
+	produced.
+
+	\item \textbf{Signature verification:} Bob wants to verify Alice's
+	signature $(d, \sigma)$. With the public key, Bob can verify that, indeed,
+	only Alice's private key could generate $\sigma$ for $d$. If someone
+	altered $d$ to insert malicious information and sent this modified document
+	$d'$, to Bob, the signature $\sigma$ would not be verified by the
+	verification algorithm.
+
+\end{itemize}
+
+This can be seen as the inverse of sending private messages using public key
+cryptography, as the owner of the private key ciphers the message to be signed.
+Recall that it should be hard to find the private key from the public one, thus
+it is hard to forge new signatures without possessing the private key.
+
+A secure digital signature scheme should provide three properties to the signed
+documents, as long as they are valid:
+
+\begin{itemize}
+
+	\item \textbf{Integrity:} The document is untouched compared to the
+	originally signed document. Flipping one bit of the document would render
+	the signature invalid.
+
+	\item \textbf{Authenticity:} Only the owner of the private key can generate
+	valid signatures for the corresponding public key. So, if a document is
+	signed, it could only be signed be the private key owner. Generating new
+	signatures, without the private key, should be computationally unfeasible
+	for secure schemes.
+
+	\item \textbf{Non-repudiation:} The signer cannot deny having created a
+	valid signature $\sigma$ for a document $d$. This is due to the fact that,
+	it is unfeasible to forge signatures.
+
+\end{itemize}
+
+\section{Cryptographic Hash Functions}
+
+In the scope of this work, a hash function is a function that is used to map
+arbitrarily sized data to a fixed length value, \text{i.e.} $\mathcal{H}:\{0,
+1\}^* \rightarrow \{0, 1\}^n$. Such functions are useful to maintain integrity
+of documents, for instance, a document $d$ has this fingerprint $h =
+\mathcal{H}(d)$, which can be verified whenever one wants to ensure that $d$
+was not modified. If for the some reason the document was changed, this
+modified version $d'$ would have a different fingerprint $h' =
+\mathcal{H}(d')$, and the integrity of the original document would not be
+verified because $h \ne h'$.
+
+Of course, due to the ``compression'' made by $\mathcal{H}$, there ought to
+exist two documents that generate the same fingerprint, that is $h =
+\mathcal{H}(d_1) = \mathcal{H}(d_2)$ and $d_1 \ne d_2$. This happens due to the
+fact that there exists infinitely more documents than fingerprints, so by the
+pigeonhole principle there will be infinitely many documents with the same
+fingerprint. This can be a problem, because the integrity of those documents
+could be erroneously verified. But, in practice, for secure hash functions,
+this will happen with negligible probability with big $n$'s.
+
+Hash functions are extensively used in digital signatures. It enables the
+algorithms to sign arbitrarily big documents by signing only the fingerprint
+$h$. But for use in cryptosystems, a hash function should satisfy some
+properties to be considered cryptographically secure. Specially, three problems
+should be unfeasible to solve. Let $\mathcal{H}:X \rightarrow Y$ be a hash
+function:
+
+\begin{itemize}
+
+	\item \textbf{Preimage:} Given $y \in Y$, find $x \in X$ such that $y =
+		\mathcal{H}(x)$.
+
+	\item \textbf{Second preimage:} Given $x \in X$, find $x' \in X, x' \ne x$
+		such that $\mathcal{H}(x) = \mathcal{H}(x')$.
+
+	\item \textbf{Collision:} Find $x, x' \in X$ such that $\mathcal{H}(x) =
+		\mathcal{H}(x')$.
+
+\end{itemize}
+
+Suppose that Alice is using $\mathcal{H}$ to sign a document $d$, this is,
+Alice only signs $h = \mathcal{H}(d)$. If Eve could solve any of the preimage
+problems efficiently, let's say, Eve finds $d'$ such that $h = \mathcal{H}(d) =
+\mathcal{H}(d')$ so she could publish the same signature yielded by Alice as a
+valid signature for $d'$ without Alice's private key. If Eve solves the
+collision problem efficiently, she could hand Alice a document $d$ to be
+signed, while having generated a document with malicious content $d'$. The
+signature created by Alice would be valid for both $d$ and $d'$.
+
+\section{Finite Fields}
 
 \chapter{Multivariate cryptography}
 
@@ -936,6 +1082,7 @@ modification to the original Rainbow scheme is presented. Such modification can
 reduce up to 84\% of the private key. Additionally, this optimization can be
 used along with variants that introduce structure into the public key, reducing
 the whole key pair by up to 71\%~\cite{zambonin2019handling}.
+% TODO chapter layout
 
 \section{Proposal}\label{sec:proposal}
 
