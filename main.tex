@@ -11,6 +11,7 @@
 	\renewcommand{\listtablename}{List of Tables}
 	\renewcommand{\contentsname}{Table of Contents}
 	\renewcommand{\bibname}{REFERENCES}
+	\renewcommand{\proofname}{Proof.}
 }
 \makeatletter
 \renewcommand{\listadeabreviaturas}{
@@ -24,8 +25,9 @@
 % Use standard \mathcal font
 \DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
 
-% Create `definition' environment
+% Create theorem environments
 \newtheorem{definition}{Definition}
+\newtheorem{corollary}{Corollary}
 
 % Tabular configurations
 \renewcommand\theadfont{\bfseries}
@@ -315,6 +317,172 @@ signed, while having generated a document with malicious content $d'$. The
 signature created by Alice would be valid for both $d$ and $d'$.
 
 \section{Finite Fields}
+
+This section definitions are based on the book~\cite{lidl1983encyclopedia}, and
+a basic understanding of the algebraic structures used in multivariate schemes
+will be given.
+
+\begin{definition}
+A group $(G, *)$ with the set $G$ and the binary operation $*$ satisfies the
+following conditions:
+\begin{itemize}
+	\item $*$ is associative, that is, $a*(b*c) = (a*b)*c$ for any $a, b, c \in
+	G$.
+	\item There exists an identity element $e \in G$ such that $a * e = e * a =
+	a$.
+	\item There exists an inverse for every $a \in G$ such that $a*a^{-1} =
+	a^{-1}*a = e$.
+\end{itemize}
+If the group also satisfies the condition $a*b = b*a$ for all $a, b \in G$ then
+it is called an abelian or commutative group.
+\end{definition}
+
+\begin{corollary}
+The set of integers modulo $n$, denoted $\mathbb{Z}/n$, along with the ordinary
+addition, form a finite abelian group denoted $\mathbb{Z}_n$.
+\end{corollary}
+
+\begin{proof}
+The associativity and commutativity come from the regular addition operation.
+The identity element is $0$ and the inverse element of any $a \in \mathbb{Z}/n$
+is $-a \mod n$. $(\mathbb{Z}/n, +)$ is an abelian group.
+\end{proof}
+
+\begin{definition}
+A ring $(R, +, *)$ with the set $R$ and the two binary operations $+$ and $*$
+satisfies the conditions:
+\begin{itemize}
+	\item $(R, +)$ forms an abelian group.
+	\item $*$ is associative, that is, $a*(b*c) = (a*b)*c$ for any $a, b, c \in
+	R$.
+	\item $*$ is distributive, that is, $a*(b+c) = a*b + a*c$ for any $a, b, c
+	\in R$.
+\end{itemize}
+\end{definition}
+
+It must be emphasized that not only the ordinary multiplication and addition
+can be used to form groups or rings.
+
+\begin{definition}
+A ring can be further classified as:
+\begin{itemize}
+	\item \textbf{Commutative} if $*$ is commutative, that is, $a*b = b*a$ for
+	all $a, b \in R$.
+	\item A \textbf{division ring} if the nonzero elements of $R$ form a group
+	under $*$.
+	\item A \textbf{field} if it is a commutative division ring .
+\end{itemize}
+\end{definition}
+
+\begin{corollary}
+The set of integers modulo a prime $p$, denoted $\mathbb{Z}/p$, along with the
+ordinary addition and multiplication, form a finite field denoted
+$\mathbb{F}_p$.
+\end{corollary}
+
+\begin{proof}
+As stated above $(\mathbb{Z}/n, +)$ is an abelian group, therefore
+$(\mathbb{Z}/p, +)$ is a commutative group as well. The ordinary multiplication
+is associative, distributive and commutative. Now it must be shown that
+$(\mathbb{Z} - \{0\}, *)$ forms a group.  The identity element of this group is
+$1$. $a*b$ will never be zero because if $a*b \equiv 0 \mod p$ then either $a$
+or $b$ is zero and divides $p$, which is a contradiction because $p$ is prime.
+Now to show that all elements have inverses, the Bézout's identity can be used.
+For every $a \in \mathbb{Z}/p$ there exists $x, y \in \mathbb{Z}/p$ such that
+$a*x + p*y \equiv 1 \mod p$, due to the fact that $\text{gcd}(a, p) = 1$. Note
+that $p*y \equiv 0 \mod p$, hence $a*x \equiv 1 \mod p$ and $x$ is the inverse
+of $a$. $(\mathbb{Z}/p, +, *)$ is a finite field.
+\end{proof}
+
+\begin{definition}
+Given a ring $R$ there exists a positive integer $n$ such that $n*r = 0$ for
+every $r \in R$. The least such positive integer is called the characteristic
+of $n$. If $n$ does not exist, the characteristic of $R$ is $0$.
+\end{definition}
+
+It can be noted that finite fields have prime characteristic. If a finite field
+had a characteristic $n = p*q$ with $p, q \in \mathbb{Z}$ and $1 < p,q < n$,
+then $n*e = (p*q)*e = 0$ would be true and the ring would not be a division
+ring, because multiplying two nonzero elements cannot result in $0$.
+
+\begin{corollary}\label{cor:extension}
+Let $\mathbb{F}_p[x]/f(x)$ be the set of polynomials with coefficients in a
+finite field $\mathbb{F}_p$, modulo an irreducible polynomial\footnote{An
+irreducible polynomial cannot be divided by a polynomial other than $f(x) =
+1$.} $f(x)$ of degree $n$. $\mathbb{F}_p[x]/f(x)$ along with the ordinary
+polynomial addition and multiplication modulo $f(x)$, form an extension field
+denoted $\mathbb{F}_{p^n}$.
+\end{corollary}
+
+For illustration, the finite field $\mathbb{F}_{2^2}$ can be defined with its
+elements being $P = \{0, 1, x, x+1\}$, and the operations, the ordinary
+addition and multiplication of polynomials modulo $f(x) = x^2 + x + 1$. Note
+that all coefficients are in $\mathbb{F}_2$. The addition operation is given by
+the Table \ref{tab:addition} and the multiplication by Table
+\ref{tab:multiplication}.  The addition in $\mathbb{F}_{2^2}$ is the trivial
+polynomial addition with coefficients modulo $2$, and there is no need for
+polynomial reductions. The multiplication though needs reductions modulo the
+irreducible polynomial. For instance, $x*(x+1) \equiv x^2+x \equiv 1 + 1*f(x)
+\equiv 1 \mod f(x)$.
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|cccc}
+$+$   & $0$   & $1$   & $x$   & $x+1$ \\
+\hline
+$0$   & $0$   & $1$   & $x$   & $x+1$ \\
+$1$   & $1$   & $0$   & $x+1$ & $x$   \\
+$x$   & $x$   & $x+1$ & $0$   & $1$   \\
+$x+1$ & $x+1$ & $x$   & $1$   & $0$   \\
+\end{tabular}
+\caption{Addition operation of $\mathbb{F}_{2^2}$}
+\label{tab:addition}
+\end{center}
+\end{table}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|cccc}
+$*$   & $0$ & $1$   & $x$   & $x+1$ \\
+\hline
+$0$   & $0$ & $0$   & $0$   & $0$   \\
+$1$   & $0$ & $1$   & $x$   & $x+1$ \\
+$x$   & $0$ & $x$   & $x+1$ & $1$   \\
+$x+1$ & $0$ & $x+1$ & $1$   & $x$   \\
+\end{tabular}
+\caption{Multiplication operation of $\mathbb{F}_{2^2}$}
+\label{tab:multiplication}
+\end{center}
+\end{table}
+
+\begin{proof}
+To prove Corollary \ref{cor:extension} the field properties should hold for the
+finite fields of this fashion. Let $P = \mathbb{F}_p[x]/f(x)$. $(P, +)$ forms
+an abelian group with $e = 0$ and the inverse of any $a \in P$ being $-a$.
+Also, $(P - \{0\}, *)$ forms a group, with the identity element being $1$. The
+inverse element of any $a \in P - \{0\}$ can be found using Bézout's indentity
+because $\text{gcd}(a, f(x)) = 1$, this comes from the fact that $f(x)$ is
+irreducible. So, there exists $x, y \in P - \{0\}$ such that $a*x + f*y \equiv
+1 \mod f(x)$, hence $x$ is the inverse of $a$. Observe that $a*b \equiv 0 \mod
+f(x)$ never happens in the group $(P - \{0\}, *)$, because either $a$ or $b$
+would need to be zero and would divide $f(x)$, which is a contradiction because
+$f(x)$ is irreducible. All other properties can be trivially extended from the
+ordinary polynomial addition and multiplication. $(P, +, *)$ is a finite field.
+\end{proof}
+
+Extensions of the binary field $\mathbb{F}_2$ are specially interesting because
+representing and operating with them can be very computationally efficient. An
+element of $\mathbb{F}_{p^n}$ needs $n$ elements of $\mathbb{F}_p$ to be
+represented, hence an element of $\mathbb{F}_{2^8}$ needs $8$ bits, or $1$
+byte. The element $x^7 + x^5 + x + 1$ can be represented by the binary $8$-uple
+$(1, 0, 1, 0, 0, 0, 1, 1)$. The addition, when elements are represented in such
+way, is simply the bitwise exclusive or (XOR) operation. The multiplication
+operation can be performed efficiently using a modification to the Peasant's
+algorithm, which takes advantage of the binary representation. The reduction
+modulo $f(x)$ can also be done by a series of bitwise XOR operations. For small
+finite fields, a lookup table like the ones above, can be precomputed in order
+to dramatically improve the operations efficiency, as only one query to such
+table would be needed to perform them.
 
 \chapter{Multivariate cryptography}
 
