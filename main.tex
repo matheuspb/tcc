@@ -61,7 +61,7 @@
 \dedicatoria{A Fátima, que infelizmente não pode acompanhar minha trajetória,
 mas tenho certeza de que estaria orgulhosa.}
 
-\agradecimento{Agradeço aos meus pais que me fizeram capazes de entender e
+\agradecimento{Agradeço aos meus pais que me fizeram capaz de entender e
 percorrer os caminhos do conhecimento e da vida. A toda a minha família que
 nunca me faltou com apoio sempre que precisei. Ao meu orientador Prof. Ricardo
 e ao Prof. Daniel pela ajuda no desenvolvimento deste trabalho com as inúmeras
@@ -70,7 +70,7 @@ orientado por um amigo, e que contribui enormemente para este trabalho. Ao
 Douglas Silva e ao Douglas Martins que me orientaram em diversos aspectos da
 vida acadêmica e profissional. A todos os amigos que fiz dentro e fora do
 curso, que me acompanharam e me ajudaram direta ou indiretamente a percorrer
-esse trajeto. Em especial, agradeço ao Lucas e ao Vinícius que sempre me
+esse trajeto. Em especial, agradeço ao Lucas e ao Vinicius que sempre me
 motivaram a vencer as batalhas enfrentadas com o ânimo e a dedicação
 necessária. Por último, e com certeza não menos importante, agradeço ao Mateus
 e ao Luís pela cumplicidade e companhia mesmo quando nada parecia bem, e por
@@ -545,6 +545,9 @@ this work. Section \ref{sec:problems} depicts the underlying problems in which
 MPKCs rely their security on. Section \ref{sec:mqschemes} describes the schemes
 addressed in this study. Section \ref{sec:rainbowvariants} illustrates some
 variants of the Rainbow digital signature scheme present in the literature.
+Section \ref{sec:equivalentkeys} demonstrates a method to find equivalent
+private keys in Rainbow-like schemes and how it can be used to reduce the outer
+maps.
 
 \section{Systems of multivariate equations}\label{sec:mqsystems}
 
@@ -1646,7 +1649,7 @@ technique is not exploited.
 
 Rainbow has a space requirement problem, as its keys can get orders of
 magnitude bigger than the classic digital signatures algorithms. In order to
-viabilize the usage of Rainbow in a Post-Quantum scenario, this issue is being
+viabilize the usage of Rainbow in a post-quantum scenario, this issue is being
 extensively addressed in the literature. A series of modifications to the
 original Rainbow scheme present in the literature were studied in order to
 comprehend the techniques used to tackle the key size problem. It could be
