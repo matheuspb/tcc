@@ -58,17 +58,70 @@
 	Universidade Federal de Santa Catarina
 }
 
-\dedicatoria{Dedicatória} % TODO
+\dedicatoria{A Fátima, que infelizmente não pode acompanhar minha trajetória,
+mas tenho certeza de que estaria orgulhosa.}
 
-\agradecimento{Agradecimentos} % TODO
+\agradecimento{Agradeço aos meus pais que me fizeram capazes de entender e
+percorrer os caminhos do conhecimento e da vida. A toda a minha família que
+nunca me faltou com apoio sempre que precisei. Ao meu orientador Prof. Ricardo
+e ao Prof. Daniel pela ajuda no desenvolvimento deste trabalho com as inúmeras
+e produtivas reuniões. Ao Gustavo que me proporcionou a oportunidade de ser
+orientado por um amigo, e que contribui enormemente para este trabalho. Ao
+Douglas Silva e ao Douglas Martins que me orientaram em diversos aspectos da
+vida acadêmica e profissional. A todos os amigos que fiz dentro e fora do
+curso, que me acompanharam e me ajudaram direta ou indiretamente a percorrer
+esse trajeto. Em especial, agradeço ao Lucas e ao Vinícius que sempre me
+motivaram a vencer as batalhas enfrentadas com o ânimo e a dedicação
+necessária. Por último, e com certeza não menos importante, agradeço ao Mateus
+e ao Luís pela cumplicidade e companhia mesmo quando nada parecia bem, e por
+todas as pessoas incríveis que eles me proporcionaram conhecer.}
 
 \epigrafe{``\textit{Ce qui embellit le désert,
 c'est qu'il cache un puits quelque part...}''}{Le Petit Prince}
 
-\textoResumo{\textit{Inserir resumo}} % TODO
+\textoResumo{Os algoritmos clássicos de assinatura digital como RSA e ECDSA
+baseiam sua segurança na dificuldade da fatoração de inteiros, e no logaritmo
+discreto, respectivamente. Esses problemas já possuem algoritmos quânticos que
+os resolvem em tempo polinomial, ou seja, com computadores quânticos poderosos
+o suficiente, o uso dos algoritmos de assinatura digital mais difundidos
+tornará-se impraticável. Naturalmente, com o aumento do poder computacional
+quântico, o interesse por criptossistemas resistentes a ataques que utilizam-se
+de tais computadores também cresceu. A área que estuda esses criptossistemas é,
+portanto, chamada de criptografia pós-quântica. Particularmente, esses
+algoritmos baseiam-se numa série de problemas que permanecem difíceis, mesmo
+que computadores quânticos poderosos sejam utilizados, logo, despertam o
+interesse para substituir os criptossistemas clássicos. Este trabalho visa
+estudar a classe de criptossistemas baseados em sistemas de polinômios
+multivariados, que, baseiam-se em problemas como a solução de sistemas de
+polinômios e o isomorfismo de polinômios, os quais ainda são resistentes a
+algoritmos quânticos, portanto, são bons candidatos para criptografia
+pós-quântica. Tais esquemas possuem tamanhos de chaves muito maiores que os
+algoritmos clássicos. Neste trabalho um novo método para redução de chaves
+privadas do esquema de assinatura digital Rainbow é proposto. Usando este
+método as chaves privadas podem ser reduzidas em até 84\%. Ainda, este método
+pode ser combinado com outros de forma a reduzir o par de chaves por completo.}
 \palavrasChave{criptografia, assinatura digital, pós-quântico}
 
-\textAbstract{\textit{Insert abstract}} % TODO
+\textAbstract{Classic digital signature algorithms base their security upon the
+difficulty of the integer factorization problem, and the discrete logarithm
+problem, respectively. These problems already have quantum algorithms that
+solve them in polynomial time, consequently, with sufficiently powerful quantum
+computers, the use of the most common digital signature algorithms would become
+impractical. Naturally, with the rise in quantum computational power, the
+interest in cryptosystems resistant to attacks that make use of such computers
+has raised as well. The area that studies such cryptosystems is therefore
+called post-quantum cryptography. Particularly, these algorithms are based upon
+a series of problems that continue to be hard, even with quantum computers
+available, hence, provoke interest to substitute the classical schemes. This
+work aims to study the cryptosystems based on systems of multivariate
+polynomials. They base their security upon problems like the polynomial system
+solving and the isomorphism of polynomials, which are still resistant to
+quantum computers, henceforth are good candidates to post-quantum cryptography.
+Such schemes have much larger keys than classical algorithms. In this work a
+new method that allows the reduction of private keys of the Rainbow digital
+signature scheme is proposed. Using this method, private keys can be reduced by
+up to 84\%. Still, this method can be combined with others to achieve smaller
+key pairs in their entirety.}
 \keywords{cryptography, digital signatures, post-quantum}
 
 \begin{document}
@@ -159,7 +212,6 @@ asymmetric algorithms. Quantum algorithms will also not be discussed.
 
 \section{Methodology}
 
-% TODO improve this section
 The work will be developed using the infrastructure and resources provided by
 the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
 made to determine what is state-of-the-art in MPKCs. Recently proposed schemes
@@ -173,7 +225,6 @@ of the optimizations.
 In this chapter some basic cryptographic primitives will be described for a
 complete understanding of the following chapters. All definitions and
 descriptions will be based on the book \cite{stinson2005cryptography}.
-% TODO give chapter layout
 
 \section{Public Key Cryptography}
 
@@ -1249,8 +1300,8 @@ simultaneously to achieve smaller key pairs. In this section, a novel
 modification to the original Rainbow scheme is presented. Such modification can
 reduce up to 84\% of the private key. Additionally, this optimization can be
 used along with variants that introduce structure into the public key, reducing
-the whole key pair by up to 71\%~\cite{zambonin2019handling}.
-% TODO chapter layout
+the whole key pair by up to 71\%~\cite{zambonin2019handling}. The pitfalls of
+using such optimization will be discussed as well.
 
 \section{Proposal}\label{sec:proposal}
 
@@ -1592,7 +1643,31 @@ technique is not exploited.
 
 \chapter{Conclusion}
 
-\textit{This chapter will be written next semester.}
+Rainbow has a space requirement problem, as its keys can get orders of
+magnitude bigger than the classic digital signatures algorithms. In order to
+viabilize the usage of Rainbow in a Post-Quantum scenario, this issue is being
+extensively addressed in the literature. A series of modifications to the
+original Rainbow scheme present in the literature were studied in order to
+comprehend the techniques used to tackle the key size problem. It could be
+observed that the introduction of structures into the private key, in general,
+made the schemes less secure. Finally, a novel modification was proposed.
+
+\section{Contributions}
+
+In this work a detailed description and comprehension of the Rainbow digital
+signature scheme was given, along with all the basic foundations needed to
+understand it. Also, a new method to reduce Rainbow private keys was proposed.
+This method does not involve a direct modification of the central map, thus can
+be jointed with other methods to achieve smaller Rainbow key pairs. The use of
+such method can reduce up to 84\% of the private key.
+
+\section{Future works}
+
+The security analysis of Rainbow-$\eta$ could be further expanded, specially
+its sensitivity to side-channel attacks, as this could be an issue of the
+original Rainbow too. Also, cryptanalytic attacks were not discarded, as an
+attacker with access to multiple signatures could derive some information of
+the central map due to the reuse of the vinegar variables.
 
 % TODO article in appendix
 
