@@ -1,7 +1,7 @@
 % TODO translate template
 \documentclass{ufsctex/ufsctex}
 
-\usepackage{amsmath, amsfonts, amsthm, makecell, mathtools, tikz}
+\usepackage{amsmath, amsfonts, amsthm, makecell, mathtools, pdfpages, tikz}
 
 % English captions
 \addto\captionsbrazil{
@@ -1673,7 +1673,11 @@ original Rainbow too. Also, cryptanalytic attacks were not discarded, as an
 attacker with access to multiple signatures could derive some information of
 the central map due to the reuse of the vinegar variables.
 
-% TODO article in appendix
+\apendice{}
+
+\chapter{ARTIGO DO TCC\\Publicado no evento Africacrypt 2019}
+
+\includepdf[pages=-]{rainbow-eta.pdf}
 
 \bibliographystyle{abnt-alf}
 \bibliography{ref}
