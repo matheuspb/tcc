@@ -1520,12 +1520,21 @@ in~\cite{ding2017nist}.
 \section{Similarity of multiple signatures}
 
 Rainbow-$\eta$ fixes part of the preimage of $\mathcal{F}$, which may raise a
-concern. Do multiple signatures, with the same vinegar variables, leak
-information about these variables? An attacker with access to multiple
-signatures that use the same set $V_1$, could derive some information about
-that set if some pattern is observed across the signatures.
+concern. Multiple signatures, with the same vinegar variables, can leak
+information about the private keys or even the variables found in the signature
+process.
 
-% TODO argument
+It should be noted that the attacker has no information about $\mathcal{T}$, so
+if one would try to find and invert this first transformation that hides the
+central map $\mathcal{F}$, a quadratic polynomial system would need to be
+resolved. That is, one would need to resolve the equation $\sigma =
+\mathcal{T}^{-1}(x)$, and with $x$ and $\mathcal{T}$ being unknowns, it
+actually forms a quadratic polynomial system. If part of $x$ is fixed, this
+system remains quadratic, still with more variables than equations. Suppose
+that even though it is unfeasible to solve the above equation and find the
+original $\mathcal{T}$, an attackers finds it efficiently via some other
+method. The possession of $\mathcal{T}$ would be of no use because
+$\mathcal{P}$ is also being hided by $\mathcal{S}$. 
 
 \section{Application of known attacks}
 
