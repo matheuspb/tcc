@@ -435,7 +435,7 @@ $\mathbb{F}_p$.
 As stated above $(\mathbb{Z}/n, +)$ is an abelian group, therefore
 $(\mathbb{Z}/p, +)$ is a commutative group as well. The ordinary multiplication
 is associative, distributive and commutative. Now it must be shown that
-$(\mathbb{Z} - \{0\}, *)$ forms a group.  The identity element of this group is
+$(\mathbb{Z} - \{0\}, *)$ forms a group. The identity element of this group is
 $1$. $a*b$ will never be zero because if $a*b \equiv 0 \mod p$ then either $a$
 or $b$ is zero and divides $p$, which is a contradiction because $p$ is prime.
 Now to show that all elements have inverses, the Bézout's identity can be used.
@@ -470,7 +470,7 @@ elements being $P = \{0, 1, x, x+1\}$, and the operations, the ordinary
 addition and multiplication of polynomials modulo $f(x) = x^2 + x + 1$. Note
 that all coefficients are in $\mathbb{F}_2$. The addition operation is given by
 the Table \ref{tab:addition} and the multiplication by Table
-\ref{tab:multiplication}.  The addition in $\mathbb{F}_{2^2}$ is the trivial
+\ref{tab:multiplication}. The addition in $\mathbb{F}_{2^2}$ is the trivial
 polynomial addition with coefficients modulo $2$, and there is no need for
 polynomial reductions. The multiplication though needs reductions modulo the
 irreducible polynomial. For instance, $x*(x+1) \equiv x^2+x \equiv 1 + 1*f(x)
@@ -1178,7 +1178,7 @@ security of the original Rainbow.
 In~\cite{wolf2005equivalent} is introduced the idea of equivalent keys for
 Multivariate Cryptosystems. Equivalent keys are different private keys that
 lead to the same public key. They can be found using the idea of
-``sustainers''.  Sustainers are transformations that do not alter the property
+``sustainers''. Sustainers are transformations that do not alter the property
 present in the central map that allow its inversion. For instance, a sustainer
 to UOV is a transformation that, when applied to the central map, does not
 change the fact that oil variables do not multiply themselves. Let $\Delta,
@@ -1201,11 +1201,12 @@ special structure, the private key space can be reduced.
 For instance, if this idea is applied to UOV, additive sustainers can be used
 to reduce $\mathcal{T}$. An additive sustainer only adds a term to the constant
 term. This sustainer clearly does not break the Oil and Vinegar property of the
-central map, and we can use it to subtract the constant terms in $\mathcal{S}$.
-Let $\mathcal{T}$ be a random affine map, $\Gamma^{-1}$ can be chosen such that
-it subtracts all its constant terms. So, for every $\mathcal{T}$, there exists
-an equivalent map $\mathcal{T'}$ that has no constants. Using this fact,
-$\mathcal{T}$ can be chosen without its constants already.
+central map, and it can be used to subtract the constant terms in
+$\mathcal{S}$. Let $\mathcal{T}$ be a random affine map, $\Gamma^{-1}$ can be
+chosen such that it subtracts all its constant terms. So, for every
+$\mathcal{T}$, there exists an equivalent map $\mathcal{T'}$ that has no
+constants. Using this fact, $\mathcal{T}$ can be chosen without its constants
+already.
 
 Extending this idea, as done in~\cite{wolf2011equivalent}, Gauss sustainers can
 be used to further reduce the private key space. Gauss sustainers are
@@ -1282,10 +1283,10 @@ maps of the private keys, is extended in~\cite[Chapter 3.5]{petzoldt2013thesis}
 to be used in Rainbow. The multilayer construction allows to build $\Delta$
 sustainers that mix layer equations within their own layer. The improvement is
 actually used in the Rainbow submission~\cite{ding2019nist} to round 2 of
-NIST's standardization process.  The proposal consists of using almost upper
+NIST's standardization process. The proposal consists of using almost upper
 triangular matrices, with the main diagonal only composed by 1's, in the outer
 maps. Matrices of such kind are always invertible due to the fact that their
-determinant is always equal to 1.  This reduction in the outer maps key space
+determinant is always equal to 1. This reduction in the outer maps key space
 can be used along with the Rainbow variants mentioned above, nonetheless it
 only reduces the maps $\mathcal{S}$ and $\mathcal{T}$ which do not make part of
 the majority of the private key size, as it can be observed in
@@ -1322,9 +1323,9 @@ $\mathcal{F}$, the set $V_1$ is chosen randomly and then substituted into the
 equations. Notice that the first layer polynomials are now linearized. $V_1$
 can be substituted in the subsequent layers too. These layers remain quadratic
 but with far less monomials, because the monomials that contain variables from
-$V_1$ will be simplified. We store this ``linearized'' central map
-$\mathcal{F'}$ along with the chosen $V_1$ for use in the signature generation
-step. The rest of the key generation step remains the same. $\mathcal{P}$ is
+$V_1$ will be simplified. This ``linearized'' central map $\mathcal{F'}$ is
+stored along with the chosen $V_1$ for use in the signature generation step.
+The rest of the key generation step remains the same. $\mathcal{P}$ is
 calculated using the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to be
 stored. The private key is now the tuple $(\mathcal{S}, \mathcal{F'},
 \mathcal{T}, V_1)$.
@@ -1378,7 +1379,7 @@ no need for new vinegar variables to be plugged in $\mathcal{F}$. This could be
 achieved using a random nonce in the generation of $h$. When generating a new
 signature, a random salt $r$ is chosen and $h$ is given by $h =
 \mathcal{H}(\mathcal{H}(d) \| r)$. Note that now, changing $r$ changes $h$
-completely.  Recall that the image $y$ is calculated by $y =
+completely. Recall that the image $y$ is calculated by $y =
 \mathcal{S}^{-1}(h)$, hence changing $r$ totally alters $y$. With this modified
 hashing procedure, in the case of an unsolvable layer, $r$ is changed and the
 hashing repeated, getting new values for $y$. This is done until all layers are
@@ -1447,7 +1448,7 @@ y =
 
 with $x$ and $y$ being the column of $x$ and $y$ variables. Let $A$ be the
 coefficient matrix of equation \ref{eq:linear} and $B$ the column of constant
-terms, we can solve the system for a given vector $y$ by calculating:
+terms, the system for a given vector $y$ can be solved by calculating:
 
 \begin{equation}
 x = A^{-1} \cdot (y - B)
