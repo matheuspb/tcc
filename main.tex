@@ -86,21 +86,21 @@ os resolvem em tempo polinomial, ou seja, com computadores quânticos poderosos
 o suficiente, o uso dos algoritmos de assinatura digital mais difundidos
 tornará-se impraticável. Naturalmente, com o aumento do poder computacional
 quântico, o interesse por criptossistemas resistentes a ataques que utilizam-se
-de tais computadores também cresceu. A área que estuda esses criptossistemas é,
-portanto, chamada de criptografia pós-quântica. Particularmente, esses
-algoritmos baseiam-se numa série de problemas que permanecem difíceis, mesmo
-que computadores quânticos poderosos sejam utilizados, logo, despertam o
-interesse para substituir os criptossistemas clássicos. Este trabalho visa
-estudar a classe de criptossistemas baseados em sistemas de polinômios
-multivariados, que, baseiam-se em problemas como a solução de sistemas de
-polinômios e o isomorfismo de polinômios, os quais ainda são resistentes a
-algoritmos quânticos, portanto, são bons candidatos para criptografia
-pós-quântica. Tais esquemas possuem tamanhos de chaves muito maiores que os
-algoritmos clássicos. Neste trabalho um novo método para redução de chaves
-privadas do esquema de assinatura digital Rainbow é proposto. Usando este
-método as chaves privadas podem ser reduzidas em até 84\%. Ainda, este método
-pode ser combinado com outros de forma a reduzir o par de chaves por completo.}
-\palavrasChave{criptografia, assinatura digital, pós-quântico}
+de tais computadores também cresceu. A área que estuda esses criptossistemas é
+chamada de criptografia pós-quântica. Particularmente, esses algoritmos
+baseiam-se numa série de problemas que permanecem difíceis, mesmo que
+computadores quânticos poderosos sejam utilizados, logo, despertam o interesse
+para substituir os criptossistemas clássicos. Este trabalho aborda
+criptossistemas baseados em sistemas de polinômios multivariados, que,
+baseiam-se em problemas como a solução de sistemas de polinômios e o
+isomorfismo de polinômios, os quais ainda são resistentes a algoritmos
+quânticos, e portanto, são candidatos para criptografia pós-quântica. Tais
+esquemas possuem tamanhos de chaves muito maiores que os algoritmos clássicos.
+Neste trabalho um novo método para redução de chaves privadas do esquema de
+assinatura digital Rainbow é proposto. Usando este método as chaves privadas
+podem ser reduzidas em até 84\%. Ainda, este método pode ser combinado com
+outros de forma a reduzir o par de chaves por completo.}
+\palavrasChave{criptografia pós-quântica, assinatura digital, Rainbow}
 
 \textAbstract{Classic digital signature algorithms base their security upon the
 difficulty of the integer factorization problem, and the discrete logarithm
@@ -109,20 +109,20 @@ solve them in polynomial time, consequently, with sufficiently powerful quantum
 computers, the use of the most common digital signature algorithms would become
 impractical. Naturally, with the rise in quantum computational power, the
 interest in cryptosystems resistant to attacks that make use of such computers
-has raised as well. The area that studies such cryptosystems is therefore
-called post-quantum cryptography. Particularly, these algorithms are based upon
-a series of problems that continue to be hard, even with quantum computers
+has raised as well. The area that studies such cryptosystems is called
+post-quantum cryptography. Particularly, these algorithms are based upon a
+series of problems that continue to be hard, even with quantum computers
 available, hence, provoke interest to substitute the classical schemes. This
-work aims to study the cryptosystems based on systems of multivariate
-polynomials. They base their security upon problems like the polynomial system
-solving and the isomorphism of polynomials, which are still resistant to
-quantum computers, henceforth are good candidates to post-quantum cryptography.
-Such schemes have much larger keys than classical algorithms. In this work a
-new method that allows the reduction of private keys of the Rainbow digital
-signature scheme is proposed. Using this method, private keys can be reduced by
-up to 84\%. Still, this method can be combined with others to achieve smaller
-key pairs in their entirety.}
-\keywords{cryptography, digital signatures, post-quantum}
+work approaches cryptosystems based on systems of multivariate polynomials.
+They base their security upon problems like the polynomial system solving and
+the isomorphism of polynomials, which are still resistant to quantum computers,
+henceforth are candidates to post-quantum cryptography.  Such schemes have much
+larger keys than classical algorithms. In this work a new method that allows
+the reduction of private keys of the Rainbow digital signature scheme is
+proposed. Using this method, private keys can be reduced by up to 84\%. Still,
+this method can be combined with others to achieve smaller key pairs in their
+entirety.}
+\keywords{post-quantum cryptography, digital signatures, Rainbow}
 
 \begin{document}
 
@@ -142,8 +142,8 @@ Classic asymmetric cryptography is threatened as a result of the advance in
 quantum algorithms development. The hardness of recovering private keys, for
 instance, RSA\sigla{RSA}{Rivest-Shamir-Adleman} and ECDSA\sigla{ECDSA}{Elliptic
 Curve Digital Signature Algorithm} keys, relies, respectively, on the hardness
-of the integer factorization problem and the discrete logarithm. Quantum
-algorithms, that run in polynomial-time, for solving such problems already
+of the integer factorization problem and the discrete logarithm problem.
+Quantum polynomial-time algorithms that solve those problems already
 exist~\cite{shor1999polynomial}. Using such algorithms, recovering private keys
 can be done efficiently by a sufficiently powerful quantum computer. Hence, the
 most used digital signature algorithms would become insecure.
@@ -159,9 +159,9 @@ use in a scenario of attackers equipped with quantum computers.
 There are several classes of post-quantum cryptosystems proposed in the
 literature, and each of them relies on one kind of hard problem. This work aims
 to study Multivariate Public-Key Cryptosystems
-(MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems}. These
-cryptosystems are constructed using multivariate polynomials systems. A
-Polynomial system is usually composed of polynomial equations with single
+(MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems} based on Rainbow.
+These cryptosystems are constructed using multivariate polynomials systems. A
+polynomial system is usually composed of polynomial equations with single
 variable monomials, and can be easily solved using, for instance, Gaussian
 elimination. However, with the inclusion of more variables into the monomials,
 it becomes a multivariate system. The problem of solving multivariate systems
@@ -184,10 +184,10 @@ well as small signatures, in some cases, smaller than classic algorithms. The
 main caveat of such schemes is that they have large public and private keys.
 Various efforts were made to reduce such parts of these cryptosystems, but, to
 the best of our knowledge, none of them reduced both public and private keys.
-This work aims to understand the OV signature scheme, its subsequent optimized
-schemes and the key reduction techniques proposed in the literature. Finally, a
-new framework that allows for a reduction of both the private and the public
-keys in Rainbow-like schemes is proposed.
+This work aims to understand the Rainbow signature scheme, its subsequent
+optimized schemes and the key reduction techniques proposed in the literature.
+Finally, a new framework that allows for a reduction of both the private and
+the public keys in Rainbow-like schemes is proposed.
 
 \section{Goals and scope}
 
@@ -206,16 +206,18 @@ Compare and analyze the performance of the aforementioned schemes in terms of
 operations needed to generate and verify signatures as well as storage
 requirements. Finally, propose new optimizations on top of those schemes.
 
-\textit{Scope:} This work will not cover other classes of post-quantum
-algorithms such as code-, lattice- and hash-based cryptosystems, nor classical
-asymmetric algorithms. Quantum algorithms will also not be discussed.
+\textit{Scope:} This work will be focused on the Rainbow digital signature
+scheme, its ancestors, and the optimizations made on top of it. Other classes
+of post-quantum algorithms such as code-, lattice- and hash-based cryptosystems
+will not be covered. Classical asymmetric algorithms will not be covered as
+well. Quantum algorithms will also not be discussed.
 
 \section{Methodology}
 
 The work will be developed using the infrastructure and resources provided by
 the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
-made to determine what is state-of-the-art in MPKCs. Recently proposed schemes
-will be studied, as well as broken ones for a better understanding of the
+made to determine the state-of-the-art in MPKCs. Recently proposed schemes will
+be studied, as well as broken ones for a better understanding of the
 constructions used that optimize the classic multivariate schemes. The
 performance of all the schemes studied should be observed along with the impact
 of the optimizations.
@@ -224,7 +226,7 @@ of the optimizations.
 
 In this chapter some basic cryptographic primitives will be described for a
 complete understanding of the following chapters. All definitions and
-descriptions will be based on the book \cite{stinson2005cryptography}.
+descriptions are based on \cite{stinson2005cryptography}.
 
 \section{Public Key Cryptography}
 
@@ -237,38 +239,38 @@ One of the keys is public, everyone can have access, and it is used to encrypt
 a message. The other key is private and can be held only by its owner, no one
 else can access it. Deciphering a message can only be made with the private
 key. Also, getting the private key from the public key should be
-computationally unfeasible. Now, if Alice wants to send a private message to
-Bob, she gets his public key through any mean of communication, encrypts the
-message, and sends to Bob. Bob, which possesses the private key, is the only
-one capable of decrypting Alice's message.
+computationally unfeasible. Now, if Bob wants to send a private message to
+Alice, he gets her public key through any channel of communication, encrypts
+the message, and sends it to Alice. Alice, which possesses the private key, is
+the only one capable of decrypting Bob's message.
 
 The idea of public key cryptosystems was first introduced
 in~\cite{diffie1976new}, but the first practical scheme of such kind was only
 proposed in~\cite{rivest1977digital}. These algorithms can be thought as a
-trapdoor one-way function, \textit{i.e.} the encryption process ``traps'' the
-message, and only with the possession of the private key, one can untangle the
-original message from the trap. The security of this algorithms rely on the
-difficulty of getting the private key from the public one, that is, it should
-be hard to unravel the message from the trapdoor.
+trapdoor one-way function, i.e. the encryption process ``traps'' the message,
+and only with the possession of the private key, one can untangle the original
+message from the trap. The security of these algorithms rely on the difficulty
+of getting the private key from the public one, that is, it should be hard to
+unravel the message from the trap.
 
 \section{Digital Signatures}
 
-A conventional signature is used everyday to provide authenticity of documents,
+Conventional signatures are used everyday to provide authenticity of documents,
 like letters and contracts. A digital signature is a signature to a digital
 document, that can be transmitted across a digital medium. Digitally signed
-documents have considerable differences to conventional signatures. First is
-that a digital signature is not physically bonded to the signed document.
-Second is the verification of the signature. Conventional signatures are
-verified by similarity to other signatures that are trusted. Digital signatures
-are verified using publicly known algorithms. Also, a digital signature can be
-copied several times, and it will remain authentic. Care should be taken, such
-that a document may not be used more times than it should be. For instance, a
-signed document saying that Alice wants to transfer some amount of money to Bob
-should be used only once, as Bob could force the bank to transfer this same
-amount multiple times. Adding the time the signature was made to the signed
-document can mitigate this problem.
+documents have considerable differences to conventional signatures. First, a
+digital signature is not physically bonded to the signed document.  Second, the
+verification procedure of the signature is distinct. Conventional signatures
+are verified by similarity to other signatures that are trusted. Digital
+signatures are verified using publicly known algorithms. Also, a digital
+signature can be copied several times, and it will remain authentic. Care
+should be taken, such that a document is not used more times than it should be.
+For instance, a signed document saying that Alice wants to transfer some amount
+of money to Bob should be used only once, as Bob could force the bank to
+transfer this same amount multiple times. Adding the time the signature was
+made to the signed document can mitigate this problem.
 
-A digital signature scheme may be composed of three efficient\footnote{Can be
+A digital signature scheme is composed of three efficient\footnote{Can be
 computed in a reasonable time by the parties involved.} algorithms:
 
 \begin{itemize}
@@ -324,10 +326,9 @@ arbitrarily sized data to a fixed length value, \text{i.e.} $\mathcal{H}:\{0,
 1\}^* \rightarrow \{0, 1\}^n$. Such functions are useful to maintain integrity
 of documents, for instance, a document $d$ has this fingerprint $h =
 \mathcal{H}(d)$, which can be verified whenever one wants to ensure that $d$
-was not modified. If for the some reason the document was changed, this
-modified version $d'$ would have a different fingerprint $h' =
-\mathcal{H}(d')$, and the integrity of the original document would not be
-verified because $h \ne h'$.
+was not modified. If for some reason the document was changed, this modified
+version $d'$ would have a different fingerprint $h' = \mathcal{H}(d')$, and the
+integrity of the original document would not be verified because $h \ne h'$.
 
 Of course, due to the ``compression'' made by $\mathcal{H}$, there ought to
 exist two documents that generate the same fingerprint, that is $h =
@@ -335,43 +336,43 @@ exist two documents that generate the same fingerprint, that is $h =
 fact that there exists infinitely more documents than fingerprints, so by the
 pigeonhole principle there will be infinitely many documents with the same
 fingerprint. This can be a problem, because the integrity of those documents
-could be erroneously verified. But, in practice, for secure hash functions,
-this will happen with negligible probability with big $n$'s.
+could be erroneously verified. However, in practice, for secure hash functions,
+this will happen with negligible probability for a large enough $n$.
 
 Hash functions are extensively used in digital signatures. It enables the
 algorithms to sign arbitrarily big documents by signing only the fingerprint
-$h$. But for use in cryptosystems, a hash function should satisfy some
-properties to be considered cryptographically secure. Specially, three problems
-should be unfeasible to solve. Let $\mathcal{H}:X \rightarrow Y$ be a hash
-function:
+$h$. However, a hash function should satisfy some properties to be considered
+cryptographically secure. Specially, three problems should be unfeasible to
+solve. Let $\mathcal{H}:X \rightarrow Y$ be a hash function:
 
 \begin{itemize}
 
 	\item \textbf{Preimage:} Given $y \in Y$, find $x \in X$ such that $y =
 		\mathcal{H}(x)$.
 
-	\item \textbf{Second preimage:} Given $x \in X$, find $x' \in X, x' \ne x$
-		such that $\mathcal{H}(x) = \mathcal{H}(x')$.
+	\item \textbf{Second preimage:} Given $x \in X$, find $x' \in X,\; x' \ne
+		x$ such that $\mathcal{H}(x) = \mathcal{H}(x')$.
 
-	\item \textbf{Collision:} Find $x, x' \in X$ such that $\mathcal{H}(x) =
+	\item \textbf{Collision:} Find $x,\; x' \in X$ such that $\mathcal{H}(x) =
 		\mathcal{H}(x')$.
 
 \end{itemize}
 
 Suppose that Alice is using $\mathcal{H}$ to sign a document $d$, this is,
-Alice only signs $h = \mathcal{H}(d)$. If Eve could solve any of the preimage
-problems efficiently, let's say, Eve finds $d'$ such that $h = \mathcal{H}(d) =
-\mathcal{H}(d')$ so she could publish the same signature yielded by Alice as a
-valid signature for $d'$ without Alice's private key. If Eve solves the
-collision problem efficiently, she could hand Alice a document $d$ to be
-signed, while having generated a document with malicious content $d'$. The
-signature created by Alice would be valid for both $d$ and $d'$.
+Alice only signs $h = \mathcal{H}(d)$. If a malicious party, namely Eve, could
+solve any of the preimage problems efficiently, let's say, Eve finds $d'$ such
+that $h = \mathcal{H}(d) = \mathcal{H}(d')$ so she could publish the same
+signature yielded by Alice as a valid signature for $d'$ without Alice's
+private key. If Eve solves the collision problem efficiently, she could hand
+Alice a document $d$ to be signed, while having generated a document with
+malicious content $d'$. The signature created by Alice would be valid for both
+$d$ and $d'$.
 
 \section{Finite Fields}
 
-This section definitions are based on the book~\cite{lidl1983encyclopedia}, and
-a basic understanding of the algebraic structures used in multivariate schemes
-will be given.
+These section's definitions are based on \cite{lidl1983encyclopedia}, and a
+basic understanding of the algebraic structures used in multivariate schemes is
+given.
 
 \begin{definition}
 A group $(G, *)$ with the set $G$ and the binary operation $*$ satisfies the
@@ -415,13 +416,13 @@ It must be emphasized that not only the ordinary multiplication and addition
 can be used to form groups or rings.
 
 \begin{definition}
-A ring can be further classified as:
+A ring $(R, +, *)$ can be further classified as:
 \begin{itemize}
 	\item \textbf{Commutative} if $*$ is commutative, that is, $a*b = b*a$ for
 	all $a, b \in R$.
 	\item A \textbf{division ring} if the nonzero elements of $R$ form a group
 	under $*$.
-	\item A \textbf{field} if it is a commutative division ring .
+	\item A \textbf{field} if it is a commutative division ring.
 \end{itemize}
 \end{definition}
 
@@ -446,9 +447,9 @@ of $a$. $(\mathbb{Z}/p, +, *)$ is a finite field.
 \end{proof}
 
 \begin{definition}
-Given a ring $R$ there exists a positive integer $n$ such that $n*r = 0$ for
-every $r \in R$. The least such positive integer is called the characteristic
-of $n$. If $n$ does not exist, the characteristic of $R$ is $0$.
+Given a ring $(R, +, *)$ there exists a positive integer $n$ such that $n*r =
+0$ for every $r \in R$. The least such positive integer is called the
+characteristic of $n$. If $n$ does not exist, the characteristic of $R$ is $0$.
 \end{definition}
 
 It can be noted that finite fields have prime characteristic. If a finite field
@@ -525,15 +526,16 @@ Extensions of the binary field $\mathbb{F}_2$ are specially interesting because
 representing and operating with them can be very computationally efficient. An
 element of $\mathbb{F}_{p^n}$ needs $n$ elements of $\mathbb{F}_p$ to be
 represented, hence an element of $\mathbb{F}_{2^8}$ needs $8$ bits, or $1$
-byte. The element $x^7 + x^5 + x + 1$ can be represented by the binary $8$-uple
-$(1, 0, 1, 0, 0, 0, 1, 1)$. The addition, when elements are represented in such
-way, is simply the bitwise exclusive or (XOR) operation. The multiplication
-operation can be performed efficiently using a modification to the Peasant's
-algorithm, which takes advantage of the binary representation. The reduction
-modulo $f(x)$ can also be done by a series of bitwise XOR operations. For small
-finite fields, a lookup table like the ones above, can be precomputed in order
-to dramatically improve the operations efficiency, as only one query to such
-table would be needed to perform them.
+byte. For instance, the element $x^7 + x^5 + x + 1 \in \mathbb{F}_{2^8}$ can be
+represented by the binary $8$-uple $(1, 0, 1, 0, 0, 0, 1, 1)$. The addition,
+when elements are represented in such way, is simply the bitwise exclusive or
+XOR operation. The multiplication operation can be performed efficiently using
+a modification to the Peasant's algorithm, which takes advantage of the binary
+representation. The reduction modulo $f(x)$ can also be done by a series of
+bitwise XOR operations. For small finite fields, a lookup table such as Table
+\ref{tab:addition} and \ref{tab:multiplication}, can be precomputed in order to
+dramatically improve the efficiency of the operations, as only one query to
+such table would be needed to obtain the result.
 
 \chapter{Multivariate cryptography}
 
