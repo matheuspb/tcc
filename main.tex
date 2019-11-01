@@ -965,7 +965,8 @@ schemes.
 \hline
 % header
 \thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
-& \thead{Private key size} & \thead{Public key size} \\ \hline
+& \thead{Private key size\\(bytes)} & \thead{Public key size\\(bytes)} \\
+\hline
 % data
 80  & $(\mathbb{F}_{256}, 17, 17, 9)$   & 19208   & 25740   \\ \hline
 100 & $(\mathbb{F}_{256}, 26, 22, 11)$  & 45450   & 60390   \\ \hline
@@ -1303,23 +1304,23 @@ Equation~\ref{eq:rainbowprivatekeysize}.
 
 \chapter{Reducing private keys by reusing vinegar variables}
 
-In chapter \ref{sec:rainbowvariants} it is shown some examples of Rainbow
-variants that introduce structure in either the public key or the central map
-$\mathcal{F}$. As stated above, none of these strategies could be used
+In Section \ref{sec:rainbowvariants}, some examples of Rainbow variants that
+introduce structure in either the public key or the central map $\mathcal{F}$
+are introduced. As stated above, none of these strategies could be used
 simultaneously to achieve smaller key pairs. In this section, a novel
-modification to the original Rainbow scheme is presented. Such modification can
-reduce up to 84\% of the private key. Additionally, this optimization can be
-used along with variants that introduce structure into the public key, reducing
-the whole key pair by up to 71\%~\cite{zambonin2019handling}. The pitfalls of
-using such optimization will be discussed as well.
+modification to the original Rainbow scheme is presented. It can reduce up to
+84\% of the private key. Additionally, this optimization can be used along with
+variants that introduce structure into the public key, reducing the whole key
+pair by up to 71\%~\cite{zambonin2019handling}. The pitfalls of using such
+optimization will be discussed as well.
 
 \section{Proposal}\label{sec:proposal}
 
 It can be noted that introducing structure into the central map is generally
-not well succeeded. Such schemes generally offer some vulnerability due to the
+not well succeeded. Such schemes usually offer some vulnerability due to the
 special structure in $\mathcal{F}$. With this in mind, a new general framework
 to reduce private keys in Rainbow-like signature schemes is proposed. The
-modification, namely Rainbow-$\eta$, consists in modifying the key generation
+modification, namely Rainbow-$\eta$, consists in tweaking the key generation
 and the signature generation step, rather than introducing structures in the
 central system of equations. Recall that the first set of vinegar variables is
 chosen at random for every new signature. If this set of vinegar variables
@@ -1332,29 +1333,28 @@ $\mathcal{F}$, the set $V_1$ is chosen randomly and then substituted into the
 equations. Notice that the first layer polynomials are now linearized. $V_1$
 can be substituted in the subsequent layers too. These layers remain quadratic
 but with far less monomials, because the monomials that contain variables from
-$V_1$ will be simplified. This ``linearized'' central map $\mathcal{F'}$ is
-stored along with the chosen $V_1$ for use in the signature generation step.
-The rest of the key generation step remains the same. $\mathcal{P}$ is
-calculated using the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to be
-stored. The private key is now the tuple $(\mathcal{S}, \mathcal{F'},
-\mathcal{T}, V_1)$.
+$V_1$ will be simplified. This linearized central map $\mathcal{F'}$ is stored
+along with the chosen $V_1$ for use in the signature generation step.  The rest
+of the key generation step remains the same. $\mathcal{P}$ is calculated using
+the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to be stored. The
+private key is now the tuple $(\mathcal{S}, \mathcal{F'}, \mathcal{T}, V_1)$.
 
 To further generate new signatures, the first step of the signing procedure,
-that is, chose and substitute $V_1$ into $\mathcal{F}$, is not needed anymore,
-as this was done in the key generation step. The layers are inverted as
+that is, choose and substitute $V_1$ into $\mathcal{F}$, is not needed anymore,
+as this is done in the key generation step. The layers are inverted as
 described in section \ref{sec:rainbow}. After the preimage of $\mathcal{F}$ is
 found, the set $V_1$, selected in the key generation step, is used along with
 the rest of the variables to compute the signature. It may happen that some
-layer cannot be solvable for a given signature. Originally, when this happens,
-a new set $V_1$ is chosen and the inversion process is repeated. In
+layer is not solvable for a given signature. Originally, when this happens, a
+new set $V_1$ is chosen and the inversion process is repeated. In
 Rainbow-$\eta$ this cannot be done, due to the fact that the central map
 $\mathcal{F'}$ is already simplified with the previously chosen $V_1$, and
-$\mathcal{F}$ is not available. With this issue in mind, henceforth three
-alternatives are proposed to viabilize Rainbow-$\eta$.
+$\mathcal{F}$ is not available. With this issue in mind, three alternatives are
+proposed to viabilize Rainbow-$\eta$.
 
 \subsection{Rainbow-$\eta_1$}
 
-In order to further regenerate the central map $\mathcal{F}$, a
+In order to regenerate the central map $\mathcal{F}$, a
 PRNG\sigla{PRNG}{Pseudorandom Number Generator} seeded by $S$ can be used to
 generate $\mathcal{F}$ in the key generation step. Storing $S$ with the rest of
 the private key, enables the signer to regenerate $\mathcal{F}$ in the case of
@@ -1367,34 +1367,34 @@ subsequent signatures.
 
 This alternative is efficient and adds only the cost of regenerating
 $\mathcal{F}$ every time that some layer is not solvable, which occurs with
-small probability, as it is shown in section \ref{sec:invertibility}. Also, the
-cost of storing $S$ along with the private key is added.
+small probability, as it is shown in Section \ref{sec:invertibility}. Also, the
+small cost of storing $S$ along with the private key is added.
 
 \subsection{Rainbow-$\eta_2$}
 
-It is show in section \ref{sec:relation} that a linear relation between the
+It is show in Section \ref{sec:relation} that a linear relation between the
 public and private maps exist. This relation can be used to generate
 $\mathcal{F}$ from $\mathcal{P}$, $\mathcal{S}$ and $\mathcal{T}$. Therefore,
 in the case of the signer being unable to find a preimage for the central map,
 $\mathcal{F}$ is regenerated and the signing procedure occurs just like in
 Rainbow-$\eta_1$. With this method, no additional data is needed in the private
-key, anyway, regenerating the central map by this manner is less efficient than
-through the PRNG solution.
+key, however, regenerating the central map by this manner is less efficient
+than through the PRNG solution.
 
 \subsection{Rainbow-$\eta_3$}\label{sec:rainboweta3}
 
 If the central map layers could be solved for different values, there would be
 no need for new vinegar variables to be plugged in $\mathcal{F}$. This could be
-achieved using a random nonce in the generation of $h$. When generating a new
+achieved using a random nonce in the generation of $h$. When creating a new
 signature, a random salt $r$ is chosen and $h$ is given by $h =
-\mathcal{H}(\mathcal{H}(d) \| r)$. Note that now, changing $r$ changes $h$
+\mathcal{H}(\mathcal{H}(d) \| r)$. Note that, changing $r$ changes $h$
 completely. Recall that the image $y$ is calculated by $y =
 \mathcal{S}^{-1}(h)$, hence changing $r$ totally alters $y$. With this modified
 hashing procedure, in the case of an unsolvable layer, $r$ is changed and the
 hashing repeated, getting new values for $y$. This is done until all layers are
-solvable and the signature step can follow up. The verification process is done
-by checking if $\mathcal{P}(\sigma) = \mathcal{H}(\mathcal{H}(d) \| r)$ holds,
-also $r$ is now part of the signature.
+solvable and the signature step can finish properly. The verification process
+is done by checking if $\mathcal{P}(\sigma) = \mathcal{H}(\mathcal{H}(d) \| r)$
+holds. Note the now, $r$ is part of the signature.
 
 Actually, this method is used in the Rainbow proposal to NIST's standardization
 process~\cite{ding2017nist}. This technique is used to achieve
@@ -1407,7 +1407,7 @@ the use of Rainbow-$\eta_3$ is recommended.
 
 \section{Invertibility of the central map}\label{sec:invertibility}
 
-As describe in section \ref{sec:rainbow}, to sign a document, $\mathcal{F}$
+As described in Section \ref{sec:rainbow}, to sign a document, $\mathcal{F}$
 needs to be inverted\footnote{Note that $\mathcal{F}$ is surjective, hence
 there is no inverse of this map. This inversion is actually a
 ``pseudo-inversion'' and it consists in finding a preimage for $\mathcal{F}$.}.
@@ -1456,8 +1456,8 @@ y =
 \end{equation}
 
 with $x$ and $y$ being the column of $x$ and $y$ variables. Let $A$ be the
-coefficient matrix of equation \ref{eq:linear} and $B$ the column of constant
-terms, the system for a given vector $y$ can be solved by calculating:
+coefficient matrix of Equation \ref{eq:linear} and $B$ the column of constant
+terms. The system for a given vector $y$ can be solved by calculating:
 
 \begin{equation}
 x = A^{-1} \cdot (y - B)
@@ -1465,9 +1465,9 @@ x = A^{-1} \cdot (y - B)
 
 Actually, the system will be solvable if and only if $A$ is invertible.
 Therefore, observing the probability of a randomly built matrix being
-invertible shows the probability of random linear systems being
-solvable\footnote{From now on, it is assumed that the linear systems generated
-in the signature step, are randomly built.}.
+invertible shows the probability of random linear systems being solvable. From
+now on, it is assumed that the linear systems generated in the signature step,
+are randomly built.
 
 \begin{definition}
 Let $I_n$ be the identity matrix of size $n$. A matrix $A \in \mathbb{F}^{n
@@ -1478,20 +1478,21 @@ inverse of $A$.
 
 It can be shown that all lines of an invertible matrix are linearly
 independent. Let $A$ be an invertible matrix. For contradiction, assume that
-some line of $A$ is linearly dependent of other(s). So, there exists a nonzero
-column vector $x$ such that $Ax = 0$. If $A$ is invertible, then $A^{-1}Ax = 0$
-can be calculated and this equality does not hold, as $x$ is nonzero.
+some line of $A$ is linearly dependent of one or more other lines. So, there
+exists a nonzero column vector $x$ such that $Ax = 0$. If $A$ is invertible,
+then $A^{-1}Ax = 0$ can be calculated and this equality does not hold, as $x$
+is nonzero.
 
 With this fact in mind, invertible matrices can be constructed line by line,
 choosing a vector that is not linearly dependent of the previously selected
 ones. On the first line $l_1$ there will be a total of $q^n - 1$ choices, as
 the zero vector cannot be chosen. The second line must satisfy the condition
 $l_2 \neq c l_1$, since $q$ values for $c$ can be selected, the second line has
-$q^n - q$ possibilities. Extending, the $k$-th line must satisfy $l_k \ne
-c_1l_1 + c_2l_2 + \cdots + c_{k-1}l_{k-1}$. As there are $q^{k-1}$
-possibilities for $c$ constants, the $k$-th line has $q^n - q^{k-1}$
+$q^n - q$ possibilities. Without loss of generality, the $k$-th line must
+satisfy $l_k \ne c_1l_1 + c_2l_2 + \cdots + c_{k-1}l_{k-1}$. As there are
+$q^{k-1}$ possibilities for $c$ constants, the $k$-th line has $q^n - q^{k-1}$
 possibilities. Multiplying all these possibilities, the probability of a random
-matrix with elements in $\mathbb{F}_q$ being invertible is:
+matrix with elements in $\mathbb{F}_q$ being invertible is given by:
 
 \begin{equation}
 \begin{split}
@@ -1523,7 +1524,7 @@ subsequent layers need to be taken into account. It can be noted that the third
 proposed variant does not add any cost to the implementation submitted
 in~\cite{ding2017nist}.
 
-\section{Similarity of multiple signatures}
+\section{Attacking multiple signatures}
 
 Rainbow-$\eta$ fixes part of the preimage of $\mathcal{F}$, which may raise a
 concern. Multiple signatures, with the same vinegar variables, can leak
@@ -1540,15 +1541,14 @@ system remains quadratic, still with more variables than equations. Suppose
 that even though it is unfeasible to solve the above equation and find the
 original $\mathcal{T}$, an attackers finds it efficiently via some other
 method. The possession of $\mathcal{T}$ would be of no use because
-$\mathcal{P}$ is also being hided by $\mathcal{S}$. 
+$\mathcal{P}$ is also hidden by $\mathcal{S}$.
 
 \section{Application of known attacks}
 
 There are lots of known attacks on Rainbow and UOV that could also be applied
 to Rainbow-$\eta$. In the previous sections, some problems and possibly
 security flaws are analysed. In this section, the applicability of existing
-attacks is discussed and if they can take advantage of the reuse of vinegar
-variables throughout multiple signatures.
+attacks is discussed.
 
 \subsection{Direct Attack}
 
@@ -1602,9 +1602,9 @@ signatures and know the messages that cause a non-invertibility of some layer.
 as \textit{``... all key dependent operations are performed in a time-constant
 manner.''}. However, when some layer is not solvable, the signature generation
 takes longer, as described in Section~\ref{sec:rainboweta3}. There are no known
-attacks that make use of such information, but the possibility of existing such
-attack is not discarded, and the submitted implementation may be vulnerable to
-such timing attack.
+attacks that make use of such information, but this possibility is not
+discarded, and the submitted implementation may be vulnerable to such timing
+attack.
 
 \section{Improvement on Rainbow instances}
 
@@ -1627,7 +1627,8 @@ m^2 + m + n^2 + n + v_1 \, + \\
 \hline
 % header
 \thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
-& \thead{$K_{pr}$} & \thead{$K^{\eta}_{pr}$} & \thead{Difference} \\ \hline
+& \thead{$K_{pr}$\\(bytes)} & \thead{$K^{\eta}_{pr}$\\(bytes)} &
+\thead{Difference} \\ \hline
 % data
 80  & $(\mathbb{F}_{256}, 17, 17, 9)$  & 19208   & 5914   & -69.21\% \\ \hline
 100 & $(\mathbb{F}_{256}, 26, 22, 11)$ & 45450   & 11013  & -75.77\% \\ \hline
@@ -1652,24 +1653,24 @@ other methods to achieve smaller key pairs.
 
 \section{Implementation}
 
-A proof of concept implementation was made to validate the proposed
-optimization. It can be found in
-\footnote{\url{https://github.com/matheuspb/rainbow-eta}}. The repository
-contains a modified version of the Rainbow implementation submitted to NIST's
-standardization process. In this implementation, the first set of vinegar
-variables is only substituted in the first layer, so the full potential of the
-technique is not exploited.
+A proof of concept
+implementation\footnote{\url{https://github.com/matheuspb/rainbow-eta}} was
+made to validate the proposed optimization. The repository contains a modified
+version of the Rainbow implementation submitted to NIST's standardization
+process. In this implementation, the first set of vinegar variables is only
+substituted in the first layer, so the full potential of the technique is not
+exploited.
 
 \chapter{Conclusion}
 
-Rainbow has a space requirement problem, as its keys can get orders of
-magnitude bigger than the classic digital signatures algorithms. In order to
-viabilize the usage of Rainbow in a post-quantum scenario, this issue is being
-extensively addressed in the literature. A series of modifications to the
-original Rainbow scheme present in the literature were studied in order to
-comprehend the techniques used to tackle the key size problem. It could be
-observed that the introduction of structures into the private key, in general,
-made the schemes less secure. Finally, a novel modification was proposed.
+Rainbow has a space requirement problem, as its keys are orders of magnitude
+bigger than the classic digital signature algorithms. In order to viabilize the
+usage of Rainbow in a post-quantum scenario, this issue is being extensively
+addressed in the literature. A series of modifications to the original Rainbow
+scheme presented in the literature were studied in order to comprehend the
+techniques used to tackle the key size problem. It is observed that the
+introduction of structures into the private key, in general, makes the schemes
+less secure. Finally, a novel modification was proposed.
 
 \section{Contributions}
 
@@ -1677,7 +1678,7 @@ In this work a detailed description and comprehension of the Rainbow digital
 signature scheme was given, along with all the basic foundations needed to
 understand it. Also, a new method to reduce Rainbow private keys was proposed.
 This method does not involve a direct modification of the central map, thus can
-be jointed with other methods to achieve smaller Rainbow key pairs. The use of
+be unified with other methods to achieve smaller Rainbow key pairs. The use of
 such method can reduce up to 84\% of the private key.
 
 \section{Future works}
