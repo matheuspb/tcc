@@ -3,6 +3,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[brazil]{babel}
+\usepackage{amsmath, amsthm, makecell, tikz}
 
 \title{Reducing keys in Rainbow-like signature schemes}
 
@@ -23,11 +24,181 @@
 
 \frame{\titlepage}
 
-\begin{frame}
-	\cite{zambonin2019handling}
+\begin{frame}{Assinaturas Digitais}
+	\begin{itemize}[<+->]
+		\item Simulam as assinaturas de punho em meios digitais.
+		\item Utilizam pares de chaves criptográficas, sendo que somente o
+		assinante possui a chave privada.
+		\item São verificadas a partir de um algoritmo público de verificação.
+		\item Deve ser difícil criar novas assinaturas sem a chave privada.
+		\item Provê integridade, autenticidade e não-repúdio dos documentos
+		assinados.
+		\item Os algoritmos mais utilizados são o RSA e o ECDSA.
+	\end{itemize}
 \end{frame}
 
-\begin{frame}{Referências}
+\begin{frame}{Criptografia pós-quântica}
+	\begin{itemize}[<+->]
+		\item Os algoritmos clássicos de assinatura digital se baseiam em
+		problemas da teoria dos números, como a fatoração de inteiros e o
+		logaritmo discreto.
+		\item Com o advento da computação quântica, esses problemas poderão ser
+		resolvidos em tempo polinomial~\cite{shor1999polynomial}.
+		\item Motiva o estudo de novos algoritmos criptográficos que se baseiam
+		em outros problemas.
+		\item Essa área de estudos é denominada criptografia pós-quântica.
+		\item Estes algoritmos estão em processo de padronização pelo NIST.
+		\item Este trabalho visa estudar uma classe de algoritmos de assinatura
+		digital pós-quânticos.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Criptografia baseada em polinômios multivariados}
+	\begin{align*}
+	p^{(1)}(x_1,\dots,x_n)&= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(1)}_{ij} x_i x_j
+		+ \sum_{i=1}^n \beta^{(1)}_i x_i + \gamma^{(1)} \\
+	\onslide<2->{
+	p^{(2)}(x_1,\dots,x_n)&= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(2)}_{ij} x_i x_j
+		+ \sum_{i=1}^n \beta^{(2)}_i x_i + \gamma^{(2)} \\
+	&\vdots \\
+	p^{(m)}(x_1,\dots,x_n)&= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(m)}_{ij} x_i x_j
+		+ \sum_{i=1}^n \beta^{(m)}_i x_i + \gamma^{(m)}
+	}
+	\end{align*}
+	\begin{itemize}
+		\item<3-> Resolver sistemas de polinômios não lineares é
+		NP-Hard~\cite{garey1979npc}.
+		\item<4-> Podem ser usados como mapas.
+		\item<5-> Pares de chaves muito grandes!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Construção Bipolar}
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}
+			\node (h) at (0, 0) {$h \in \mathbb{F}^m$};
+			\node (y) at (3, 0) {$y \in \mathbb{F}^m$};
+			\node (x) at (6, 0) {$x \in \mathbb{F}^n$};
+			\node (z) at (9, 0) {$\sigma \in \mathbb{F}^n$};
+			\draw[-latex] (h) -- node[above]{$\mathcal{S}^{-1}$} (y);
+			\draw[-latex] (y) --
+			node[above]{$\mathcal{F}^{-1}$} node[below]{\textbf{Assinar}} (x);
+			\draw[-latex] (x) -- node[above]{$\mathcal{T}^{-1}$} (z);
+			\draw[-latex] (z) to[bend left=35] node[above]{$\mathcal{P}$}
+			node[below]{\textbf{Verificar}} (h);
+		\end{tikzpicture}
+	\end{figure}
+	\begin{itemize}
+		\item<2-> $\mathcal{F}$ é um sistema de polinômios multivariados.
+		\item<3-> $\mathcal{S}$ e $\mathcal{T}$ são mapas lineares, servem para
+		esconder o mapa central.
+		\item<4-> A chave pública é dada por $\mathcal{P} = \mathcal{S} \circ
+		\mathcal{F} \circ \mathcal{T}$
+		\item<5-> Pode ser utilizada para construir esquemas de assinatura
+		digital.
+		\item<6-> É a construção básica do Rainbow.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{O princípio Óleo e Vinagre~\cite{patarin1997ov}}
+	\begin{itemize}[<+->]
+		\item Consiste em criar um sistema com dois conjuntos de variáveis.
+		\item \begin{equation*}\label{eq:ovpolynomial}
+			y^{(k)} =
+			\underbrace{
+				\sum_{i=1}^{v}\sum_{j=i}^{v} \alpha^{(k)}_{ij} x_i x_j}_{
+			V \times V} +
+			\underbrace{
+				\sum_{i=v+1}^{v+o}\sum_{j=1}^{v} \beta^{(k)}_{ij} x_i x_j}_{
+			O \times V} +
+			\underbrace{
+				\sum_{i=1}^{o+v} \gamma^{(k)}_{i} x_i}_{\text{linear}} +
+			\underbrace{\delta^{(k)}}_{\text{constante}}
+		\end{equation*}
+		\item O sistema é linear em Óleo.
+		\item Um sistema com ``$o$'' equações e ``$o$'' variáveis de óleo pode
+		ser solucionado se valores forem selecionados para as variáveis de
+		vinagre.
+		\item A estrutura do sistema é escondida por um mapeamento das
+		variáveis $\mathcal{T}$.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{O esquema de assinatura digital Rainbow~\cite{ding2005rainbow}}
+	\begin{itemize}[<+->]
+		\item Consiste em criar múltiplas camadas de sistemas que tem a
+		propriedade Óleo e Vinagre.
+		\item Resolvendo uma camada, possibilita resolver a próxima, pois as
+		variáveis de uma camada são as variáveis de vinagre da próxima.
+		\item Foi submetido ao processo de padronização do
+		NIST~\cite{ding2017nist}.
+		\item Chaves de até 1.6MB!
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Reusando variáveis de vinagre para reduzir a chave privada}
+	\begin{itemize}[<+->]
+		\item A escolha das variáveis de vinagre é necessária para linearizar a
+		primeira camada.
+		\item Podemos guardar apenas o sistema simplificado após a substituição
+		das variáveis de vinagre.
+		\item Existe a possibilidade de alguma das camadas não ser inversível.
+		\item Dois métodos foram propostos para gerar novamente o mapa central.
+		\item Um terceiro método usa a variante utilizada na submissão para o
+		NIST~\cite{ding2017nist} e evita que o mapa central seja gerado
+		novamente.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Reusando variáveis de vinagre para reduzir a chave privada}
+	\begin{itemize}[<+->]
+		\item Resultados publicados em~\cite{zambonin2019handling}.
+		\begin{table}
+		\begin{tabular}{|c|c|c|c|c|}
+			\hline
+			% header
+			\thead{Segurança\\(bits)} &
+			\thead{Parâmetros\\$(K, o_1, v_1, v_2)$} &
+			\thead{$K_{pr}$\\(bytes)} & \thead{$K^{\eta}_{pr}$\\(bytes)} &
+			\thead{Redução} \\ \hline
+			% data
+			80  & $(\mathbb{F}_{256},17,17,9)$  & 19208   & 5914   & -69.21\%
+			\\ \hline
+			100 & $(\mathbb{F}_{256},26,22,11)$ & 45450   & 11013  & -75.77\%
+			\\ \hline
+			128 & $(\mathbb{F}_{256},36,28,15)$ & 103704  & 22110  & -78.68\%
+			\\ \hline
+			192 & $(\mathbb{F}_{256},63,46,22)$ & 440638  & 71773  & -83.71\%
+			\\ \hline
+			256 & $(\mathbb{F}_{256},85,63,30)$ & 1086971 & 164721 & -84.85\%
+			\\ \hline
+		\end{tabular}
+		\end{table}
+		\item Implementação de uma prova de conceito em
+		\url{https://github.com/matheuspb/rainbow-eta}
+		\item Este método pode ser combinado ainda com outros métodos que
+		reduzem a chave pública para atingir 71\% de redução no par de chaves.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+	\begin{itemize}[<+->]
+		\item Foi proposto um método para reduzir o mapa central do Rainbow,
+		sem a adição de estrutura.
+		\item Esse método pode ser usado em combinação com outros métodos que
+		reduzem o mapa público.
+		\item Trabalhos futuros podem extender a análise de segurança do método
+		proposto.
+		\item Podem também abordar a questão dos \textit{side-channel} attacks.
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Conclusão}
+	\center{\Huge Obrigado!}
+\end{frame}
+
+\begin{frame}[allowframebreaks]{Referências}
 	\bibliographystyle{apalike}
 	\bibliography{ref}
 \end{frame}
