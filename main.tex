@@ -1,4 +1,3 @@
-% TODO translate template
 \documentclass{ufsctex/ufsctex}
 
 \usepackage{amsmath, amsfonts, amsthm, makecell, mathtools, pdfpages, tikz}
@@ -89,9 +88,9 @@ tornará-se impraticável. Naturalmente, com o aumento do poder computacional
 quântico, o interesse por criptossistemas resistentes a ataques que utilizam-se
 de tais computadores também cresceu. A área que estuda esses criptossistemas é
 chamada de criptografia pós-quântica. Particularmente, esses algoritmos
-baseiam-se numa série de problemas que permanecem difíceis, mesmo que
-computadores quânticos poderosos sejam utilizados, logo, despertam o interesse
-para substituir os criptossistemas clássicos. Este trabalho aborda
+baseiam-se numa série de problemas que, por enquanto, permanecem difíceis,
+mesmo que computadores quânticos poderosos sejam utilizados, logo, despertam o
+interesse para substituir os criptossistemas clássicos. Este trabalho aborda
 criptossistemas baseados em sistemas de polinômios multivariados, que,
 baseiam-se em problemas como a solução de sistemas de polinômios e o
 isomorfismo de polinômios, os quais ainda são resistentes a algoritmos
@@ -100,7 +99,7 @@ esquemas possuem tamanhos de chaves muito maiores que os algoritmos clássicos.
 Neste trabalho um novo método para redução de chaves privadas do esquema de
 assinatura digital Rainbow é proposto. Usando este método as chaves privadas
 podem ser reduzidas em até 84\%. Ainda, este método pode ser combinado com
-outros de forma a reduzir o par de chaves por completo.}
+outros de forma a reduzir tanto a chave privada como a chave pública.}
 \palavrasChave{criptografia pós-quântica, assinatura digital, Rainbow}
 
 \textAbstract{Classic digital signature algorithms base their security upon the
@@ -112,17 +111,17 @@ impractical. Naturally, with the rise in quantum computational power, the
 interest in cryptosystems resistant to attacks that make use of such computers
 has raised as well. The area that studies such cryptosystems is called
 post-quantum cryptography. Particularly, these algorithms are based upon a
-series of problems that continue to be hard, even with quantum computers
-available, hence, provoke interest to substitute the classical schemes. This
-work approaches cryptosystems based on systems of multivariate polynomials.
-They base their security upon problems like the polynomial system solving and
-the isomorphism of polynomials, which are still resistant to quantum computers,
-henceforth are candidates to post-quantum cryptography.  Such schemes have much
-larger keys than classical algorithms. In this work a new method that allows
-the reduction of private keys of the Rainbow digital signature scheme is
-proposed. Using this method, private keys can be reduced by up to 84\%. Still,
-this method can be combined with others to achieve smaller key pairs in their
-entirety.}
+series of problems that, at this time, continue to be hard, even with quantum
+computers available, hence, provoke interest to substitute the classical
+schemes. This work approaches cryptosystems based on systems of multivariate
+polynomials.  They base their security upon problems like the polynomial system
+solving and the isomorphism of polynomials, which are still resistant to
+quantum computers, henceforth are candidates to post-quantum cryptography.
+Such schemes have much larger keys than classical algorithms. In this work a
+new method that allows the reduction of private keys of the Rainbow digital
+signature scheme is proposed. Using this method, private keys can be reduced by
+up to 84\%. Still, this method can be combined with others to reduce the
+private key and the public key simultaneously.}
 \keywords{post-quantum cryptography, digital signatures, Rainbow}
 
 \begin{document}
@@ -133,8 +132,6 @@ entirety.}
 \listadefiguras{}
 \listadetabelas{}
 \listadeabreviaturas{}
-%\listadesimbolos{}
-%\listadealgoritmos{}
 \sumario{}
 
 \chapter{Introduction}
@@ -207,25 +204,24 @@ Compare and analyze the performance of the aforementioned schemes in terms of
 operations needed to generate and verify signatures as well as storage
 requirements. Finally, propose new optimizations on top of those schemes.
 
-\textit{Scope:} This work will be focused on the Rainbow digital signature
-scheme, its ancestors, and the optimizations made on top of it. Other classes
-of post-quantum algorithms such as code-, lattice- and hash-based cryptosystems
-will not be covered. Classical asymmetric algorithms will not be covered as
-well. Quantum algorithms will also not be discussed.
+\textit{Scope:} This work is focused on the Rainbow digital signature scheme,
+its ancestors, and the optimizations made on top of it. Other classes of
+post-quantum algorithms such as code-, lattice- and hash-based cryptosystems
+are not covered. Classical asymmetric algorithms are not covered as well.
+Quantum algorithms are also not discussed.
 
 \section{Methodology}
 
-The work will be developed using the infrastructure and resources provided by
-the Computer Security Laboratory (LabSEC/UFSC). A literature review will be
-made to determine the state-of-the-art in MPKCs. Recently proposed schemes will
-be studied, as well as broken ones for a better understanding of the
-constructions used that optimize the classic multivariate schemes. The
-performance of all the schemes studied should be observed along with the impact
-of the optimizations.
+The work was developed using the infrastructure and resources provided by the
+Computer Security Laboratory (LabSEC/UFSC). A literature review was made to
+determine the state-of-the-art in MPKCs. Recently proposed schemes were
+studied, as well as broken ones for a better understanding of the constructions
+used that optimize the classic multivariate schemes. The performance of all the
+schemes studied were observed along with the impact of the optimizations.
 
 \chapter{Cryptographic primitives}
 
-In this chapter some basic cryptographic primitives will be described for a
+In this chapter some basic cryptographic primitives are described for a
 complete understanding of the following chapters. All definitions and
 descriptions are based on \cite{stinson2005cryptography}.
 
@@ -233,20 +229,20 @@ descriptions are based on \cite{stinson2005cryptography}.
 
 Symmetric cryptography consists of ciphering and deciphering a message with the
 same key. This can be very useful if two parties, say Alice and Bob, have
-agreed upon using the same key using a secure channel. But if Alice and Bob are
-distant and do not have a secure channel to share a symmetric key, this cannot
-be used. Public key cryptography resolves this issue, as there exists two keys.
-One of the keys is public, everyone can have access, and it is used to encrypt
-a message. The other key is private and can be held only by its owner, no one
-else can access it. Deciphering a message can only be made with the private
-key. Also, getting the private key from the public key should be
+agreed upon using the same key through a secure channel. But if Alice and Bob
+are distant and do not have a secure channel to share a symmetric key, this
+cannot be used. Public key cryptography resolves this issue, as there exists
+two keys.  One of the keys is public, everyone can have access, and it is used
+to encrypt a message. The other key is private and can be held only by its
+owner, no one else can access it. Deciphering a message can only be made with
+the private key. Also, getting the private key from the public key should be
 computationally unfeasible. Now, if Bob wants to send a private message to
 Alice, he gets her public key through any channel of communication, encrypts
 the message, and sends it to Alice. Alice, which possesses the private key, is
 the only one capable of decrypting Bob's message.
 
 The idea of public key cryptosystems was first introduced
-in~\cite{diffie1976new}, but the first practical scheme of such kind was only
+in~\cite{diffie1976new}, but the first practical scheme of such kind was
 proposed in~\cite{rivest1977digital}. These algorithms can be thought as a
 trapdoor one-way function, i.e. the encryption process ``traps'' the message,
 and only with the possession of the private key, one can untangle the original
@@ -260,16 +256,17 @@ Conventional signatures are used everyday to provide authenticity of documents,
 like letters and contracts. A digital signature is a signature to a digital
 document, that can be transmitted across a digital medium. Digitally signed
 documents have considerable differences to conventional signatures. First, a
-digital signature is not physically bonded to the signed document.  Second, the
-verification procedure of the signature is distinct. Conventional signatures
-are verified by similarity to other signatures that are trusted. Digital
-signatures are verified using publicly known algorithms. Also, a digital
-signature can be copied several times, and it will remain authentic. Care
-should be taken, such that a document is not used more times than it should be.
-For instance, a signed document saying that Alice wants to transfer some amount
-of money to Bob should be used only once, as Bob could force the bank to
-transfer this same amount multiple times. Adding the time the signature was
-made to the signed document can mitigate this problem.
+digital signature is not physically bonded to the signed document. Second, the
+verification procedure of the signature is done in a different way than
+classical signatures. Conventional signatures are verified by similarity to
+other signatures that are trusted. Digital signatures are verified using
+publicly known algorithms. Also, a digital signature can be copied several
+times, and it remains authentic. Care should be taken, such that a document is
+not used more times than it should be.  For instance, a signed document saying
+that Alice wants to transfer some amount of money to Bob should be used only
+once, as Bob could force the bank to transfer this same amount multiple times.
+Adding the time the signature was made to the signed document can mitigate this
+problem.
 
 A digital signature scheme is composed of three efficient\footnote{Can be
 computed in a reasonable time by the parties involved.} algorithms:
@@ -282,7 +279,7 @@ computed in a reasonable time by the parties involved.} algorithms:
 
 	\item \textbf{Signature generation:} Alice, possessing the private key,
 	signs a document $d$, yielding a signature $\sigma$, and publishes the pair
-	$(d, \sigma)$. For each different document, a different signature will be
+	$(d, \sigma)$. For each different document, a different signature is
 	produced.
 
 	\item \textbf{Signature verification:} Bob wants to verify Alice's
@@ -335,10 +332,10 @@ Of course, due to the ``compression'' made by $\mathcal{H}$, there ought to
 exist two documents that generate the same fingerprint, that is $h =
 \mathcal{H}(d_1) = \mathcal{H}(d_2)$ and $d_1 \ne d_2$. This happens due to the
 fact that there exists infinitely more documents than fingerprints, so by the
-pigeonhole principle there will be infinitely many documents with the same
+pigeonhole principle there are infinitely many documents with the same
 fingerprint. This can be a problem, because the integrity of those documents
 could be erroneously verified. However, in practice, for secure hash functions,
-this will happen with negligible probability for a large enough $n$.
+this happens with negligible probability for a large enough $n$.
 
 Hash functions are extensively used in digital signatures. It enables the
 algorithms to sign arbitrarily big documents by signing only the fingerprint
@@ -362,7 +359,7 @@ solve. Let $\mathcal{H}:X \rightarrow Y$ be a hash function:
 Suppose that Alice is using $\mathcal{H}$ to sign a document $d$, this is,
 Alice only signs $h = \mathcal{H}(d)$. If a malicious party, namely Eve, could
 solve any of the preimage problems efficiently, let's say, Eve finds $d'$ such
-that $h = \mathcal{H}(d) = \mathcal{H}(d')$ so she could publish the same
+that $h = \mathcal{H}(d) = \mathcal{H}(d')$, then she could publish the same
 signature yielded by Alice as a valid signature for $d'$ without Alice's
 private key. If Eve solves the collision problem efficiently, she could hand
 Alice a document $d$ to be signed, while having generated a document with
@@ -398,7 +395,7 @@ addition, form a finite abelian group denoted $\mathbb{Z}_n$.
 \begin{proof}
 The associativity and commutativity come from the regular addition operation.
 The identity element is $0$ and the inverse element of any $a \in \mathbb{Z}/n$
-is $-a \mod n$. $(\mathbb{Z}/n, +)$ is an abelian group.
+is $-a \mod n$. Hence, $(\mathbb{Z}/n, +)$ is an abelian group.
 \end{proof}
 
 \begin{definition}
@@ -437,46 +434,47 @@ $\mathbb{F}_p$.
 As stated above $(\mathbb{Z}/n, +)$ is an abelian group, therefore
 $(\mathbb{Z}/p, +)$ is a commutative group as well. The ordinary multiplication
 is associative, distributive and commutative. Now it must be shown that
-$(\mathbb{Z} - \{0\}, *)$ forms a group. The identity element of this group is
-$1$. $a*b$ will never be zero because if $a*b \equiv 0 \mod p$ then either $a$
-or $b$ is zero and divides $p$, which is a contradiction because $p$ is prime.
-Now to show that all elements have inverses, the Bézout's identity can be used.
-For every $a \in \mathbb{Z}/p$ there exists $x, y \in \mathbb{Z}/p$ such that
-$a*x + p*y \equiv 1 \mod p$, due to the fact that $\text{gcd}(a, p) = 1$. Note
-that $p*y \equiv 0 \mod p$, hence $a*x \equiv 1 \mod p$ and $x$ is the inverse
-of $a$. $(\mathbb{Z}/p, +, *)$ is a finite field.
+$(\mathbb{Z} \setminus \{0\}, *)$ forms a group. The identity element of this
+group is $1$. It can be observed that $a*b$ is never zero, because if $a*b
+\equiv 0 \mod p$ then either $a$ or $b$ is zero and divides $p$, which is a
+contradiction because $p$ is prime.  Now to show that all elements have
+inverses, the Bézout's identity can be used.  For every $a \in \mathbb{Z}/p$
+there exists $x, y \in \mathbb{Z}/p$ such that $a*x + p*y \equiv 1 \mod p$, due
+to the fact that $\text{gcd}(a, p) = 1$. Note that $p*y \equiv 0 \mod p$, hence
+$a*x \equiv 1 \mod p$ and $x$ is the inverse of $a$. It can be concluded that
+$(\mathbb{Z}/p, +, *)$ is a finite field.
 \end{proof}
 
 \begin{definition}
 Given a ring $(R, +, *)$ there exists a positive integer $n$ such that $n*r =
-0$ for every $r \in R$. The least such positive integer is called the
-characteristic of $n$. If $n$ does not exist, the characteristic of $R$ is $0$.
+0$ for every $r \in R$. The least such positive integer is the characteristic
+of the ring. If $n$ does not exist, the characteristic is $0$.
 \end{definition}
 
 It can be noted that finite fields have prime characteristic. If a finite field
 had a characteristic $n = p*q$ with $p, q \in \mathbb{Z}$ and $1 < p,q < n$,
-then $n*e = (p*q)*e = 0$ would be true and the ring would not be a division
-ring, because multiplying two nonzero elements cannot result in $0$.
+then $n*e = (p*q)*e = (p*e)*(q*e) = 0$ which implies that either $p*e = 0$ or
+$q*e = 0$ and it is a contradiction, because $n$ should be the least positive
+integer such that $n*e = 0$.
 
 \begin{corollary}\label{cor:extension}
-Let $\mathbb{F}_p[x]/f(x)$ be the set of polynomials with coefficients in a
-finite field $\mathbb{F}_p$, modulo an irreducible polynomial\footnote{An
-irreducible polynomial cannot be divided by a polynomial other than $f(x) =
-1$.} $f(x)$ of degree $n$. $\mathbb{F}_p[x]/f(x)$ along with the ordinary
-polynomial addition and multiplication modulo $f(x)$, form an extension field
-denoted $\mathbb{F}_{p^n}$.
+Let $\mathbb{F}_p[x]/f$ be the set of polynomials with coefficients in a finite
+field $\mathbb{F}_p$, modulo an irreducible polynomial\footnote{An irreducible
+polynomial cannot be divided by a polynomial other than $f(x) = 1$.} $f$ of
+degree $n$. $\mathbb{F}_p[x]/f$ along with the ordinary polynomial addition and
+multiplication modulo $f$, form an extension field denoted $\mathbb{F}_{p^n}$.
 \end{corollary}
 
 For illustration, the finite field $\mathbb{F}_{2^2}$ can be defined with its
 elements being $P = \{0, 1, x, x+1\}$, and the operations, the ordinary
 addition and multiplication of polynomials modulo $f(x) = x^2 + x + 1$. Note
-that all coefficients are in $\mathbb{F}_2$. The addition operation is given by
-the Table \ref{tab:addition} and the multiplication by Table
+that all coefficients are in $\mathbb{F}_2$. The addition operation is given in
+Table \ref{tab:addition} and the multiplication in Table
 \ref{tab:multiplication}. The addition in $\mathbb{F}_{2^2}$ is the trivial
 polynomial addition with coefficients modulo $2$, and there is no need for
 polynomial reductions. The multiplication though needs reductions modulo the
 irreducible polynomial. For instance, $x*(x+1) \equiv x^2+x \equiv 1 + 1*f(x)
-\equiv 1 \mod f(x)$.
+\equiv 1 \mod f$.
 
 \begin{table}
 \begin{center}
@@ -510,17 +508,18 @@ $x+1$ & $0$ & $x+1$ & $1$   & $x$   \\
 
 \begin{proof}
 To prove Corollary \ref{cor:extension} the field properties should hold for the
-finite fields of this fashion. Let $P = \mathbb{F}_p[x]/f(x)$. $(P, +)$ forms
-an abelian group with $e = 0$ and the inverse of any $a \in P$ being $-a$.
-Also, $(P - \{0\}, *)$ forms a group, with the identity element being $1$. The
-inverse element of any $a \in P - \{0\}$ can be found using Bézout's indentity
-because $\text{gcd}(a, f(x)) = 1$, this comes from the fact that $f(x)$ is
-irreducible. So, there exists $x, y \in P - \{0\}$ such that $a*x + f*y \equiv
-1 \mod f(x)$, hence $x$ is the inverse of $a$. Observe that $a*b \equiv 0 \mod
-f(x)$ never happens in the group $(P - \{0\}, *)$, because either $a$ or $b$
-would need to be zero and would divide $f(x)$, which is a contradiction because
-$f(x)$ is irreducible. All other properties can be trivially extended from the
-ordinary polynomial addition and multiplication. $(P, +, *)$ is a finite field.
+finite fields of this fashion. Let $P = \mathbb{F}_p[x]/f$. Then, $(P, +)$
+forms an abelian group with $e = 0$ and the inverse of any $a \in P$ being
+$-a$. Also, $(P \setminus \{0\}, *)$ forms a group, with the identity element
+being $1$. The inverse element of any $a \in P \setminus \{0\}$ can be found
+using Bézout's indentity because $\text{gcd}(a, f) = 1$, this comes from the
+fact that $f$ is irreducible. So, there exists $g, h \in P \setminus \{0\}$
+such that $a*g + f*h \equiv 1 \mod f$. Note that $f*h \equiv 0 \mod f$, hence
+$g$ is the inverse of $a$.  Observe that $a*b \equiv 0 \mod f$ never happens in
+the group $(P \setminus \{0\}, *)$, because either $a$ or $b$ would need to be
+zero and would divide $f$, which is a contradiction because $f$ is irreducible.
+All other properties can be trivially extended from the ordinary polynomial
+addition and multiplication. Therefore, $(P, +, *)$ is a finite field.
 \end{proof}
 
 Extensions of the binary field $\mathbb{F}_2$ are specially interesting because
@@ -532,7 +531,7 @@ represented by the binary $8$-uple $(1, 0, 1, 0, 0, 0, 1, 1)$. The addition,
 when elements are represented in such way, is simply the bitwise exclusive or
 XOR operation. The multiplication operation can be performed efficiently using
 a modification to the Peasant's algorithm, which takes advantage of the binary
-representation. The reduction modulo $f(x)$ can also be done by a series of
+representation. The reduction modulo $f$ can also be done by a series of
 bitwise XOR operations. For small finite fields, a lookup table such as Table
 \ref{tab:addition} and \ref{tab:multiplication}, can be precomputed in order to
 dramatically improve the efficiency of the operations, as only one query to
@@ -565,28 +564,29 @@ cryptography, multivariate quadratic equations are sufficient, hence most
 commonly used.
 
 \begin{definition}
-A multivariate quadratic polynomial is defined as:
+A multivariate quadratic polynomial over a finite field $\mathbb{F}$ is defined
+as:
 \begin{equation}
 p(x_1,\dots,x_n) = \sum_{i=1}^n \sum_{j=i}^n \alpha_{ij} x_i x_j +
-	\sum_{i=1}^n \beta_i x_i + \gamma
+	\sum_{i=1}^n \beta_i x_i + \gamma,
 \end{equation}
-where all $x, \alpha, \beta, \gamma \in \mathbb{F}$
+where all $x, \alpha, \beta, \gamma \in \mathbb{F}$.
 \end{definition}
 
 A system of polynomials is a set of polynomials that share the same variables.
 It is known that, for polynomials with $n$ variables, systems that have at
-least $n$ polynomials may be solvable, and the existence of solutions can be
-checked efficiently. One of the most common methods for solving such systems is
-the Gaussian elimination. Note that, not all systems with $n$ polynomials and
-$n$ variables have a unique solution, some of them may even have infinitely
-many solutions. It happens due to the fact that a polynomial can be linearly
-dependent of others in the systems.
+least $n$ linear polynomials, may be solvable, and the existence of solutions
+can be checked efficiently. One of the most common methods for solving such
+systems is the Gaussian elimination. Note that, not all systems with $n$
+polynomials and $n$ variables have a unique solution, some of them may even
+have infinitely many solutions. It happens due to the fact that a polynomial
+can be linearly dependent of others in the systems.
 
 Systems of multivariate polynomials can be constructed as well. Opposed to the
 systems explained above, solving multivariate systems is a NP-Hard
 problem~\cite{garey1979npc}, even for the simplest case of quadratic
 polynomials, therefore they are interesting to be used in building
-cryptosystems. Specially, systems of multivariate quadratic polynomials will be
+cryptosystems. Specially, systems of multivariate quadratic polynomials are
 used, as the addition of more variables to the monomials does not increase the
 hardness of the problem.
 
@@ -597,19 +597,20 @@ substituting these variables into the equations and taking their results as the
 output of the map.
 
 \begin{definition}\label{def:mqsystem}
-A system $\mathcal{P}$ of multivariate quadratic polynomials is defined as:
+A system $\mathcal{P}$ of multivariate quadratic polynomials over a finite
+field $\mathbb{F}$ is defined as:
 \begin{equation}\label{eq:mqsystem}
 \begin{split}
 p^{(1)}(x_1,\dots,x_n) &= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(1)}_{ij} x_i x_j
-	+ \sum_{i=1}^n \beta^{(1)}_i x_i + \gamma^{(1)} \\
+	+ \sum_{i=1}^n \beta^{(1)}_i x_i + \gamma^{(1)}, \\
 p^{(2)}(x_1,\dots,x_n) &= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(2)}_{ij} x_i x_j
-	+ \sum_{i=1}^n \beta^{(2)}_i x_i + \gamma^{(2)} \\
+	+ \sum_{i=1}^n \beta^{(2)}_i x_i + \gamma^{(2)}, \\
 &\vdotswithin{=} \\
 p^{(m)}(x_1,\dots,x_n) &= \sum_{i=1}^n \sum_{j=i}^n \alpha^{(m)}_{ij} x_i x_j
-	+ \sum_{i=1}^n \beta^{(m)}_i x_i + \gamma^{(m)}
+	+ \sum_{i=1}^n \beta^{(m)}_i x_i + \gamma^{(m)},
 \end{split}
 \end{equation}
-where all $x, \alpha, \beta, \gamma \in \mathbb{F}$
+where all $x, \alpha, \beta, \gamma \in \mathbb{F}$.
 \end{definition}
 
 Each equation of the system can be represented as an upper triangular square
@@ -630,13 +631,13 @@ A^{(k)} =
 \vdots & \vdots & \vdots & \ddots & \vdots & \vdots \\
 0 & 0 & 0 & \cdots & \alpha^{(k)}_{nn} & \beta^{(k)}_n \\
 0 & 0 & 0 & \cdots & 0 & \gamma^{(k)} \\
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation}
 
 Furthermore, $p^{(k)}$ may be written as:
 \begin{equation}
-p^{(k)}(x_1,\cdots,x_n) =
-	(x_1,\cdots,x_n,1) \cdot A^{(k)} \cdot (x_1,\cdots,x_n,1)^T
+p^{(k)}(x_1,\dots,x_n) =
+	(x_1,\dots,x_n,1) \cdot A^{(k)} \cdot (x_1,\dots,x_n,1)^T.
 \end{equation}
 
 Systems of multivariate quadratic equations can be represented and stored with
@@ -653,30 +654,31 @@ into these matrices, in such a way that representing them requires less space.
 For instance, the series of works by Petzoldt et al., introduce a framework
 that enables the public key to be partially selected. Such selection is done in
 a way that some special structure is introduced into the matrices, hence
-reducing their space requirements. Notably, CyclicRainbow uses a cyclic
-structure in the matrix representation of the public key.
+reducing their space requirements. Notably,
+CyclicRainbow~\cite{petzoldt2010cyclicrainbow} uses a cyclic structure in the
+matrix representation of the public key.
 
 \section{Bipolar construction}\label{sec:bipolar}
 
 The basic construction used in multivariate cryptosystems is based on the
 composition of multiple transformations. As described above, a multivariate
-system, as per Definition \ref{def:mqsystem}, may be used as a function
+system, as per Definition \ref{def:mqsystem}, may be used as a map
 $\mathcal{F}:\mathbb{F}^n\to\mathbb{F}^m$. The central transformation of this
-construction will be a system of such kind, which will contain some specific
-structure such that, one can find preimages. $\mathcal{F}$ will remain secret,
+construction is a system of such kind, that contains some specific structure
+such that, one can find preimages. In this case, $\mathcal{F}$ remains secret,
 and with the combination of one or more affine transformations, a public system
-of equations, with no apparent structure, will be generated.
+of equations, with no apparent structure, is generated.
 
 As shown in Figure \ref{fig:bipolar}, the bipolar construction consists of
-three secret maps, and a public map that is derived from these three.
-$\mathcal{P}$ and $\mathcal{F}$ are multivariate systems. $\mathcal{S}$ and
-$\mathcal{T}$ are random invertible affine maps. In the signing procedure,
+three secret maps, and a public map that is derived from these three.  Let,
+$\mathcal{P}$ and $\mathcal{F}$ be multivariate systems, and $\mathcal{S}$ and
+$\mathcal{T}$ be random invertible affine maps. In the signing procedure,
 $\mathcal{F}^{-1}$ means finding one of possibly many preimages, and
 $\mathcal{F}$ introduces some structure that allows one to do such. The affine
 maps take care of hiding this structure by actually scrambling the variables of
-the system. When generating the keys, one calculates $\mathcal{P}$ by the
-composition of the secret maps $\mathcal{P} = \mathcal{S} \circ \mathcal{F}
-\circ \mathcal{T}$.
+the system. When generating the keys, one calculates $\mathcal{P}$ composing
+the secret maps $\mathcal{P} = \mathcal{S} \circ \mathcal{F} \circ
+\mathcal{T}$.
 
 \begin{figure}
 \centering
@@ -706,7 +708,8 @@ With a hash function $\mathcal{H}:\{0,1\}^* \to \mathbb{F}^m$ one can sign a
 document $d$ by calculating $h = \mathcal{H}(d)$. As shown in Figure
 \ref{fig:bipolar}, recursively compute the signature $\sigma =
 \mathcal{T}^{-1}(\mathcal{F}^{-1}(\mathcal{S}^{-1}(h)))$. This is possible due
-to the fact that those maps are constructed such that they can be inverted. To
+to the fact that those maps are constructed such that they can be inverted.
+Actually, $\mathcal{F}$ can't be inverted, but preimages can be found. To
 verify the signature $\sigma$ for document $d$ one can simply check if $h =
 \mathcal{P}(\sigma)$ holds.
 
@@ -740,13 +743,13 @@ does not rely exclusively on the MQ-Problem. An attacker knows that the public
 map is constructed by the composition of the private maps, thus one can try to
 decompose the map $\mathcal{P}$ into three maps, isomorphic to the private
 ones, and forge new signatures. The problem of finding such isomorphic maps is
-called the Extended Isomorphism of Polynomials problem.
+the Extended Isomorphism of Polynomials problem.
 
 \begin{definition}
 Extended Isomorphism of Polynomials problem: given a nonlinear multivariate
 system $\mathcal{P} = \mathcal{S} \circ \mathcal{F} \circ \mathcal{T}$ with
 $\mathcal{F}$ belonging to some class $\mathcal{C}$ of special nonlinear
-systems that can be inverted. Find $\tilde{\mathcal{S}}$, $\tilde{\mathcal{F}}$
+systems that can be inverted, find $\tilde{\mathcal{S}}$, $\tilde{\mathcal{F}}$
 and $\tilde{\mathcal{T}}$ such that $\mathcal{P} = \tilde{\mathcal{S}} \circ
 \tilde{\mathcal{F}} \circ \tilde{\mathcal{T}}$ and $\tilde{\mathcal{F}} \in
 \mathcal{C}$.
@@ -759,7 +762,7 @@ may forge a signature for a document $d$ by computing $\sigma =
 $\mathcal{P}$. Recall that $\tilde{\mathcal{F}} \in \mathcal{C}$ so it can be
 inverted.
 
-Some variations of the problem with only one affine map or even ones that
+Some variations of the problem with only one affine map or others that
 involve finding the original central map $\mathcal{F}$ exist, but the extended
 variation is the most generic one. In fact, solving the problem as stated
 above, in polynomial time, is enough to break the Rainbow Signature
@@ -800,9 +803,9 @@ function.
 The private key consists of two maps $\mathcal{T}$ and $\mathcal{F}$. Let
 $\mathcal{T}: K^{o+v} \to K^{o+v}$ be a random \textit{invertible} affine
 transformation, its effect is to rewrite every variable as a linear combination
-of all other variables. This map will be used to hide the structure of the
-central map. Let $\mathcal{F}: K^{o+v} \to K^{o}$ be the central map, composed
-of $o$ equations of the form:
+of all other variables. This map is used to hide the structure of the central
+map. Let $\mathcal{F}: K^{o+v} \to K^{o}$ be the central map, composed of $o$
+equations of the form:
 
 \begin{equation}\label{eq:ovpolynomial}
 y^{(k)} =
@@ -811,39 +814,40 @@ V \times V} +
 \underbrace{\sum_{i=v+1}^{v+o}\sum_{j=1}^{v} \beta^{(k)}_{ij} x_i x_j}_{
 O \times V} +
 \underbrace{\sum_{i=1}^{o+v} \gamma^{(k)}_{i} x_i}_{\text{linear}} +
-\underbrace{\delta^{(k)}}_{\text{constant}}
+\underbrace{\delta^{(k)}}_{\text{constant}},
 \end{equation}
 
+\noindent
 where $x_1,\dots,x_v \in V$ are the ``vinegar'' variables and
 $x_{v+1},\dots,x_{v+o} \in O$ are the ``oil'' variables. Note that the oil
-variables are not multiplied between themselves, this will be important to find
+variables are not multiplied between themselves, this is important to find
 preimages for this map when signing a message.
 
 The public map $\mathcal{P}$ is a simple composition of the secret maps,
 $\mathcal{P} = \mathcal{F} \circ \mathcal{T}$. Both $\mathcal{F}$ and
-$\mathcal{P}$ are multivariate systems. $\mathcal{F}$ has the special structure
-mentioned above, nevertheless $\mathcal{P}$ looks randomly built. With these
-maps described, let the public/private key pair be
+$\mathcal{P}$ are multivariate systems, and $\mathcal{F}$ has the special
+structure mentioned above, nevertheless $\mathcal{P}$ looks randomly built.
+With these maps described, let the public/private key pair be
 $(\mathcal{P},(\mathcal{F},\mathcal{T}))$.
 
 To sign a document $d$, compute its hash value $h = \mathcal{H}(d)$ and find a
 preimage $(x_1,\dots,x_{o+v})$ for the map $\mathcal{F}$ such that
-$(y^{(1)},\dots,y^{(o)}) = (h_1,\dots,h_o)$. Recall the structure present in
-$\mathcal{F}$, setting random values to the vinegar variables makes the system
-linear. Hence, finding a preimage consists of selecting vinegar variables at
-random, substitute them into $\mathcal{F}$, and find the oil variables through
-Gaussian elimination. If the system cannot be solved, new vinegar variables
-need to be chosen. The vector of variables $x$ are found such that
-$\mathcal{F}(x)=h$. Next, using the map $\mathcal{T}$ the signature itself may
-be computed. Recall that $\mathcal{T}$ is invertible, thus $\mathcal{T}^{-1}$
-can be obtained. With both maps inverted, the signature $\sigma$ of $d$ is
-published as $\sigma = \mathcal{T}^{-1}(x)$.
+$(y^{(1)},\dots,y^{(o)}) = (h_1,\dots,h_o)$. Observe that the structure present
+in $\mathcal{F}$ implies that, setting random values to the vinegar variables
+makes the system linear. Hence, finding a preimage consists of selecting
+vinegar variables at random, substituting them into $\mathcal{F}$, and finding
+the oil variables through Gaussian elimination. If the system cannot be solved,
+new vinegar variables need to be chosen. The vector of variables $x$ are found
+such that $\mathcal{F}(x)=h$. Next, using the map $\mathcal{T}$ the signature
+itself may be computed. Recall that $\mathcal{T}$ is invertible, thus
+$\mathcal{T}^{-1}$ can be obtained. With both maps inverted, the signature
+$\sigma$ of $d$ is published as $\sigma = \mathcal{T}^{-1}(x)$.
 
 To verify a signature $\sigma$ of a document $d$, one can simply check if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds, therefore the signature is valid,
 otherwise it is invalid. The equality does actually hold for valid signatures,
 as $\mathcal{P}$ is a composition of the maps that were inverted in the signing
-procedure. Recall that $\mathcal{P}$ is a system of multivariate equations,
+procedure. Remember that $\mathcal{P}$ is a system of multivariate equations,
 hence hard to solve.
 
 \subsection{Unbalanced Oil and Vinegar}
@@ -852,8 +856,8 @@ The original Oil and Vinegar explained in Section \ref{sec:ov} is actually
 insecure due to the fact that $o = v$. It is called Balanced Oil and Vinegar
 due the same amount of oil and vinegar variables. This aspect of the
 cryptosystem was exploited by~\cite{kipnis1998cryptanalysis}, where a method
-was introduced to efficiently forge new signatures when $o = v$. The same
-authors subsequently proposed a new scheme, called Unbalanced Oil and
+was introduced to efficiently forge new signatures when $o = v$. Subsequently,
+a new scheme was proposed, namely Unbalanced Oil and
 Vinegar~\cite{kipnis1999unbalanced}. This work proposes new parameters for the
 original OV. The most common instantiation of this new scheme is the $v = 2o$
 case.
@@ -868,35 +872,34 @@ Both public and private key sizes, as well as signatures size, are reduced for
 equivalent security levels. A detailed description of the Rainbow cryptosystem
 follows.
 
-Each layer of this so called Rainbow will has its own polynomials, as well as
-its own set of oil and vinegar variables. These polynomials have the same
-structure as OV polynomials, but the layers are intrinsically connected when
-constructed. Namely, $V_l$ and $O_l$ are respectively the set of vinegar
-variables and the set of oil variables of the $l$-th layer. Let $u$ be the
-number of layers. Let $v_1, v_2, \cdots, v_{u+1}$ be the number of vinegar
-variables in each layer, such that $0 < v_1 < v_2 < \cdots < v_{u+1} = n$. Note
-that the layers actually grow bigger, this is due to the fact that each set of
-vinegar variables contains the vinegar variables from the previous layer, that
-is $V_1 \subset V_2 \subset \cdots \subset V_{u}$. As you go deeper into the
-layers, the oil variables become vinegar variables, \textit{i.e.} $V_{l+1} =
-V_l \cup O_l$. Keep in mind that $|V_l| = v_l$ and $|O_l| = o_l = v_{l+1} -
-v_{l}$.
+Each layer of this Rainbow has its own polynomials, as well as its own set of
+oil and vinegar variables. These polynomials have the same structure as OV
+polynomials, but the layers are intrinsically connected when constructed.
+Namely, $V_l$ and $O_l$ are respectively the set of vinegar variables and the
+set of oil variables of the $l$-th layer. Let $u$ be the number of layers. Let
+$v_1, v_2, \dots, v_{u+1}$ be the number of vinegar variables in each layer,
+such that $0 < v_1 < v_2 < \cdots < v_{u+1} = n$. It may be observed that the
+layers actually grow bigger, this is due to the fact that each set of vinegar
+variables contains the vinegar variables from the previous layer, that is $V_1
+\subset V_2 \subset \cdots \subset V_{u}$. Deeper into the layers, the oil
+variables become vinegar variables, \textit{i.e.} $V_{l+1} = V_l \cup O_l$.
+Keep in mind that $|V_l| = v_l$ and $|O_l| = o_l = v_{l+1} - v_{l}$.
 
 The connection between variables of the layers exist in such a way that the
 layers have to be inverted one after the other for the complete inversion of
 the central map. To start this process, one randomly selects the first set of
-vinegar variables and substitutes them, making the first layer linear. Recall
+vinegar variables and substitutes them, making the first layer linear. Notice
 that the oil variables of some layer are part of the vinegar variables of the
 subsequent layer. When the first layer is solved, the set $O_1$ can be used to
 construct $V_2$ in its entirety. With known values for $V_2$ one can linearize
 the second layer and solve it. Repeating this process for every layer, inverts
-the whole central map. It may happen that some layer will not be solvable, in
+the whole central map. It may happen that some layer is not be solvable, in
 this case, a new set $V_1$ is chosen and the inversion process starts over.
 This happens with very small probability as shown in Section
 \ref{sec:invertibility}.
 
-Let the sets $V_l = \{x_1, \cdots, x_{v_l}\}$ be the vinegar variables of the
-$l$-th layer, and $O_l = V_{l+1} - V_l$ the respective oil variables. Recall
+Let the sets $V_l = \{x_1, \dots, x_{v_l}\}$ be the vinegar variables of the
+$l$-th layer, and $O_l = V_{l+1} - V_l$ the respective oil variables. Observe
 that, each layer $l$ has $o_l = v_{l+1} - v_{l}$ equations, and thus $o_l$
 equations are needed to solve for $O_l$ variables. For each layer $l$,
 construct a system $\mathcal{F}_l$ composed of $o_l$ polynomials of the form:
@@ -906,27 +909,28 @@ y^{(k)} =
 \sum_{i=1}^{v_l}\sum_{j=i}^{v_l} \alpha^{(k)}_{ij} x_i x_j +
 \sum_{i=v_l+1}^{v_{l+1}}\sum_{j=1}^{v_l} \beta^{(k)}_{ij} x_i x_j +
 \sum_{i=1}^{v_{l+1}} \gamma^{(k)}_{i} x_i +
-\delta^{(k)}
+\delta^{(k)},
 \end{equation}
 
-for $k = v_l, \cdots, v_{l+1} - 1$ and $l = 1, \cdots, u$. Observe that the
+\noindent
+for $k = v_l, \dots, v_{l+1} - 1$ and $l = 1, \dots, u$. Observe that the
 polynomials are Oil and Vinegar polynomials, just like the ones in
 Equation~\ref{eq:ovpolynomial}, and they can be solved for $O_l$ when $V_l$ has
 known values. Let the central map $\mathcal{F}:K^{n} \to K^{n-v_1}$ be the
 union of the $u$ layers. To hide the central map, two random invertible affine
-maps will be used. Let $\mathcal{S}:K^{n-v_1} \to K^{n-v_1}$ and
-$\mathcal{T}:K^{n} \to K^{n}$ be part of the private key. Publish $\mathcal{P}
-= \mathcal{S} \circ \mathcal{F} \circ \mathcal{T}$ as the public key.
+maps are used. Let $\mathcal{S}:K^{n-v_1} \to K^{n-v_1}$ and $\mathcal{T}:K^{n}
+\to K^{n}$ be part of the private key. Then, $\mathcal{P} = \mathcal{S} \circ
+\mathcal{F} \circ \mathcal{T}$ is published as the public key.
 
 Let $\mathcal{H}: \{0,1\}^* \to K^{n-v_1}$ be a cryptographic hash function. To
-sign a document $d$, compute $h = \mathcal{H}(d)$. Compute $y = (y_1, \cdots,
-y_{n-v_1}) = \mathcal{S}^{-1}(h)$. Solve all layers of $\mathcal{F}$ using the
-process described above, in order to find $x = (x_1, \cdots, x_n)$ such that
-$\mathcal{F}(x) = y$. Finally, publish $\sigma = \mathcal{T}^{-1}(x)$ as the
-signature for $d$.
+sign a document $d$, compute $h = \mathcal{H}(d)$. Compute $y = (y_1, \dots,
+y_{n-v_1}) = \mathcal{S}^{-1}(h)$. All layers of $\mathcal{F}$ are solved using
+the process described above, in order to find $x = (x_1, \cdots, x_n)$ such
+that $\mathcal{F}(x) = y$. Finally, $\sigma = \mathcal{T}^{-1}(x)$ is published
+as the signature for $d$.
 
 Verifying a signature $\sigma$ for a document $d$ is as simple as checking if
-$\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Recall that, again, $\mathcal{P}$
+$\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Remark that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
 
@@ -941,14 +945,12 @@ K_{pr} =
 \underbrace{m^2 + m}_{\mathcal{S}} + \underbrace{n^2 + n}_{\mathcal{T}} +
 \underbrace{\sum_{l=1}^{u} o_l \left(
 \frac{v_l(v_l + 1)}{2} + v_l o_l + v_{l+1} + 1
-\right)}_{\mathcal{F}}
+\right)}_{\mathcal{F}},
 \end{equation}
 
 \begin{equation}
-\begin{split}
-K_{pu} &= m \left( \frac{n (n + 1)}{2} + n + 1 \right) \\
-&= m \frac{(n+1)(n+2)}{2}
-\end{split}
+K_{pu} = m \left( \frac{n (n + 1)}{2} + n + 1 \right)
+= m \frac{(n+1)(n+2)}{2}.
 \end{equation}
 
 These can be easily checked by looking at Equation \ref{eq:rainbowmap} and the
@@ -1001,14 +1003,14 @@ select $\mathcal{P}$ and $\mathcal{S}$ in a clever manner, such that their
 representations are smaller, introducing some kind of structure like a
 circulant matrix in the case of CyclicRainbow.
 
-Recall the UOV construction of the maps $\mathcal{P} = \mathcal{F} \circ
+Think of the UOV construction of the maps $\mathcal{P} = \mathcal{F} \circ
 \mathcal{T}$. To better understand this linear relation, the equations can be
 simplified, without its linear and constant terms. Let $n = o + v$, and the
 $k$-th private polynomial of the system, without its linear and constant terms,
 be denoted as:
 
 \begin{equation}
-y^{(k)} = \sum_{r=1}^n \sum_{s=r}^n\left(\alpha^{(k)}_{rs}x_rx_s\right)
+y^{(k)} = \sum_{r=1}^n \sum_{s=r}^n\left(\alpha^{(k)}_{rs}x_rx_s\right).
 \end{equation}
 
 Let $\mathcal{T} \in K^{n \times n}$ be the matrix that describes the secret
@@ -1016,9 +1018,10 @@ affine map. The $k$-th public polynomial can be written as:
 
 \begin{equation}\label{eq:pubpolynomial}
 p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n
-\left[ \alpha^{k}_{rs} \sum_{i=1}^n(t_{ir}x_i) \sum_{j=1}^n(t_{js}x_j) \right]
+\left[ \alpha^{k}_{rs} \sum_{i=1}^n(t_{ir}x_i) \sum_{j=1}^n(t_{js}x_j) \right],
 \end{equation}
 
+\noindent
 where $t_{ij}$ is the element of $\mathcal{T}$ in the $i$-th line and the
 $j$-th column. The inner summations come from the matrix multiplication
 operation, where the vector of $x$ variables is multiplied with $\mathcal{T}$
@@ -1027,7 +1030,7 @@ actually just linear combinations of the old ones. Let the public polynomial be
 denoted similarly to the private one:
 
 \begin{equation}
-p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n \left( \rho^{(k)}_{rs}x_rx_s \right)
+p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n \left( \rho^{(k)}_{rs}x_rx_s \right).
 \end{equation}
 
 To establish a relation between $\alpha_{rs}$ and $\rho_{rs}$
@@ -1035,19 +1038,20 @@ observe the structure of Equation \ref{eq:pubpolynomial} where $\alpha_{rs}$ is
 multiplying two polynomials. Expanding the inner summations gives:
 
 \begin{equation}
-(t_{1r}x_1 + t_{2r}x_2 + \cdots + t_{nr}x_n)
-(t_{1s}x_1 + t_{2s}x_2 + \cdots + t_{nr}x_n)
+(t_{1r}x_1 + t_{2r}x_2 + \dots + t_{nr}x_n)
+(t_{1s}x_1 + t_{2s}x_2 + \dots + t_{nr}x_n),
 \end{equation}
 
-This can be described as a new polynomial with quadratic terms, applying
+\noindent
+which can be described as a new polynomial with quadratic terms, applying
 distributive multiplication:
 
 \begin{equation}\label{eq:tau}
 \sum_{i=1}^{n}\sum_{j=i}^n \left( \tau^{rs}_{ij} x_i x_j \right)
 \quad \mathrm{where:} \quad \tau^{rs}_{ij} =
 \begin{cases}
-	t_{ir} t_{is} &\mbox{if } i=j \\
-	t_{ir} t_{js} + t_{jr} t_{is} &\mbox{otherwise}
+	t_{ir} t_{is} &\mbox{if } i=j, \\
+	t_{ir} t_{js} + t_{jr} t_{is} &\mbox{otherwise.}
 \end{cases}
 \end{equation}
 
@@ -1057,14 +1061,15 @@ Substituting Equation \ref{eq:tau} into Equation \ref{eq:pubpolynomial} yields:
 p^{(k)} = \sum_{r=1}^n \sum_{s=r}^n
 \left[
 \alpha^{k}_{rs} \sum_{i=1}^{n}\sum_{j=i}^n \left( \tau^{rs}_{ij} x_i x_j \right)
-\right]
+\right],
 \end{equation}
 
-Therefore, a relation between private and public coefficients can be written as:
+\noindent
+therefore, a relation between private and public coefficients can be written as:
 
 \begin{equation}\label{eq:relation}
 \rho^{(k)}_{ij} = \sum_{r=1}^{n}\sum_{s=r}^n
-\left( \tau^{rs}_{ij} \alpha^{k}_{rs} \right)
+\left( \tau^{rs}_{ij} \alpha^{k}_{rs} \right).
 \end{equation}
 
 After randomly choosing $\mathcal{S}$, Equation \ref{eq:relation} depicts the
@@ -1079,7 +1084,7 @@ was extensively used to reduce either public or private keys, but not both.
 Reducing key sizes with this strategy consists of introducing some structure
 into one part of the key, such that its representation becomes smaller, and
 calculating the other part using the equations above. Notable key optimizations
-will be briefly discussed hereafter.
+are briefly discussed hereafter.
 
 \subsection{CyclicRainbow}
 
@@ -1098,14 +1103,14 @@ a_n     & a_1    & a_2     & \cdots  & a_{n-1} \\
 a_{n-1} & a_n    & a_1     &         & a_{n-2} \\
 \vdots  &        & \ddots  & \ddots  & \vdots  \\
 a_2     & \cdots & a_{n-1} & a_n     & a_1
-\end{pmatrix}
+\end{pmatrix}.
 \end{equation}
 \end{definition}
 
 Such matrices allow for a compact representation. Storing the vector $(a_1,
-a_2, \cdots, a_n)$ is enough to represent the matrix completely, as its
-elements form a structured repetition. Introducing this structure in parts of
-the public key, when possible, reduces the representation of the public system
+a_2, \dots, a_n)$ is enough to represent the matrix completely, as its elements
+form a structured repetition. Introducing this structure in parts of the public
+key, when possible, reduces the representation of the public system
 significantly. In fact this method allows a public key reduction factor of up
 to 2.9, for secure parameters. This repetition of elements also leads up to a
 repetition of operations when verifying a signature. Exploiting this common
@@ -1118,20 +1123,20 @@ signature \cite[Table 10.3]{petzoldt2013thesis}.
 RainbowLRS2~\cite[Section 9.2]{petzoldt2013thesis} introduces matrices
 generated by Linear Recurring Sequences into the public key, just like in
 CyclicRainbow. To generate an $m \times n$ matrix of this type, a vector $a =
-(a_1, a_2, \cdots, a_m) \in \mathbb{F}^m$ of distinct elements is selected.
+(a_1, a_2, \dots, a_m) \in \mathbb{F}^m$ of distinct elements is selected.
 The $i$-th row of this matrix is:
 
 \begin{equation}\label{eq:lrsmatrix}
-A[i] = (a_i^0, a_i^1, a_i^2, \dots, a_i^{n-1}) \qquad i = 1, \dots, m
+A[i] = (a_i^0, a_i^1, a_i^2, \dots, a_i^{n-1}) \qquad i = 1, \dots, m.
 \end{equation}
 
-Storing the vector $a$ is sufficient the represent the matrix $A$, since every
+Storing the vector $a$ is sufficient to represent the matrix $A$, since every
 row can be calculated using Equation \ref{eq:lrsmatrix}. Using matrices of this
 fashion in the public map representation, allows for a reduction factor of up
 to 3.1. Veritably, this method is similar to the one used in CyclicRainbow,
 thus provides an akin improvement in space requirements. The main difference is
 that CyclicRainbow uses rotations to generate each row. In RainbowLRS2 the rows
-are defined by equation \ref{eq:lrsmatrix}. It is shown
+are defined by Equation \ref{eq:lrsmatrix}. It is shown
 in~\cite{petzoldt2013thesis} that field multiplications also repeat in the
 verification process of RainbowLRS2, which allows for a speed up to a factor of
 2.2~\cite[Table 10.3]{petzoldt2013thesis}.
@@ -1140,21 +1145,20 @@ verification process of RainbowLRS2, which allows for a speed up to a factor of
 
 Circulant Rainbow~\cite{peng2017circulant} introduces circulant matrices in the
 central private map, in contrast to CyclicRainbow that does it on the public
-map. These circulant relations will be present in very specific parts of the
+map. These circulant relations are present in very specific parts of the
 central polynomials, precisely in the terms that have oil variables. Throughout
 the signature generation, after inserting values into the vinegar variables,
-one will have to solve a linear system as shown in Section \ref{sec:rainbow}.
-Due the structure introduced in the coefficients of the central map, this
-system will be represented by a circulant matrix. Solving such systems can be
-done more efficiently using a method described in~\cite{peng2017circulant}.
-Indeed, the private key needs less space to be represented. Circulant Rainbow
-has a private key 1.8 times smaller than the original Rainbow, and the
-signature generation can be 2.9 times faster if the optimized method for
-solving the special linear systems is used instead of the Gaussian elimination.
-Notably, \cite{hashimoto2018security} discourages the use of Circulant Rainbow.
-It is shown that the Kipnis-Shamir's attack~\cite{kipnis1998cryptanalysis} can
-be used to recover equivalent Circulant Rainbow private keys in polynomial
-time.
+one has to solve a linear system as shown in Section \ref{sec:rainbow}. Due to
+the structure introduced in the coefficients of the central map, this system is
+represented by a circulant matrix. Solving such systems can be done more
+efficiently using a method described in~\cite{peng2017circulant}. Indeed, the
+private key needs less space to be represented. Circulant Rainbow has a private
+key 1.8 times smaller than the original Rainbow, and the signature generation
+can be 2.9 times faster if the optimized method for solving the special linear
+systems is used instead of the Gaussian elimination. Notably,
+\cite{hashimoto2018security} discourages the use of Circulant Rainbow. It is
+shown that the Kipnis-Shamir's attack~\cite{kipnis1998cryptanalysis} can be
+used to recover equivalent Circulant Rainbow private keys in polynomial time.
 
 \subsection{NC-Rainbow}
 
@@ -1201,7 +1205,7 @@ equation:
 \circ
 \underbrace{\Delta \circ \mathcal{F} \circ \Gamma}_{\mathcal{F'}}
 \circ
-\underbrace{\Gamma^{-1} \circ \mathcal{T}}_{\mathcal{T'}}
+\underbrace{\Gamma^{-1} \circ \mathcal{T}}_{\mathcal{T'}}.
 \end{equation}
 
 The maps $\mathcal{S'}, \mathcal{F'}, \mathcal{T'}$ are equivalent keys for
@@ -1213,7 +1217,7 @@ For instance, if this idea is applied to UOV, additive sustainers can be used
 to reduce the storage requirements of $\mathcal{T}$. An additive sustainer only
 adds a term to the constant term. This sustainer clearly does not break the Oil
 and Vinegar property of the central map, and it can be used to subtract the
-constant terms in $\mathcal{T}$. Let $\mathcal{T}$ be a random affine map,
+constant terms in $\mathcal{T}$. Let $\mathcal{T}$ be a random affine map, then
 $\Gamma^{-1}$ can be chosen such that it subtracts all its constant terms. So,
 for every $\mathcal{T}$, there exists an equivalent map $\mathcal{T'}$ that has
 no constants. Using this fact, $\mathcal{T}$ can be chosen without its
@@ -1230,14 +1234,15 @@ sustainer for UOV:
 \begin{pmatrix}
 A & 0 \\
 B & C \\
-\end{pmatrix} \cdot x
+\end{pmatrix} \cdot x,
 \end{equation}
 
+\noindent
 such that $A \in K^{v \times v}_q$, $B \in K^{o \times v}_q$, $C \in K^{o
-\times o}_q$ and $A, C$ are invertible. Recall that $x$ is the column vector of
-variables in the central equations. $\Gamma$ only shuffles the vinegar
-variables within themselves, so it is in fact a sustainer. The construction of
-Equation \ref{eq:sustainer} can be applied as:
+\times o}_q$ and $A, C$ are invertible. Observe that $x$ is the column vector
+of variables in the central equations. The transformation $\Gamma$ only
+shuffles the vinegar variables within themselves, so it is in fact a sustainer.
+The construction of Equation \ref{eq:sustainer} can be applied as:
 
 \begin{equation}
 \begin{split}
@@ -1256,7 +1261,7 @@ A^{-1} & 0 \\
 -C^{-1} \cdot B \cdot A^{-1} & C^{-1} \\
 \end{pmatrix}
 \circ
-\mathcal{T} \\
+\mathcal{T}, \\
 \end{split}
 \end{equation}
 
@@ -1279,7 +1284,7 @@ T_3 & T_4 - T_3 \cdot T_1^{-1} \cdot T_2 \\
 \begin{pmatrix}
 I_v & T_1^{-1} \cdot T_2 \\
 0 & I_o \\
-\end{pmatrix} \\
+\end{pmatrix}. \\
 \end{split}
 \end{equation}
 
@@ -1313,7 +1318,7 @@ modification to the original Rainbow scheme is presented. It can reduce up to
 84\% of the private key. Additionally, this optimization can be used along with
 variants that introduce structure into the public key, reducing the whole key
 pair by up to 71\%~\cite{zambonin2019handling}. The pitfalls of using such
-optimization will be discussed as well.
+optimization are discussed as well.
 
 \section{Proposal}\label{sec:proposal}
 
@@ -1323,7 +1328,7 @@ special structure in $\mathcal{F}$. With this in mind, a new general framework
 to reduce private keys in Rainbow-like signature schemes is proposed. The
 modification, namely Rainbow-$\eta$, consists in tweaking the key generation
 and the signature generation step, rather than introducing structures in the
-central system of equations. Recall that the first set of vinegar variables is
+central system of equations. Remind that the first set of vinegar variables is
 chosen at random for every new signature. If this set of vinegar variables
 could be reused across multiple signatures, a reduced version of the central
 map, with the first set of vinegar variables substituted into the equations
@@ -1331,19 +1336,20 @@ could be stored, in contrast to the whole map with all variables.
 
 Generating new keys now includes an additional step. After building
 $\mathcal{F}$, the set $V_1$ is chosen randomly and then substituted into the
-equations. Notice that the first layer polynomials are now linearized. $V_1$
-can be substituted in the subsequent layers too. These layers remain quadratic
-but with far less monomials, because the monomials that contain variables from
-$V_1$ will be simplified. This linearized central map $\mathcal{F'}$ is stored
-along with the chosen $V_1$ for use in the signature generation step.  The rest
-of the key generation step remains the same. $\mathcal{P}$ is calculated using
-the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to be stored. The
-private key is now the tuple $(\mathcal{S}, \mathcal{F'}, \mathcal{T}, V_1)$.
+equations. Notice that the first layer polynomials are now linearized. In this
+way $V_1$ can be substituted in the subsequent layers too. These layers remain
+quadratic but with far less monomials, because the monomials that contain
+variables from $V_1$ are simplified. This linearized central map $\mathcal{F'}$
+is stored along with the chosen $V_1$ for use in the signature generation step.
+The rest of the key generation step remains the same. Henceforth, $\mathcal{P}$
+is calculated using the whole $\mathcal{F}$, but only $\mathcal{F'}$ needs to
+be stored. The private key is now the tuple $(\mathcal{S}, \mathcal{F'},
+\mathcal{T}, V_1)$.
 
 To further generate new signatures, the first step of the signing procedure,
 that is, choose and substitute $V_1$ into $\mathcal{F}$, is not needed anymore,
 as this is done in the key generation step. The layers are inverted as
-described in section \ref{sec:rainbow}. After the preimage of $\mathcal{F}$ is
+described in Section \ref{sec:rainbow}. After the preimage of $\mathcal{F}$ is
 found, the set $V_1$, selected in the key generation step, is used along with
 the rest of the variables to compute the signature. It may happen that some
 layer is not solvable for a given signature. Originally, when this happens, a
@@ -1356,15 +1362,15 @@ proposed to viabilize Rainbow-$\eta$.
 \subsection{Rainbow-$\eta_1$}
 
 In order to regenerate the central map $\mathcal{F}$, a
-PRNG\sigla{PRNG}{Pseudorandom Number Generator} seeded by $S$ can be used to
-generate $\mathcal{F}$ in the key generation step. Storing $S$ with the rest of
-the private key, enables the signer to regenerate $\mathcal{F}$ in the case of
-the some layer not being solvable for some signature. Therefore, in the
-signature procedure, if some layer fails to be solved, $\mathcal{F}$ is
-regenerated completely and a new set $\tilde{V_1}$ is chosen until the first
-layer becomes solvable. After $\tilde{V_1}$ is substituted into $\mathcal{F}$,
-only this new simplified version of $\mathcal{F}$ needs to be kept for
-subsequent signatures.
+PRNG\sigla{PRNG}{Pseudorandom Number Generator} (Pseudorandom Number Generator)
+seeded by $S$ can be used to generate $\mathcal{F}$ in the key generation step.
+Storing $S$ with the rest of the private key, enables the signer to regenerate
+$\mathcal{F}$ in the case of the some layer not being solvable for some
+signature. Therefore, in the signature procedure, if some layer fails to be
+solved, $\mathcal{F}$ is regenerated completely and a new set $\tilde{V_1}$ is
+chosen until the first layer becomes solvable. After $\tilde{V_1}$ is
+substituted into $\mathcal{F}$, only this new simplified version of
+$\mathcal{F}$ needs to be kept for subsequent signatures.
 
 This alternative is efficient and adds only the cost of regenerating
 $\mathcal{F}$ every time that some layer is not solvable, which occurs with
@@ -1388,14 +1394,14 @@ If the central map layers could be solved for different values, there would be
 no need for new vinegar variables to be plugged in $\mathcal{F}$. This could be
 achieved using a random nonce in the generation of $h$. When creating a new
 signature, a random salt $r$ is chosen and $h$ is given by $h =
-\mathcal{H}(\mathcal{H}(d) \| r)$. Note that, changing $r$ changes $h$
-completely. Recall that the image $y$ is calculated by $y =
+\mathcal{H}(\mathcal{H}(d) \| r)$. Note that changing $r$ changes $h$
+completely. Observe that the image $y$ is calculated by $y =
 \mathcal{S}^{-1}(h)$, hence changing $r$ totally alters $y$. With this modified
 hashing procedure, in the case of an unsolvable layer, $r$ is changed and the
 hashing repeated, getting new values for $y$. This is done until all layers are
 solvable and the signature step can finish properly. The verification process
 is done by checking if $\mathcal{P}(\sigma) = \mathcal{H}(\mathcal{H}(d) \| r)$
-holds. Note the now, $r$ is part of the signature.
+holds. Note that now, $r$ is part of the signature.
 
 Actually, this method is used in the Rainbow proposal to NIST's standardization
 process~\cite{ding2017nist}. This technique is used to achieve
@@ -1422,21 +1428,22 @@ section, it is shown that this happens with small probability, hence the
 average cost introduced by the $\eta$ variants is small.
 
 A linear system of equations can be represented by a matrix of its
-coefficients. Each line of this matrix will represent one equation. For
-instance, the following system with $n$ equation and $n$ variables:
+coefficients. Each row of this matrix represents one equation. For instance,
+the following system with $n$ equation and $n$ variables:
 
 \begin{equation}
 \begin{split}
 y^{(1)} &= \alpha^{(1)}_1 x_1 + \alpha^{(1)}_2 x_2 + \cdots +
-	\alpha^{(1)}_n x_n + \beta^{(1)} \\
+	\alpha^{(1)}_n x_n + \beta^{(1)}, \\
 y^{(2)} &= \alpha^{(2)}_1 x_1 + \alpha^{(2)}_2 x_2 + \cdots +
-	\alpha^{(2)}_n x_n + \beta^{(2)} \\
+	\alpha^{(2)}_n x_n + \beta^{(2)}, \\
 &\vdotswithin{=} \\
 y^{(n)} &= \alpha^{(n)}_1 x_1 + \alpha^{(n)}_2 x_2 + \cdots +
-	\alpha^{(n)}_n x_n + \beta^{(k)} \\
+	\alpha^{(n)}_n x_n + \beta^{(n)}, \\
 \end{split}
 \end{equation}
 
+\noindent
 with all $x, y, \alpha \in \mathbb{F}_q$, can be rewritten as:
 
 \begin{equation}\label{eq:linear}
@@ -1445,85 +1452,83 @@ y =
 \alpha^{(1)}_1 & \alpha^{(1)}_2 & \cdots & \alpha^{(1)}_n \\
 \alpha^{(2)}_1 & \alpha^{(2)}_2 & \cdots & \alpha^{(2)}_n \\
 \vdots & \vdots & \ddots & \vdots \\
-\alpha^{(k)}_1 & \alpha^{(k)}_2 & \cdots & \alpha^{(k)}_n \\
+\alpha^{(n)}_1 & \alpha^{(n)}_2 & \cdots & \alpha^{(n)}_n \\
 \end{pmatrix}
 \cdot x +
 \begin{pmatrix}
 \beta^{(1)}_n \\
 \beta^{(2)}_n \\
 \vdots \\
-\beta^{(k)}_n \\
-\end{pmatrix}
+\beta^{(n)}_n \\
+\end{pmatrix},
 \end{equation}
 
+\noindent
 with $x$ and $y$ being the column of $x$ and $y$ variables. Let $A$ be the
 coefficient matrix of Equation \ref{eq:linear} and $B$ the column of constant
 terms. The system for a given vector $y$ can be solved by calculating:
 
 \begin{equation}
-x = A^{-1} \cdot (y - B)
+x = A^{-1} \cdot (y - B).
 \end{equation}
 
-Actually, the system will be solvable if and only if $A$ is invertible.
-Therefore, observing the probability of a randomly built matrix being
-invertible shows the probability of random linear systems being solvable. From
-now on, it is assumed that the linear systems generated in the signature step,
-are randomly built.
+Actually, the system is solvable if and only if $A$ is invertible. Therefore,
+observing the probability of a randomly built matrix being invertible shows the
+probability of random linear systems being solvable. From now on, it is assumed
+that the linear systems generated in the signature step, are randomly built.
 
 \begin{definition}
 Let $I_n$ be the identity matrix of size $n$. A matrix $A \in \mathbb{F}^{n
 \times n}_q$ is invertible if and only if there exists another matrix $B \in
-\mathbb{F}^{n \times n}_q$ such that $AB = BA = I_n$. $A^{-1} = B$ denotes the
-inverse of $A$.
+\mathbb{F}^{n \times n}_q$ such that $AB = BA = I_n$. The inverse of $A$ is
+denoted as $A^{-1}$.
 \end{definition}
 
-It can be shown that all lines of an invertible matrix are linearly
-independent. Let $A$ be an invertible matrix. For contradiction, assume that
-some line of $A$ is linearly dependent of one or more other lines. So, there
-exists a nonzero column vector $x$ such that $Ax = 0$. If $A$ is invertible,
-then $A^{-1}Ax = 0$ can be calculated and this equality does not hold, as $x$
-is nonzero.
+It can be shown that all rows of an invertible matrix are linearly independent.
+Let $A$ be an invertible matrix. By contradiction, assume that some row of $A$
+is linearly dependent of one or more other lines. So, there exists a nonzero
+column vector $x$ such that $Ax = 0$. If $A$ is invertible, then $A^{-1}Ax = 0$
+can be calculated and the equality holds only if $x=0$, contradicting the
+linear dependency.
 
-With this fact in mind, invertible matrices can be constructed line by line,
+With this fact in mind, invertible matrices can be constructed row by row,
 choosing a vector that is not linearly dependent of the previously selected
-ones. On the first line $l_1$ there will be a total of $q^n - 1$ choices, as
-the zero vector cannot be chosen. The second line must satisfy the condition
-$l_2 \neq c l_1$, since $q$ values for $c$ can be selected, the second line has
-$q^n - q$ possibilities. Without loss of generality, the $k$-th line must
-satisfy $l_k \ne c_1l_1 + c_2l_2 + \cdots + c_{k-1}l_{k-1}$. As there are
-$q^{k-1}$ possibilities for $c$ constants, the $k$-th line has $q^n - q^{k-1}$
+ones. For the first row $l_1$ there are a total of $q^n - 1$ choices, as the
+zero vector cannot be chosen. The second row must satisfy the condition $l_2
+\neq c l_1$, since $q$ values for $c$ can be selected, the second row has $q^n
+- q$ possibilities. Without loss of generality, the $k$-th row must satisfy
+$l_k \ne c_1l_1 + c_2l_2 + \cdots + c_{k-1}l_{k-1}$. As there are $q^{k-1}$
+possibilities for $c$ constants, the $k$-th row has $q^n - q^{k-1}$
 possibilities. Multiplying all these possibilities, the probability of a random
 matrix with elements in $\mathbb{F}_q$ being invertible is given by:
 
 \begin{equation}
-\begin{split}
-p(n, q) &= \prod_{k=1}^{n} \frac{q^n - q^{k-1}}{q^n} \\
-&= \prod_{k=1}^{n} \left( 1 - q^{-k} \right) \\
-\end{split}
+p(n, q) = \prod_{k=1}^{n} \frac{q^n - q^{k-1}}{q^n}
+= \prod_{k=1}^{n} \left( 1 - q^{-k} \right).
 \end{equation}
 
-Also, the probability of all layers being invertible for a given Rainbow
+Moreover, the probability of all layers being invertible for a given Rainbow
 instance with parameters $(v_1, o_1, o_2, \ldots, o_u)$ is:
 
 \begin{equation}
 \tilde{p}(q, o_1, \ldots, o_u) =
-	\prod_{l=1}^{u} \prod_{k=1}^{o_l} \left( 1 - q^{-k} \right) \\
+	\prod_{l=1}^{u} \prod_{k=1}^{o_l} \left( 1 - q^{-k} \right).
 \end{equation}
 
 It can be observed that smaller matrices with bigger fields are more probable
 to be invertible. For instance, with the parameters proposed in~\cite[Chapter
 6]{petzoldt2013thesis}, using the finite field $\mathbb{F}_{16}$ and a Rainbow
 instance that achieves 256-bit security level, the probability of all layers
-being invertible is $\tilde{p}(16, 69, 59) \approx 87.15\%$. But using another
-proposed instance, with $\mathbb{F}_{256}$ and for the same security level,
-$\tilde{p}(256, 63, 30) \approx 99.21\%$. So, only in 0.79\% of the cases some
-layer will not be solvable. In Rainbow-$\eta$, this probability is even
+being invertible is $\tilde{p}(16, 69, 59) \approx 87.15\%$. However using
+another proposed instance, with $\mathbb{F}_{256}$ and for the same security
+level, $\tilde{p}(256, 63, 30) \approx 99.21\%$. So, only in 0.79\% of the
+cases some layer is not solvable. In Rainbow-$\eta$, this probability is even
 smaller, as the first layer is fixed throughout multiple signatures and it only
-has a chance of not being invertible when a new set $V_1$ is chosen. Specially,
-in Rainbow-$\eta_3$, as no new set $V_1$ is chosen, only the probability of the
-subsequent layers need to be taken into account. It can be noted that the third
-proposed variant does not add any cost to the implementation submitted
-in~\cite{ding2017nist}.
+has a chance of not being invertible when a new set $V_1$ is chosen.
+Specially, in Rainbow-$\eta_3$, as no new set $V_1$ is chosen, only the
+probability of the subsequent layers need to be taken into account. It can be
+noted that the third proposed variant does not add any cost to the
+implementation submitted in~\cite{ding2017nist}.
 
 \section{Attacking multiple signatures}
 
@@ -1539,10 +1544,10 @@ resolved. That is, one would need to resolve the equation $\sigma =
 \mathcal{T}^{-1}(x)$, and with $x$ and $\mathcal{T}$ being unknowns, it
 actually forms a quadratic polynomial system. If part of $x$ is fixed, this
 system remains quadratic, still with more variables than equations. Suppose
-that even though it is unfeasible to solve the above equation and find the
-original $\mathcal{T}$, an attackers finds it efficiently via some other
-method. The possession of $\mathcal{T}$ would be of no use because
-$\mathcal{P}$ is also hidden by $\mathcal{S}$.
+that even though it is unfeasible to solve the above equation and to find the
+original $\mathcal{T}$, an attacker finds it efficiently via some other method.
+The possession of $\mathcal{T}$ would be of no use because $\mathcal{P}$ is
+also hidden by $\mathcal{S}$.
 
 \section{Application of known attacks}
 
@@ -1595,8 +1600,8 @@ As described in Sections \ref{sec:rainbow} and \ref{sec:proposal}, when some
 Rainbow layer is not solvable, a new set of first layer vinegar variables
 should be chosen. This adds a considerable computation time to the signature
 generation step when some layer is not solvable. Specially, in Rainbow-$\eta_2$
-this difference can be huge, as the signer will recalculate the central map. In
-a chosen message attack, an attacker can observe the time taken to generate
+this difference can be huge, as the signer recalculates the central map. In a
+chosen message attack, an attacker can observe the time taken to generate
 signatures and know the messages that cause a non-invertibility of some layer.
 
 \cite{ding2017nist} claims that their implementation is side-channel resistant
@@ -1618,7 +1623,7 @@ K^{\eta}_{pr} &=
 m^2 + m + n^2 + n + v_1 \, + \\
 &\quad \sum_{l=1}^{u} o_l \left(
 \frac{(v_l - v_1)(v_l - v_1 + 1)}{2} + (v_l - v_1) o_l + (v_{l+1} - v_1) + 1
-\right)
+\right).
 \end{split}
 \end{equation}
 
@@ -1637,7 +1642,7 @@ m^2 + m + n^2 + n + v_1 \, + \\
 192 & $(\mathbb{F}_{256}, 63, 46, 22)$ & 440638  & 71773  & -83.71\% \\ \hline
 256 & $(\mathbb{F}_{256}, 85, 63, 30)$ & 1086971 & 164721 & -84.85\% \\ \hline
 \end{tabular}
-\caption{Rainbow-$\eta$ improvement}
+\caption{Rainbow-$\eta$ improvements}
 \label{tab:etaimprovement}
 \end{center}
 \end{table}
@@ -1664,7 +1669,7 @@ exploited.
 
 \chapter{Conclusion}
 
-Rainbow has a space requirement problem, as its keys are orders of magnitude
+Rainbow has a space requirement problem as its keys are orders of magnitude
 bigger than the classic digital signature algorithms. In order to viabilize the
 usage of Rainbow in a post-quantum scenario, this issue is being extensively
 addressed in the literature. A series of modifications to the original Rainbow
@@ -1687,8 +1692,8 @@ such method can reduce up to 84\% of the private key.
 The security analysis of Rainbow-$\eta$ could be further expanded, specially
 its sensitivity to side-channel attacks, as this could be an issue of the
 original Rainbow too. Also, cryptanalytic attacks were not discarded, as an
-attacker with access to multiple signatures could derive some information of
-the central map due to the reuse of the vinegar variables.
+attacker with access to multiple signatures could potentially derive some
+information of the central map due to the reuse of the vinegar variables.
 
 \apendice{}
 
