@@ -152,24 +152,24 @@ area that studies such cryptosystems is called post-quantum cryptography, and
 the interest in this has emerged with the development of quantum computers. The
 security of these algorithms relies on problems that are not known to be
 solvable in polynomial-time, therefore, they appear to be good candidates for
-use in a scenario of attackers equipped with quantum computers.
+use in a scenario of quantum adversaries.
 
 There are several classes of post-quantum cryptosystems proposed in the
 literature, and each of them relies on one kind of hard problem. This work aims
 to study Multivariate Public-Key Cryptosystems
-(MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems} based on Rainbow.
-These cryptosystems are constructed using multivariate polynomials systems. A
-polynomial system is usually composed of polynomial equations with single
-variable monomials, and can be easily solved using, for instance, Gaussian
-elimination. However, with the inclusion of more variables into the monomials,
-it becomes a multivariate system. The problem of solving multivariate systems
-is NP-Hard~\cite{garey1979npc}. Therefore, it may be interesting to build
-cryptosystems based on this trait.
+(MPKCs)\sigla{MPKCs}{Multivariate Public-Key Cryptosystems} based on
+Rainbow~\cite{ding2005rainbow}. These cryptosystems are constructed using
+multivariate polynomials systems. A polynomial system is usually composed of
+polynomial equations with single variable monomials, and can be easily solved
+using, for instance, Gaussian elimination. However, with the inclusion of more
+variables into the monomials, it becomes a multivariate system. The problem of
+solving multivariate systems is NP-Hard~\cite{garey1979npc}. Therefore, it may
+be interesting to build cryptosystems based on this trait.
 
 Several digital signature schemes were developed based on the structure of
 multivariate systems. One of the first schemes presented was the Oil and
-Vinegar\sigla{OV}{Oil and Vinegar} signature scheme~\cite{patarin1997ov}, which
-was broken by Kipnis and Shamir in its original
+Vinegar\sigla{OV}{Oil and Vinegar} (OV) signature scheme~\cite{patarin1997ov},
+which was broken by Kipnis and Shamir in its original
 specification~\cite{kipnis1998cryptanalysis}. A subsequent
 work~\cite{kipnis1999unbalanced} reparametrized it, leading to a scheme called
 Unbalanced Oil and Vinegar.\sigla{UOV}{Unbalanced Oil and Vinegar} The trapdoor
@@ -210,7 +210,7 @@ post-quantum algorithms such as code-, lattice- and hash-based cryptosystems
 are not covered. Classical asymmetric algorithms are not covered as well.
 Quantum algorithms are also not discussed.
 
-\section{Methodology}
+\section{Method}
 
 The work was developed using the infrastructure and resources provided by the
 Computer Security Laboratory (LabSEC/UFSC). A literature review was made to
@@ -219,10 +219,10 @@ studied, as well as broken ones for a better understanding of the constructions
 used that optimize the classic multivariate schemes. The performance of all the
 schemes studied were observed along with the impact of the optimizations.
 
-\chapter{Cryptographic primitives}
+\chapter{Cryptography and Algebra background}
 
-In this chapter some basic cryptographic primitives are described for a
-complete understanding of the following chapters. All definitions and
+In this chapter some basic background on cryptography and algebra is given for
+a complete understanding of the following chapters. All definitions and
 descriptions are based on \cite{stinson2005cryptography}.
 
 \section{Public Key Cryptography}
@@ -231,11 +231,11 @@ Symmetric cryptography consists of ciphering and deciphering a message with the
 same key. This can be very useful if two parties, say Alice and Bob, have
 agreed upon using the same key through a secure channel. But if Alice and Bob
 are distant and do not have a secure channel to share a symmetric key, this
-cannot be used. Public key cryptography resolves this issue, as there exists
-two keys.  One of the keys is public, everyone can have access, and it is used
-to encrypt a message. The other key is private and can be held only by its
-owner, no one else can access it. Deciphering a message can only be made with
-the private key. Also, getting the private key from the public key should be
+cannot be used. Public key cryptography solves this issue, as there exists two
+keys. One of the keys is public, everyone can have access, and it is used to
+encrypt a message. The other key is private and can be held only by its owner,
+no one else can access it. Deciphering a message can only be made with the
+private key. Also, getting the private key from the public key should be
 computationally unfeasible. Now, if Bob wants to send a private message to
 Alice, he gets her public key through any channel of communication, encrypts
 the message, and sends it to Alice. Alice, which possesses the private key, is
@@ -262,7 +262,7 @@ classical signatures. Conventional signatures are verified by similarity to
 other signatures that are trusted. Digital signatures are verified using
 publicly known algorithms. Also, a digital signature can be copied several
 times, and it remains authentic. Care should be taken, such that a document is
-not used more times than it should be.  For instance, a signed document saying
+not used more times than it should be. For instance, a signed document saying
 that Alice wants to transfer some amount of money to Bob should be used only
 once, as Bob could force the bank to transfer this same amount multiple times.
 Adding the time the signature was made to the signed document can mitigate this
@@ -672,13 +672,14 @@ of equations, with no apparent structure, is generated.
 As shown in Figure \ref{fig:bipolar}, the bipolar construction consists of
 three secret maps, and a public map that is derived from these three.  Let,
 $\mathcal{P}$ and $\mathcal{F}$ be multivariate systems, and $\mathcal{S}$ and
-$\mathcal{T}$ be random invertible affine maps. In the signing procedure,
-$\mathcal{F}^{-1}$ means finding one of possibly many preimages, and
-$\mathcal{F}$ introduces some structure that allows one to do such. The affine
-maps take care of hiding this structure by actually scrambling the variables of
-the system. When generating the keys, one calculates $\mathcal{P}$ composing
-the secret maps $\mathcal{P} = \mathcal{S} \circ \mathcal{F} \circ
-\mathcal{T}$.
+$\mathcal{T}$ be random invertible affine maps. Affine maps are simply linear
+maps that do not preserve the origin, that is, they may translate the object.
+In the signing procedure, $\mathcal{F}^{-1}$ means finding one of possibly many
+preimages, and $\mathcal{F}$ introduces some structure that allows one to do
+such. The affine maps take care of hiding this structure by actually scrambling
+the variables of the system. When generating the keys, one calculates
+$\mathcal{P}$ composing the secret maps $\mathcal{P} = \mathcal{S} \circ
+\mathcal{F} \circ \mathcal{T}$.
 
 \begin{figure}
 \centering
@@ -697,12 +698,12 @@ node[below]{\textbf{Verify}} (h);
 \caption{Flow of the bipolar construction}\label{fig:bipolar}
 \end{figure}
 
-Note that $n \geq m$ should hold when using the construction for digital
+Note that $n \geq m > 0$ should hold when using the construction for digital
 signature schemes. This makes the public map $\mathcal{P}$ surjective, and
 ensures that for every hash $h \in \mathbb{F}^m$ there exists a signature
 $\sigma \in \mathbb{F}^n$. Encryption schemes can be constructed too, in this
 case $n \leq m$ should hold, thus making the map injective and ensuring that
-the decryption process outputs only one plain text.
+the decryption process results in only one plain text.
 
 With a hash function $\mathcal{H}:\{0,1\}^* \to \mathbb{F}^m$ one can sign a
 document $d$ by calculating $h = \mathcal{H}(d)$. As shown in Figure
@@ -772,9 +773,9 @@ Standardization Process~\cite{ding2017nist}.
 Opposed to the MQ-Problem, the hardness of this problem is not well
 established. Actually, on the balanced Oil and Vinegar
 scheme~\cite{patarin1997ov} decomposing the public map was done efficiently by
-~\cite{kipnis1998cryptanalysis}. While this problem remains an open problem,
-security proofs for multivariate schemes based on the bipolar construction will
-be absent. Still, MQDSS\sigla{MQDSS}{Multivariate Quadratic Digital Signature
+~\cite{kipnis1998cryptanalysis}. While this remains an open problem, security
+proofs for multivariate schemes based on the bipolar construction will be
+absent. Still, MQDSS\sigla{MQDSS}{Multivariate Quadratic Digital Signature
 Scheme}~\cite{chen20165} is a provably secure multivariate cryptosystem,
 however it is based on a totally different construction.
 
@@ -793,6 +794,8 @@ oil variables, that is, there are no monomials with two oil variables. With
 this fact in mind, when generating a signature, one may actually linearize the
 central system and solve for oil variables. A detailed description of the Oil
 and Vinegar signature scheme follows.
+
+\subsubsection{Key generation}
 
 Let $K$ be a small finite field, e.g. $\mathbb{F}_2$. Let $o$ and $v$ be
 integers, such that $o$ is the number of oil variables and $v$ the number of
@@ -823,12 +826,14 @@ $x_{v+1},\dots,x_{v+o} \in O$ are the ``oil'' variables. Note that the oil
 variables are not multiplied between themselves, this is important to find
 preimages for this map when signing a message.
 
-The public map $\mathcal{P}$ is a simple composition of the secret maps,
-$\mathcal{P} = \mathcal{F} \circ \mathcal{T}$. Both $\mathcal{F}$ and
-$\mathcal{P}$ are multivariate systems, and $\mathcal{F}$ has the special
+The public map $\mathcal{P}: K^{o+v} \to K^{o}$ is a simple composition of the
+secret maps, $\mathcal{P} = \mathcal{F} \circ \mathcal{T}$. Both $\mathcal{F}$
+and $\mathcal{P}$ are multivariate systems, and $\mathcal{F}$ has the special
 structure mentioned above, nevertheless $\mathcal{P}$ looks randomly built.
 With these maps described, let the public/private key pair be
 $(\mathcal{P},(\mathcal{F},\mathcal{T}))$.
+
+\subsubsection{Signature generation}
 
 To sign a document $d$, compute its hash value $h = \mathcal{H}(d)$ and find a
 preimage $(x_1,\dots,x_{o+v})$ for the map $\mathcal{F}$ such that
@@ -842,6 +847,8 @@ such that $\mathcal{F}(x)=h$. Next, using the map $\mathcal{T}$ the signature
 itself may be computed. Recall that $\mathcal{T}$ is invertible, thus
 $\mathcal{T}^{-1}$ can be obtained. With both maps inverted, the signature
 $\sigma$ of $d$ is published as $\sigma = \mathcal{T}^{-1}(x)$.
+
+\subsubsection{Signature verification}
 
 To verify a signature $\sigma$ of a document $d$, one can simply check if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds, therefore the signature is valid,
@@ -898,6 +905,8 @@ this case, a new set $V_1$ is chosen and the inversion process starts over.
 This happens with very small probability as shown in Section
 \ref{sec:invertibility}.
 
+\subsubsection{Key generation}
+
 Let the sets $V_l = \{x_1, \dots, x_{v_l}\}$ be the vinegar variables of the
 $l$-th layer, and $O_l = V_{l+1} - V_l$ the respective oil variables. Observe
 that, each layer $l$ has $o_l = v_{l+1} - v_{l}$ equations, and thus $o_l$
@@ -922,6 +931,8 @@ maps are used. Let $\mathcal{S}:K^{n-v_1} \to K^{n-v_1}$ and $\mathcal{T}:K^{n}
 \to K^{n}$ be part of the private key. Then, $\mathcal{P} = \mathcal{S} \circ
 \mathcal{F} \circ \mathcal{T}$ is published as the public key.
 
+\subsubsection{Signature generation}
+
 Let $\mathcal{H}: \{0,1\}^* \to K^{n-v_1}$ be a cryptographic hash function. To
 sign a document $d$, compute $h = \mathcal{H}(d)$. Compute $y = (y_1, \dots,
 y_{n-v_1}) = \mathcal{S}^{-1}(h)$. All layers of $\mathcal{F}$ are solved using
@@ -929,10 +940,34 @@ the process described above, in order to find $x = (x_1, \cdots, x_n)$ such
 that $\mathcal{F}(x) = y$. Finally, $\sigma = \mathcal{T}^{-1}(x)$ is published
 as the signature for $d$.
 
+\subsubsection{Signature verification}
+
 Verifying a signature $\sigma$ for a document $d$ is as simple as checking if
 $\mathcal{P}(\sigma) = \mathcal{H}(d)$ holds. Remark that, again, $\mathcal{P}$
 is a multivariate system that appears to be randomly built, thus hard to solve
 directly.
+
+\subsubsection{Key sizes}
+
+\begin{table}
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+% header
+\thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
+& \thead{Private key size\\(bytes)} & \thead{Public key size\\(bytes)} \\
+\hline
+% data
+80  & $(\mathbb{F}_{256}, 17, 17, 9)$   & 19208   & 25740   \\ \hline
+100 & $(\mathbb{F}_{256}, 26, 22, 11)$  & 45450   & 60390   \\ \hline
+128 & $(\mathbb{F}_{256}, 36, 28, 15)$  & 103704  & 139320  \\ \hline
+192 & $(\mathbb{F}_{256}, 63, 46, 22)$  & 440638  & 596904  \\ \hline
+256 & $(\mathbb{F}_{256}, 85, 63, 30)$  & 1086971 & 1498230 \\ \hline
+\end{tabular}
+\caption{Rainbow key sizes for parameters proposed in \cite{petzoldt2013thesis}}
+\label{tab:rainbowkeysizes}
+\end{center}
+\end{table}
 
 For illustration, Table \ref{tab:rainbowkeysizes} shows a comparison between
 the key sizes of some Rainbow instances proposed in \cite[Chapter
@@ -961,26 +996,6 @@ equations. The public key size formula can be checked by observing Equation
 such kind. With $u=1$, OV and UOV key sizes can be calculated using $K_{pr}$
 and $K_{pu}$ also, as Rainbow is a generalization of the Oil and Vinegar
 schemes.
-
-\begin{table}
-\begin{center}
-\begin{tabular}{|c|c|c|c|}
-\hline
-% header
-\thead{Security level\\(bits)} & \thead{Parameters\\$(K, o_1, v_1, v_2)$}
-& \thead{Private key size\\(bytes)} & \thead{Public key size\\(bytes)} \\
-\hline
-% data
-80  & $(\mathbb{F}_{256}, 17, 17, 9)$   & 19208   & 25740   \\ \hline
-100 & $(\mathbb{F}_{256}, 26, 22, 11)$  & 45450   & 60390   \\ \hline
-128 & $(\mathbb{F}_{256}, 36, 28, 15)$  & 103704  & 139320  \\ \hline
-192 & $(\mathbb{F}_{256}, 63, 46, 22)$  & 440638  & 596904  \\ \hline
-256 & $(\mathbb{F}_{256}, 85, 63, 30)$  & 1086971 & 1498230 \\ \hline
-\end{tabular}
-\caption{Rainbow key sizes for parameters proposed in \cite{petzoldt2013thesis}}
-\label{tab:rainbowkeysizes}
-\end{center}
-\end{table}
 
 \section{Rainbow variants}\label{sec:rainbowvariants}
 
@@ -1396,12 +1411,13 @@ achieved using a random nonce in the generation of $h$. When creating a new
 signature, a random salt $r$ is chosen and $h$ is given by $h =
 \mathcal{H}(\mathcal{H}(d) \| r)$. Note that changing $r$ changes $h$
 completely. Observe that the image $y$ is calculated by $y =
-\mathcal{S}^{-1}(h)$, hence changing $r$ totally alters $y$. With this modified
-hashing procedure, in the case of an unsolvable layer, $r$ is changed and the
-hashing repeated, getting new values for $y$. This is done until all layers are
-solvable and the signature step can finish properly. The verification process
-is done by checking if $\mathcal{P}(\sigma) = \mathcal{H}(\mathcal{H}(d) \| r)$
-holds. Note that now, $r$ is part of the signature.
+\mathcal{S}^{-1}(h)$, hence changing $r$ completely alters $y$. With this
+modified hashing procedure, in the case of an unsolvable layer, $r$ is changed
+and the hashing repeated, getting new values for $y$. This is done until all
+layers are solvable and the signature step can finish properly. The
+verification process is done by checking if $\mathcal{P}(\sigma) =
+\mathcal{H}(\mathcal{H}(d) \| r)$ holds. Note that now, $r$ is part of the
+signature.
 
 Actually, this method is used in the Rainbow proposal to NIST's standardization
 process~\cite{ding2017nist}. This technique is used to achieve
@@ -1551,10 +1567,10 @@ also hidden by $\mathcal{S}$.
 
 \section{Application of known attacks}
 
-There are lots of known attacks on Rainbow and UOV that could also be applied
-to Rainbow-$\eta$. In the previous sections, some problems and possibly
-security flaws are analysed. In this section, the applicability of existing
-attacks is discussed.
+There are many known attacks on Rainbow and UOV that could also be applied to
+Rainbow-$\eta$. In the previous sections, some problems and possibly security
+flaws are analysed. In this section, the applicability of existing attacks is
+discussed.
 
 \subsection{Direct Attack}
 
